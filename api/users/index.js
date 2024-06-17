@@ -1,15 +1,15 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const { User } = require('../models');
+const { User } = require('../../models');
 const router = express.Router();
 
 // Create a new user
 router.post('/', async (req, res) => {
   try {
-    const { name, age, gender, contact_info, country, state, city, university, budget, veg_nonveg, other_requirements, password } = req.body;
+    const { name, age, gender, contact_info, email, country, state, city, university, budget, veg_nonveg, other_requirements, password } = req.body;
     
     // Validate input
-    if (!name || !age || !gender || !contact_info || !country || !state || !city || !university || !budget || !veg_nonveg || !password) {
+    if (!name || !age || !gender || !contact_info || !email || !country || !state || !city || !university || !budget || !veg_nonveg || !password) {
       return res.status(400).json({ error: 'All fields are required' });
     }
     
@@ -22,6 +22,7 @@ router.post('/', async (req, res) => {
       age,
       gender,
       contact_info,
+      email,
       country,
       state,
       city,

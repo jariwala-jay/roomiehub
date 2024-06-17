@@ -1,11 +1,13 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 interface FormData {
   name: string;
   age: string;
   gender: string;
   contact_info: string;
+  email: string;
   country: string;
   state: string;
   city: string;
@@ -17,11 +19,13 @@ interface FormData {
 }
 
 const Register = () => {
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     age: '',
     gender: '',
     contact_info: '',
+    email: '',
     country: '',
     state: '',
     city: '',
@@ -32,6 +36,8 @@ const Register = () => {
     password: '',
   });
 
+  
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -39,8 +45,9 @@ const Register = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/user', formData);
+      const response = await axios.post('http://localhost:5000/api/users', formData);
       console.log('User registered:', response.data);
+      router.push('/login'); // Redirect to login page
     } catch (error) {
       console.error('Error registering user:', error);
     }
@@ -68,6 +75,10 @@ const Register = () => {
       <div>
         <label htmlFor="contact_info">Contact Info:</label>
         <input type="text" id="contact_info" name="contact_info" value={formData.contact_info} onChange={handleChange} required />
+      </div>
+      <div>
+        <label htmlFor="email">Email:</label>
+        <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
       </div>
       <div>
         <label htmlFor="country">Country:</label>

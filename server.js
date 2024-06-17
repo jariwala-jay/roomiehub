@@ -1,13 +1,38 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const passport = require('passport');
+const { Strategy, ExtractJwt } = require('passport-jwt');
 const db = require('./models');
 
 const app = express();
 const port = process.env.PORT || 5000;
 
+const secretKey = 'roomiehub';
+
 app.use(bodyParser.json());
 app.use(cors());
+
+// Passport JWT Strategy
+const opts = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: secretKey,
+};
+
+passport.use(
+  new Strategy(opts, (jwt_payload, done) => {
+    db.User.findByPk(jwt_payload.id)
+      .then(user => {
+        if (user) {
+          return done(null, user);
+        }
+        return done(null, false);
+      })
+      .catch(err => done(err, false));
+  })
+);
+
+app.use(passport.initialize());
 
 db.sequelize.sync().then(() => {
   app.listen(port, () => {
@@ -17,6 +42,8 @@ db.sequelize.sync().then(() => {
   console.error('Unable to connect to the database:', err);
 });
 
-// Include the users API
-const userRoutes = require('./api/user');
-app.use('/api/user', userRoutes);
+const userRoutes = require('./api/users');
+const authRoutes = require('./api/auth');
+
+app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
