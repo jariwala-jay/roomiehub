@@ -49,7 +49,7 @@ const Register = () => {
       console.log('User registered:', response.data);
       router.push('/login'); // Redirect to login page
     } catch (error) {
-      console.error('Error registering user:', error);
+      console.error("Error registering user:", error);
     }
   };
 
@@ -57,15 +57,35 @@ const Register = () => {
     <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="name">Name:</label>
-        <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <label htmlFor="age">Age:</label>
-        <input type="number" id="age" name="age" value={formData.age} onChange={handleChange} required />
+        <input
+          type="number"
+          id="age"
+          name="age"
+          value={formData.age}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <label htmlFor="gender">Gender:</label>
-        <select id="gender" name="gender" value={formData.gender} onChange={handleChange} required>
+        <select
+          id="gender"
+          name="gender"
+          value={formData.gender}
+          onChange={handleChange}
+          required
+        >
           <option value="">Select Gender</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
@@ -74,7 +94,25 @@ const Register = () => {
       </div>
       <div>
         <label htmlFor="contact_info">Contact Info:</label>
-        <input type="text" id="contact_info" name="contact_info" value={formData.contact_info} onChange={handleChange} required />
+        <input
+          type="text"
+          id="contact_info"
+          name="contact_info"
+          value={formData.contact_info}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <label htmlFor="email">Email:</label>
@@ -82,27 +120,68 @@ const Register = () => {
       </div>
       <div>
         <label htmlFor="country">Country:</label>
-        <input type="text" id="country" name="country" value={formData.country} onChange={handleChange} required />
+        <input
+          type="text"
+          id="country"
+          name="country"
+          value={formData.country}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <label htmlFor="state">State:</label>
-        <input type="text" id="state" name="state" value={formData.state} onChange={handleChange} required />
+        <input
+          type="text"
+          id="state"
+          name="state"
+          value={formData.state}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <label htmlFor="city">City:</label>
-        <input type="text" id="city" name="city" value={formData.city} onChange={handleChange} required />
+        <input
+          type="text"
+          id="city"
+          name="city"
+          value={formData.city}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <label htmlFor="university">University:</label>
-        <input type="text" id="university" name="university" value={formData.university} onChange={handleChange} required />
+        <input
+          type="text"
+          id="university"
+          name="university"
+          value={formData.university}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <label htmlFor="budget">Budget:</label>
-        <input type="number" id="budget" name="budget" value={formData.budget} onChange={handleChange} required />
+        <input
+          type="number"
+          id="budget"
+          name="budget"
+          value={formData.budget}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <label htmlFor="veg_nonveg">Veg/Non-Veg:</label>
-        <select id="veg_nonveg" name="veg_nonveg" value={formData.veg_nonveg} onChange={handleChange} required>
+        <select
+          id="veg_nonveg"
+          name="veg_nonveg"
+          value={formData.veg_nonveg}
+          onChange={handleChange}
+          required
+        >
           <option value="">Select Option</option>
           <option value="Veg">Veg</option>
           <option value="Non-Veg">Non-Veg</option>
@@ -110,11 +189,23 @@ const Register = () => {
       </div>
       <div>
         <label htmlFor="other_requirements">Other Requirements:</label>
-        <textarea id="other_requirements" name="other_requirements" value={formData.other_requirements} onChange={handleChange} />
+        <textarea
+          id="other_requirements"
+          name="other_requirements"
+          value={formData.other_requirements}
+          onChange={handleChange}
+        />
       </div>
       <div>
         <label htmlFor="password">Password:</label>
-        <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
       </div>
       <button type="submit">Register</button>
     </form>
