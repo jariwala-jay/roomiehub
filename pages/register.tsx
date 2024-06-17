@@ -41,13 +41,13 @@ const Register = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  const router = useRouter();
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/users', formData);
       console.log('User registered:', response.data);
-      router.push('/login'); // Redirect to login page
+      router.push('/setPreferences'); // Redirect to login page
     } catch (error) {
       console.error("Error registering user:", error);
     }
@@ -103,17 +103,7 @@ const Register = () => {
           required
         />
       </div>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      
       <div>
         <label htmlFor="email">Email:</label>
         <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
