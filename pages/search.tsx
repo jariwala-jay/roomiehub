@@ -67,7 +67,7 @@ const Search = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-      <h2 className="text-3xl font-bold pb-[50px]">Search Results</h2>
+      <h2 className="text-5xl font-bold pb-[50px]">Search Results</h2>
       {error && <div className="text-red-500 mb-4">{error}</div>}
       <div className="grid grid-cols-5 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full ">
         {results.length === 0 ? (
@@ -77,7 +77,7 @@ const Search = () => {
             
               <div
                 key={user.id}
-                className=" w-full mx-auto p-6 m-4 bg-white dark:bg-gray-950 rounded-lg shadow-lg"
+                className=" w-full border-[#000000] border-[1px] mx-auto p-6 m-4 bg-white dark:bg-gray-950 rounded-lg shadow-lg"
               >
                 <div className="flex items-center space-x-4">
                   <div className="w-16 h-16">
