@@ -32,13 +32,13 @@ const SetPreferences = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      if (token) {
+      
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        await axios.put('http://localhost:5000/api/users/preferences', preferences);
+        await axios.post('http://localhost:5000/api/users/preferences', preferences);
         router.push('/login');
-      }
+
     } catch (err) {
-      setError('Failed to set preferences.');
+      setError('Failed to set preferences.'+ err);
     }
   };
 

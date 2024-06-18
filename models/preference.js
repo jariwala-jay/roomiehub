@@ -1,23 +1,50 @@
-'use strict';
-const { Model } = require('sequelize');
-
 module.exports = (sequelize, DataTypes) => {
-  class Preference extends Model {
-    static associate(models) {
-      Preference.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
-    }
-  }
-  Preference.init({
-    userId: DataTypes.INTEGER,
-    gender: DataTypes.STRING,
-    age_min: DataTypes.INTEGER,
-    age_max: DataTypes.INTEGER,
-    budget_min: DataTypes.INTEGER,
-    budget_max: DataTypes.INTEGER,
-    veg_nonveg: DataTypes.STRING
+  const Preferences = sequelize.define('Preferences', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
+    },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    age_min: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    age_max: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    budget_min: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    budget_max: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    veg_nonveg: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   }, {
-    sequelize,
-    modelName: 'Preference',
+    timestamps: false,
   });
-  return Preference;
+
+  Preferences.associate = function(models) {
+    Preferences.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
+  };
+
+  return Preferences;
 };

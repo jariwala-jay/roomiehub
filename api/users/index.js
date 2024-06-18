@@ -1,8 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const { User } = require('../../models');
+const jwt = require('jsonwebtoken');
+const { User, Preferences } = require('../../models');
 const router = express.Router();
+
+const secretKey = 'roomiehub'; // Use a secure key in production
 
 // Create a new user
 router.post('/', async (req, res) => {
@@ -16,7 +19,7 @@ router.post('/', async (req, res) => {
     
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    
     // Create user
     const newUser = await User.create({
       name,
@@ -33,8 +36,17 @@ router.post('/', async (req, res) => {
       other_requirements,
       hashed_password: hashedPassword,
     });
-
-    res.status(201).json(newUser);
+    await Preferences.create({
+      userId: newUser.id,
+      gender: 'Any',
+      age_min: 18,
+      age_max: 90,
+      budget_min: 100,
+      budget_max: 100000,
+      veg_nonveg: 'Any',
+    });
+    const token = jwt.sign({ id: newUser.id }, secretKey, { expiresIn: '1h' });
+    res.status(201).json({user: newUser,token});
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -72,6 +84,32 @@ router.put('/profile', passport.authenticate('jwt', { session: false }), async (
     res.json(user);
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+});
+
+router.post('/preferences', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+    const { gender, age_min, age_max, budget_min, budget_max, veg_nonveg } = req.body;
+    const userId = req.user.id;
+    // Check if preferences already exist for this user
+    // const existingPreferences = await Preferences.findOne({ where: { userId } });
+    // if (existingPreferences) {
+    //   return res.status(400).json({ error: 'Preferences already set for this user.' });
+    // }
+    
+    // Create new preferences
+    const newPreferences = await Preferences.create({
+      userId,
+      gender,
+      age_min,
+      age_max,
+      budget_min,
+      budget_max,
+      veg_nonveg,
+    });
+    res.status(201).json(newPreferences);
+  } catch (error) {
+    res.status(400).json({ error1: error.message });
   }
 });
 
