@@ -113,4 +113,40 @@ router.post('/preferences', passport.authenticate('jwt', { session: false }), as
   }
 });
 
+router.put('/preferences', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+    const { gender, age_min, age_max, budget_min, budget_max, veg_nonveg } = req.body;
+    const preferences = await Preferences.findOne({ where: { userId: req.user.id } });
+
+    if (!preferences) {
+      return res.status(404).json({ error: 'Preferences not found' });
+    }
+
+    preferences.gender = gender || preferences.gender;
+    preferences.age_min = age_min || preferences.age_min;
+    preferences.age_max = age_max || preferences.age_max;
+    preferences.budget_min = budget_min || preferences.budget_min;
+    preferences.budget_max = budget_max || preferences.budget_max;
+    preferences.veg_nonveg = veg_nonveg || preferences.veg_nonveg;
+
+    await preferences.save();
+    res.json(preferences);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// New route to get user preferences
+router.get('/preferences', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+    const preferences = await Preferences.findOne({ where: { userId: req.user.id } });
+    if (!preferences) {
+      return res.status(404).json({ error: 'Preferences not found' });
+    }
+    res.json(preferences);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 module.exports = router;
