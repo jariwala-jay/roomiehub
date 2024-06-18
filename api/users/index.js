@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const { User, Preferences } = require('../../models');
+const { User } = require('../../models');
 const router = express.Router();
 
 // Create a new user
@@ -34,55 +34,42 @@ router.post('/', async (req, res) => {
       hashed_password: hashedPassword,
     });
 
-    // Create default preferences
-    await Preferences.create({
-      userId: newUser.id,
-      gender: 'Any',
-      age_min: 18,
-      age_max: 100,
-      budget_min: 0,
-      budget_max: 100000,
-      veg_nonveg: 'Any',
-    });
-
-    res.status(201).json({ user: newUser, token: 'dummy-token' }); // Replace with actual token generation
+    res.status(201).json(newUser);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
 
 // Protected route to get user profile
-router.get('/profile', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res) => {
+  res.json(req.user);
+});
+
+// Protected route to update user profile
+router.put('/profile', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
-    const user = await User.findByPk(req.user.id, { include: [{ model: Preferences, as: 'preferences' }] });
+    const { name, age, gender, contact_info, email, country, state, city, university, budget, veg_nonveg, other_requirements } = req.body;
+    const user = await User.findByPk(req.user.id);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
+
+    user.name = name || user.name;
+    user.age = age || user.age;
+    user.gender = gender || user.gender;
+    user.contact_info = contact_info || user.contact_info;
+    user.email = email || user.email;
+    user.country = country || user.country;
+    user.state = state || user.state;
+    user.city = city || user.city;
+    user.university = university || user.university;
+    user.budget = budget || user.budget;
+    user.veg_nonveg = veg_nonveg || user.veg_nonveg;
+    user.other_requirements = other_requirements || user.other_requirements;
+
+    await user.save();
+
     res.json(user);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
-
-// Protected route to update user preferences
-router.put('/preferences', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  try {
-    const { gender, age_min, age_max, budget_min, budget_max, veg_nonveg } = req.body;
-    const preferences = await Preferences.findOne({ where: { userId: req.user.id } });
-
-    if (!preferences) {
-      return res.status(404).json({ error: 'Preferences not found' });
-    }
-
-    preferences.gender = gender || preferences.gender;
-    preferences.age_min = age_min || preferences.age_min;
-    preferences.age_max = age_max || preferences.age_max;
-    preferences.budget_min = budget_min || preferences.budget_min;
-    preferences.budget_max = budget_max || preferences.budget_max;
-    preferences.veg_nonveg = veg_nonveg || preferences.veg_nonveg;
-
-    await preferences.save();
-    res.json(preferences);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

@@ -1,28 +1,23 @@
+'use strict';
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  const Preferences = sequelize.define('Preferences', {
-    gender: {
-      type: DataTypes.STRING,
-    },
-    age_min: {
-      type: DataTypes.INTEGER,
-    },
-    age_max: {
-      type: DataTypes.INTEGER,
-    },
-    budget_min: {
-      type: DataTypes.INTEGER,
-    },
-    budget_max: {
-      type: DataTypes.INTEGER,
-    },
-    veg_nonveg: {
-      type: DataTypes.STRING,
-    },
+  class Preference extends Model {
+    static associate(models) {
+      Preference.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
+    }
+  }
+  Preference.init({
+    userId: DataTypes.INTEGER,
+    gender: DataTypes.STRING,
+    age_min: DataTypes.INTEGER,
+    age_max: DataTypes.INTEGER,
+    budget_min: DataTypes.INTEGER,
+    budget_max: DataTypes.INTEGER,
+    veg_nonveg: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'Preference',
   });
-
-  Preferences.associate = function(models) {
-    Preferences.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
-  };
-
-  return Preferences;
+  return Preference;
 };
