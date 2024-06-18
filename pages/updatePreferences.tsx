@@ -52,7 +52,7 @@ const UpdatePreferences = () => {
       if (token) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         await axios.put('http://localhost:5000/api/users/preferences', preferences);
-        router.push('/dashboard');
+        alert('Profile updated successfully');
       }
     } catch (err) {
       setError('Failed to update preferences.');

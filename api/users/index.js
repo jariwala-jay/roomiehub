@@ -4,6 +4,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const { User, Preferences } = require('../../models');
 const router = express.Router();
+const { Op } = require('sequelize'); // Import Op from Sequelize
 
 const secretKey = 'roomiehub'; // Use a secure key in production
 
@@ -135,8 +136,7 @@ router.put('/preferences', passport.authenticate('jwt', { session: false }), asy
     res.status(400).json({ error: error.message });
   }
 });
-
-// New route to get user preferences
+// Protected route to get user preferences
 router.get('/preferences', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const preferences = await Preferences.findOne({ where: { userId: req.user.id } });
@@ -149,4 +149,30 @@ router.get('/preferences', passport.authenticate('jwt', { session: false }), asy
   }
 });
 
+// Route to search for roommates
+router.post('/search', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+    const { gender, age_min, age_max, budget_min, budget_max, veg_nonveg } = req.body;
+
+    const whereClause = {
+      age: { [Op.between]: [age_min, age_max] },
+      budget: { [Op.between]: [budget_min, budget_max] },
+      veg_nonveg: veg_nonveg === 'Any' ? { [Op.or]: ['Veg', 'Non-Veg'] } : veg_nonveg,
+    };
+
+    if (gender !== 'Any') {
+      whereClause.gender = gender;
+    }
+
+    console.log("Search criteria:", whereClause); // Debugging line
+
+    const users = await User.findAll({ where: whereClause });
+    
+    console.log("Number of users found:", users.length); // Debugging line
+    res.json(users);
+  } catch (error) {
+    console.error("Error searching for roommates:", error);
+    res.status(400).json({ error: error.message });
+  }
+});
 module.exports = router;
