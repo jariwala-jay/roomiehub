@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const { User, Preferences } = require('../../models');
+const { User, Preferences ,Notification } = require('../../models');
 const router = express.Router();
 const { Op } = require('sequelize'); // Import Op from Sequelize
 
@@ -175,4 +175,18 @@ router.post('/search', passport.authenticate('jwt', { session: false }), async (
     res.status(400).json({ error: error.message });
   }
 });
+
+router.get('/notifications', async (req, res) => {
+  const { userId } = req.query;
+  if (!userId) {
+    return res.status(400).json({ error: 'userId is required' });
+  }
+  try {
+    const notifications = await Notification.findAll({ where: { userId } });
+    res.json(notifications);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 module.exports = router;

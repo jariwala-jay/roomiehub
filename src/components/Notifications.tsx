@@ -3,8 +3,20 @@ import axios from 'axios';
 
 const Notifications = ({ currentUser }) => {
   const [requests, setRequests] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/users/notifications', {
+          params: { userId: currentUser.id }
+        });
+        setNotifications(response.data);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    };
+
     const fetchRequests = async () => {
       try {
         if (currentUser && currentUser.id) {
@@ -16,6 +28,7 @@ const Notifications = ({ currentUser }) => {
       }
     };
 
+    fetchNotifications();
     fetchRequests();
   }, [currentUser]);
 
@@ -31,6 +44,19 @@ const Notifications = ({ currentUser }) => {
   return (
     <div>
       <h2>Notifications</h2>
+      <div>
+        <h2 className="text-xl font-bold mb-4">Notifications</h2>
+        {notifications.length === 0 ? (
+          <p>No notifications</p>
+        ) : (
+          notifications.map((notification, index) => (
+            <div key={index} className="bg-gray-200 p-2 mb-2 rounded">
+              {notification.message}
+            </div>
+          ))
+        )}
+      </div>
+
       {requests.length === 0 ? (
         <p>No new requests</p>
       ) : (

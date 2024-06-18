@@ -1,8 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const ProfileCard = ({ user, currentUser }) => {
   const [requestSent, setRequestSent] = useState(false);
+
+  useEffect(() => {
+    // Check if a request is already sent
+    const fetchRequestStatus = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/requests/check', {
+          params: { senderId: currentUser.id, receiverId: user.id }
+        });
+        setRequestSent(response.data.exists);
+      } catch (error) {
+        console.error('Error checking request status:', error);
+      }
+    };
+
+    fetchRequestStatus();
+  }, [currentUser.id, user.id]);
 
   const handleConnect = async () => {
     try {
