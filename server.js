@@ -34,6 +34,14 @@ passport.use(
 
 app.use(passport.initialize());
 
+const userRoutes = require('./api/users');
+const authRoutes = require('./api/auth');
+const requestRoutes = require('./api/requests');
+
+app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/requests', requestRoutes);
+
 db.sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
@@ -41,9 +49,3 @@ db.sequelize.sync().then(() => {
 }).catch(err => {
   console.error('Unable to connect to the database:', err);
 });
-
-const userRoutes = require('./api/users');
-const authRoutes = require('./api/auth');
-
-app.use('/api/users', userRoutes);
-app.use('/api/auth', authRoutes);

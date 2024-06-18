@@ -1,20 +1,31 @@
-'use strict';
-const { Model } = require('sequelize');
-
 module.exports = (sequelize, DataTypes) => {
+  const { Model } = require('sequelize'); // Import Model from Sequelize
+
   class Request extends Model {
     static associate(models) {
-      Request.belongsTo(models.User, { foreignKey: 'senderId', as: 'sender' });
-      Request.belongsTo(models.User, { foreignKey: 'receiverId', as: 'receiver' });
+      Request.belongsTo(models.User, { as: 'sender', foreignKey: 'senderId' });
+      Request.belongsTo(models.User, { as: 'receiver', foreignKey: 'receiverId' });
     }
   }
+
   Request.init({
-    senderId: DataTypes.INTEGER,
-    receiverId: DataTypes.INTEGER,
-    status: DataTypes.STRING
+    senderId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    receiverId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.ENUM('pending', 'accepted', 'rejected'),
+      defaultValue: 'pending',
+      allowNull: false,
+    },
   }, {
     sequelize,
     modelName: 'Request',
   });
+
   return Request;
 };

@@ -1,35 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import ProfileCard from "@/components/ProfileCard"; // Import ProfileCard component
-
-interface Preferences {
-  gender: string;
-  age_min: number;
-  age_max: number;
-  budget_min: number;
-  budget_max: number;
-  veg_nonveg: string;
-}
-
-interface User {
-  id: number;
-  name: string;
-  age: number;
-  gender: string;
-  contact_info: string;
-  email: string;
-  country: string;
-  state: string;
-  city: string;
-  university: string;
-  budget: number;
-  veg_nonveg: string;
-  other_requirements: string;
-}
+import ProfileCard from "@/components/ProfileCard";
 
 const Search = () => {
-  const [preferences, setPreferences] = useState<Preferences>({
+  const [preferences, setPreferences] = useState({
     gender: "Any",
     age_min: 18,
     age_max: 100,
@@ -37,9 +12,11 @@ const Search = () => {
     budget_max: 100000,
     veg_nonveg: "Any",
   });
-  const [results, setResults] = useState<User[]>([]);
+  const [results, setResults] = useState([]);
   const [error, setError] = useState("");
   const router = useRouter();
+  const { id, name, email } = router.query;
+  const currentUser = { id, name, email };
 
   useEffect(() => {
     const fetchPreferencesAndSearch = async () => {
@@ -75,7 +52,7 @@ const Search = () => {
           <p className="text-lg">No results found</p>
         ) : (
           results.map((user) => (
-            <ProfileCard key={user.id} user={user} /> // Use ProfileCard component
+            <ProfileCard key={user.id} user={user} currentUser={currentUser} />
           ))
         )}
       </div>

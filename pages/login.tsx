@@ -20,9 +20,16 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
-      localStorage.setItem('token', response.data.token);
-      router.push('/dashboard');
+      const { token, user } = response.data;
+      console.log('Token:', token); // Log the token
+      console.log('User data:', user); // Log the user data
+      localStorage.setItem('token', token);
+      router.push({
+        pathname: '/dashboard',
+        query: { ...user }
+      });
     } catch (error) {
+      console.error('Login error:', error); // Log the error
       setError('Invalid email or password');
     }
   };
@@ -41,6 +48,7 @@ const Login = () => {
             value={formData.email}
             onChange={handleChange}
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            required
           />
         </div>
         <div className="mb-4">
@@ -52,6 +60,7 @@ const Login = () => {
             value={formData.password}
             onChange={handleChange}
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            required
           />
         </div>
         <button
