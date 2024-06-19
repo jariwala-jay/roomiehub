@@ -2,13 +2,8 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-interface LoginFormData {
-  email: string;
-  password: string;
-}
-
 const Login = () => {
-  const [formData, setFormData] = useState<LoginFormData>({ email: '', password: '' });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const router = useRouter();
 
@@ -20,16 +15,10 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
-      const { token, user } = response.data;
-      console.log('Token:', token); // Log the token
-      console.log('User data:', user); // Log the user data
-      localStorage.setItem('token', token);
-      router.push({
-        pathname: '/dashboard',
-        query: { ...user }
-      });
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user)); // Store user info
+      router.push('/dashboard');
     } catch (error) {
-      console.error('Login error:', error); // Log the error
       setError('Invalid email or password');
     }
   };
@@ -48,7 +37,6 @@ const Login = () => {
             value={formData.email}
             onChange={handleChange}
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
           />
         </div>
         <div className="mb-4">
@@ -60,13 +48,9 @@ const Login = () => {
             value={formData.password}
             onChange={handleChange}
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
           />
         </div>
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-        >
+        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
           Login
         </button>
       </form>

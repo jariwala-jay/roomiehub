@@ -37,15 +37,7 @@ router.post('/', async (req, res) => {
       other_requirements,
       hashed_password: hashedPassword,
     });
-    await Preferences.create({
-      userId: newUser.id,
-      gender: 'Any',
-      age_min: 18,
-      age_max: 90,
-      budget_min: 100,
-      budget_max: 100000,
-      veg_nonveg: 'Any',
-    });
+   
     const token = jwt.sign({ id: newUser.id }, secretKey, { expiresIn: '1h' });
     res.status(201).json({user: newUser,token});
   } catch (error) {
@@ -115,27 +107,25 @@ router.post('/preferences', passport.authenticate('jwt', { session: false }), as
 });
 
 router.put('/preferences', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const { gender, age_min, age_max, budget_min, budget_max, veg_nonveg } = req.body;
   try {
-    const { gender, age_min, age_max, budget_min, budget_max, veg_nonveg } = req.body;
     const preferences = await Preferences.findOne({ where: { userId: req.user.id } });
-
     if (!preferences) {
       return res.status(404).json({ error: 'Preferences not found' });
     }
-
-    preferences.gender = gender || preferences.gender;
-    preferences.age_min = age_min || preferences.age_min;
-    preferences.age_max = age_max || preferences.age_max;
-    preferences.budget_min = budget_min || preferences.budget_min;
-    preferences.budget_max = budget_max || preferences.budget_max;
-    preferences.veg_nonveg = veg_nonveg || preferences.veg_nonveg;
-
+    preferences.gender = gender;
+    preferences.age_min = age_min;
+    preferences.age_max = age_max;
+    preferences.budget_min = budget_min;
+    preferences.budget_max = budget_max;
+    preferences.veg_nonveg = veg_nonveg;
     await preferences.save();
     res.json(preferences);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
+
 // Protected route to get user preferences
 router.get('/preferences', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {

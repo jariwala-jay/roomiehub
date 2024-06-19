@@ -43,7 +43,6 @@ const Notifications = ({ currentUser }) => {
 
   return (
     <div>
-      <h2>Notifications</h2>
       <div>
         <h2 className="text-xl font-bold mb-4">Notifications</h2>
         {notifications.length === 0 ? (

@@ -14,13 +14,17 @@ const Search = () => {
   });
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
-  const router = useRouter();
-  const { id, name, email } = router.query;
-  const currentUser = { id, name, email };
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+  
+  }, []);
 
   useEffect(() => {
     const fetchPreferencesAndSearch = async () => {
       try {
+        const user =  localStorage.getItem('user') ;
+        setCurrentUser(JSON.parse(user));
         const token = localStorage.getItem("token");
         if (token) {
           axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
