@@ -15,11 +15,13 @@ const SearchAll = () => {
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const router = useRouter();
-  const { id, name, email } = router.query;
-  const currentUser = { id, name, email };
+  const [currentUser, setCurrentUser] = useState(null);
+
+  
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    setCurrentUser(user);
     const fetchPreferencesAndSearch = async () => {
       try {
         const token = localStorage.getItem("token");

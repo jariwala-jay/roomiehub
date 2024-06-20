@@ -2,13 +2,17 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import Notifications from "@/components/Notifications";
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
-  const router = useRouter();
-  const { id, name, email } = router.query;
+  const [currentUser, setCurrentUser] = useState(null);
 
-  const currentUser = { id, name, email };
-  console.log('Dashboard currentUser:', currentUser); // Debugging line
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    setCurrentUser(user);
+  }, []);
+
+  if (!currentUser) return <div>Loading...</div>;
 
 
   return (
