@@ -37,10 +37,12 @@ app.use(passport.initialize());
 const userRoutes = require('./api/users');
 const authRoutes = require('./api/auth');
 const requestRoutes = require('./api/requests');
+const friendRoutes = require('./api/friends');
 
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/requests', requestRoutes);
+app.use('/api/friends', friendRoutes);
 
 db.sequelize.sync().then(() => {
   app.listen(port, () => {
