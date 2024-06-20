@@ -27,7 +27,7 @@ const Dashboard = () => {
         <Link
           href={{
             pathname: "/updatePreferences",
-            query: currentUser,
+          
           }}
         >
           <p className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
@@ -37,7 +37,7 @@ const Dashboard = () => {
         <Link
           href={{
             pathname: "/profile",
-            query: currentUser,
+            
           }}
         >
           <p className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
@@ -47,7 +47,7 @@ const Dashboard = () => {
         <Link
           href={{
             pathname: "/search",
-            query: currentUser,
+            
           }}
         >
           <p className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
@@ -57,7 +57,7 @@ const Dashboard = () => {
         <Link
           href={{
             pathname: "/searchAll",
-            query: currentUser,
+            
           }}
         >
           <p className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
