@@ -1,50 +1,47 @@
-module.exports = (sequelize, DataTypes) => {
-  const Preferences = sequelize.define('Preferences', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
+const { Model, DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
+  class Preferences extends Model {}
+
+  Preferences.init({
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'Users',
-        key: 'id',
-      },
-      onDelete: 'CASCADE',
     },
     gender: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: 'Any',
     },
     age_min: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 18,
     },
     age_max: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 100,
     },
     budget_min: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0,
     },
     budget_max: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 100000,
     },
     veg_nonveg: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: 'Any',
     },
   }, {
-    timestamps: false,
+    sequelize,
+    modelName: 'Preferences',
   });
-
-  Preferences.associate = function(models) {
-    Preferences.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
-  };
 
   return Preferences;
 };

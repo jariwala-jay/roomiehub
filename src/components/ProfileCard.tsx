@@ -1,8 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const ProfileCard = ({ user, currentUser }) => {
   const [requestSent, setRequestSent] = useState(false);
+
+  useEffect(() => {
+    // Check if a request is already sent
+    const fetchRequestStatus = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/requests/check', {
+          params: { senderId: currentUser.id, receiverId: user.id }
+        });
+        setRequestSent(response.data.exists);
+      } catch (error) {
+        console.error('Error checking request status:', error);
+      }
+    };
+
+    fetchRequestStatus();
+  }, [currentUser.id, user.id]);
 
   const handleConnect = async () => {
     try {
@@ -22,7 +38,7 @@ const ProfileCard = ({ user, currentUser }) => {
     <div className="w-full max-w-md mx-auto p-6 bg-white dark:bg-gray-950 rounded-lg shadow-lg">
       <div className="flex items-center space-x-4">
         <div className="w-16 h-16">
-          <img src="/placeholder-user.jpg" alt="User avatar" />
+          <img src="/man.png" alt="User avatar" />
         </div>
         <div>
           <h2 className="text-xl text-gray-700 dark:text-gray-300 font-semibold">
