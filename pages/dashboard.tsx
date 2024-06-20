@@ -37,6 +37,11 @@ const Dashboard = () => {
             Search for Roommates
           </p>
         </Link>
+        <Link href="/friends">
+          <p className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+            My Friends
+          </p>
+        </Link>
       </div>
     </ProtectedRoute>
   );
