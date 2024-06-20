@@ -200,7 +200,7 @@ const SearchAll = () => {
             onChange={handleAgeChange}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
-            min={18}
+            min={1}
             max={100}
           />
         </div>
