@@ -15,10 +15,7 @@ const Search = () => {
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
-
-  useEffect(() => {
   
-  }, []);
 
   useEffect(() => {
     const fetchPreferencesAndSearch = async () => {

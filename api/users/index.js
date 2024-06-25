@@ -179,4 +179,28 @@ router.get('/notifications', async (req, res) => {
   }
 });
 
+// Define your searchAll endpoint
+router.post('/searchAll', async (req, res) => {
+  try {
+    const { gender, budget, city, age, veg_nonveg } = req.body;
+
+    const criteria = {
+      age: { [Op.between]: age },
+      budget: { [Op.between]: budget },
+      ...(gender !== 'Any' && { gender }),
+      ...(veg_nonveg !== 'Any' && { veg_nonveg }),
+      ...(city && { city: { [Op.iLike]: `%${city}%` } }),
+    };
+
+    const users = await User.findAll({
+      where: criteria,
+    });
+
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 module.exports = router;
