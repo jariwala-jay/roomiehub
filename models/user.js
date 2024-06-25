@@ -1,72 +1,76 @@
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  const User = sequelize.define(
+    "User",
+    {
+      full_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      contact_no: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      city: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      university: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      profile_pic: {
+        type: DataTypes.STRING,
+      },
+      age: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      gender: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      budget: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      veg_nonveg: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      drinker: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      smoker: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      have_room: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    age: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    gender: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    contact_info: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    country: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    state: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    city: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    university: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    budget: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    veg_nonveg: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    other_requirements: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    hashed_password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  }, {
-    timestamps: false,
-  });
+    {
+      tableName: "Users",
+      underscored: true,
+    }
+  );
 
-  User.associate = function(models) {
-    User.hasOne(models.Preferences, { foreignKey: 'userId', as: 'preferences' });
-  };
-  User.associate = function(models) {
-    User.hasMany(models.Notification, { foreignKey: 'userId' });
+  User.associate = (models) => {
+    User.hasOne(models.Preferences, { foreignKey: "user_id" });
   };
 
   return User;

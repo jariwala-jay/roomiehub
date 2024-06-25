@@ -12,7 +12,7 @@ export default function Home() {
             Login
           </button>
         </a>
-        <a href="/register">
+        <a href="/register/basic">
           <button className="px-6 py-3 text-lg font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors duration-300">
             Register
           </button>
