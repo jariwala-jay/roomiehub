@@ -1,3 +1,4 @@
+// migrations/YYYYMMDDHHMMSS-create-requests.js
 'use strict';
 
 module.exports = {
@@ -9,24 +10,34 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      senderId: {
+      sender_id: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
         allowNull: false,
       },
-      receiverId: {
+      receiver_id: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
         allowNull: false,
       },
       status: {
-        type: Sequelize.ENUM('pending', 'accepted', 'rejected'),
-        defaultValue: 'pending',
+        type: Sequelize.STRING,
         allowNull: false,
+        defaultValue: 'pending',
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },

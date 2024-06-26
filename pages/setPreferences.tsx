@@ -3,42 +3,47 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 
 interface Preferences {
-  gender: string;
-  age_min: number;
-  age_max: number;
-  budget_min: number;
-  budget_max: number;
-  veg_nonveg: string;
+  preferred_date: string;
+  preferred_veg_nonveg: string;
+  preference_checklist: string[];
+  have_room: string;
 }
 
 const SetPreferences = () => {
   const [preferences, setPreferences] = useState<Preferences>({
-    gender: 'Any',
-    age_min: 18,
-    age_max: 100,
-    budget_min: 0,
-    budget_max: 100000,
-    veg_nonveg: 'Any',
+    preferred_date: '',
+    preferred_veg_nonveg: 'Any',
+    preference_checklist: [],
+    have_room: 'no',
   });
   const [error, setError] = useState('');
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setPreferences({ ...preferences, [name]: value });
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+      setPreferences((prevPreferences) => ({
+        ...prevPreferences,
+        preference_checklist: checked
+          ? [...prevPreferences.preference_checklist, value]
+          : prevPreferences.preference_checklist.filter((item) => item !== value),
+      }));
+    } else {
+      setPreferences({ ...preferences, [name]: value });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        await axios.post('http://localhost:5000/api/users/preferences', preferences);
-        router.push('/login');
-
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      console.log(preferences)
+      const Response = await axios.post('http://localhost:5000/api/users/preferences', preferences);
+      console.log(Response.data);
+      router.push('/login');
     } catch (err) {
-      setError('Failed to set preferences.'+ err);
+      setError('Failed to set preferences. ' + err);
     }
   };
 
@@ -48,75 +53,86 @@ const SetPreferences = () => {
       {error && <div className="text-red-500 mb-4">{error}</div>}
       <form onSubmit={handleSubmit} className="w-full max-w-md">
         <div className="mb-4">
-          <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Preferred Gender</label>
+          <label htmlFor="preferred_date" className="block text-sm font-medium text-gray-700">Preferred Date</label>
+          <input
+            type="date"
+            id="preferred_date"
+            name="preferred_date"
+            value={preferences.preferred_date}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="preferred_veg_nonveg" className="block text-sm font-medium text-gray-700">Preferred Veg/Non-Veg</label>
           <select
-            id="gender"
-            name="gender"
-            value={preferences.gender}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Any">Any</option>
-          </select>
-        </div>
-        <div className="mb-4">
-          <label htmlFor="age_min" className="block text-sm font-medium text-gray-700">Age Minimum</label>
-          <input
-            type="number"
-            id="age_min"
-            name="age_min"
-            value={preferences.age_min}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="age_max" className="block text-sm font-medium text-gray-700">Age Maximum</label>
-          <input
-            type="number"
-            id="age_max"
-            name="age_max"
-            value={preferences.age_max}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="budget_min" className="block text-sm font-medium text-gray-700">Budget Minimum</label>
-          <input
-            type="number"
-            id="budget_min"
-            name="budget_min"
-            value={preferences.budget_min}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="budget_max" className="block text-sm font-medium text-gray-700">Budget Maximum</label>
-          <input
-            type="number"
-            id="budget_max"
-            name="budget_max"
-            value={preferences.budget_max}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="veg_nonveg" className="block text-sm font-medium text-gray-700">Veg/Non-Veg Preference</label>
-          <select
-            id="veg_nonveg"
-            name="veg_nonveg"
-            value={preferences.veg_nonveg}
+            id="preferred_veg_nonveg"
+            name="preferred_veg_nonveg"
+            value={preferences.preferred_veg_nonveg}
             onChange={handleChange}
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
           >
             <option value="Veg">Veg</option>
             <option value="Non-Veg">Non-Veg</option>
             <option value="Any">Any</option>
+          </select>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Preferences Checklist</label>
+          <div className="mt-1 space-y-2">
+            <label>
+              <input
+                type="checkbox"
+                name="preference_checklist"
+                value="male only"
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Male Only
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="preference_checklist"
+                value="female only"
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Female Only
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="preference_checklist"
+                value="non-smoker"
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Non-Smoker
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="preference_checklist"
+                value="non-drinker"
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Non-Drinker
+            </label>
+          </div>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="have_room" className="block text-sm font-medium text-gray-700">Have Room</label>
+          <select
+            id="have_room"
+            name="have_room"
+            value={preferences.have_room}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+          >
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
           </select>
         </div>
         <button

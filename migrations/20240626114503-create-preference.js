@@ -1,4 +1,6 @@
+// migrations/YYYYMMDDHHMMSS-create-preferences.js
 'use strict';
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Preferences', {
@@ -6,48 +8,45 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      userId: {
+      user_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
-          key: 'id'
+          key: 'id',
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        allowNull: false,
       },
-      gender: {
-        type: Sequelize.STRING
+      preferred_date: {
+        type: Sequelize.DATE,
+        allowNull: false,
       },
-      age_min: {
-        type: Sequelize.INTEGER
+      preferred_veg_nonveg: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
-      age_max: {
-        type: Sequelize.INTEGER
+      preference_checklist: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        allowNull: false,
       },
-      budget_min: {
-        type: Sequelize.INTEGER
+      have_room: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
-      budget_max: {
-        type: Sequelize.INTEGER
-      },
-      veg_nonveg: {
-        type: Sequelize.STRING
-      },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('NOW()')
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('NOW()')
-      }
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Preferences');
-  }
+  },
 };
+

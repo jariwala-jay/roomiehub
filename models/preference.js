@@ -1,47 +1,39 @@
-const { Model, DataTypes } = require('sequelize');
-
-module.exports = (sequelize) => {
-  class Preferences extends Model {}
-
-  Preferences.init({
-    userId: {
+// models/preferences.js
+module.exports = (sequelize, DataTypes) => {
+  const Preferences = sequelize.define('Preferences', {
+    user_id: {
       type: DataTypes.INTEGER,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
       allowNull: false,
     },
-    gender: {
+    preferred_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    preferred_veg_nonveg: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 'Any',
     },
-    age_min: {
-      type: DataTypes.INTEGER,
+    preference_checklist: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
-      defaultValue: 18,
     },
-    age_max: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 100,
-    },
-    budget_min: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
-    },
-    budget_max: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 100000,
-    },
-    veg_nonveg: {
+    have_room: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 'Any',
     },
   }, {
-    sequelize,
-    modelName: 'Preferences',
+    tableName: 'Preferences',
+    underscored: true,
   });
+
+  Preferences.associate = (models) => {
+    Preferences.belongsTo(models.User, { foreignKey: 'user_id' });
+  };
 
   return Preferences;
 };
