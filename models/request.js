@@ -1,31 +1,33 @@
+// models/requests.js
 module.exports = (sequelize, DataTypes) => {
-  const { Model } = require('sequelize'); // Import Model from Sequelize
-
-  class Request extends Model {
-    static associate(models) {
-      Request.belongsTo(models.User, { as: 'sender', foreignKey: 'senderId' });
-      Request.belongsTo(models.User, { as: 'receiver', foreignKey: 'receiverId' });
-    }
-  }
-
-  Request.init({
-    senderId: {
+  const Requests = sequelize.define('Requests', {
+    sender_id: {
       type: DataTypes.INTEGER,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
       allowNull: false,
     },
-    receiverId: {
+    receiver_id: {
       type: DataTypes.INTEGER,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM('pending', 'accepted', 'rejected'),
-      defaultValue: 'pending',
+      type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: 'pending',
     },
   }, {
-    sequelize,
-    modelName: 'Request',
+    tableName: 'Requests',
+    underscored: true,
   });
 
-  return Request;
+  return Requests;
 };

@@ -1,57 +1,69 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 interface FormData {
-  name: string;
-  age: string;
-  gender: string;
-  contact_info: string;
+  full_name: string;
   email: string;
-  country: string;
-  state: string;
+  contact_no: string;
+  password: string;
   city: string;
   university: string;
+  profile_pic: string;
+  age: string;
+  gender: string;
   budget: string;
   veg_nonveg: string;
-  other_requirements: string;
-  password: string;
+  drinker: string;
+  smoker: string;
+  description: string;
+  have_room: string;
 }
 
 const Register = () => {
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
-    name: 'abc',
-    age: '12',
-    gender: 'Male',
-    contact_info: '1212',
-    email: 'abc@gmail.com',
-    country: 'india',
-    state: 'guj',
-    city: 'surat',
-    university: 'abc',
-    budget: '1200',
-    veg_nonveg: 'Veg',
-    other_requirements: 'NO',
-    password: '1212',
+    full_name: '',
+    email: '',
+    contact_no: '',
+    password: '',
+    city: '',
+    university: '',
+    profile_pic: '',
+    age: '',
+    gender: '',
+    budget: '',
+    veg_nonveg: '',
+    drinker: '',
+    smoker: '',
+    description: '',
+    have_room: '',
   });
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleNext = () => {
+    setStep(step + 1);
+  };
+
+  const handleBack = () => {
+    setStep(step - 1);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/users', formData);
-      console.log('User registered:', response.data.user);
-      console.log('TOKEN :', response.data.token);
-      localStorage.setItem('token', response.data.token); // Store the token in local storage
+      const Response = await axios.post('http://localhost:5000/api/users/register', formData);
+      localStorage.setItem('token',Response.data.token);
       router.push('/setPreferences');
-    } catch (error) { 
-      console.error("Error registering user:", error);
+
+    } catch (error) {
+      console.error('Error registering user:', error);
       setError('Failed to register user.');
     }
   };
@@ -61,173 +73,220 @@ const Register = () => {
       <h2 className="text-2xl font-bold mb-4">Register</h2>
       {error && <div className="text-red-500 mb-4">{error}</div>}
       <form onSubmit={handleSubmit} className="w-full max-w-md">
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="age" className="block text-sm font-medium text-gray-700">Age</label>
-          <input
-            type="number"
-            id="age"
-            name="age"
-            value={formData.age}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
-          <select
-            id="gender"
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
-          >
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div className="mb-4">
-          <label htmlFor="contact_info" className="block text-sm font-medium text-gray-700">Contact Info</label>
-          <input
-            type="text"
-            id="contact_info"
-            name="contact_info"
-            value={formData.contact_info}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="country" className="block text-sm font-medium text-gray-700">Country</label>
-          <input
-            type="text"
-            id="country"
-            name="country"
-            value={formData.country}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
-          <input
-            type="text"
-            id="state"
-            name="state"
-            value={formData.state}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="city" className="block text-sm font-medium text-gray-700">City</label>
-          <input
-            type="text"
-            id="city"
-            name="city"
-            value={formData.city}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="university" className="block text-sm font-medium text-gray-700">University</label>
-          <input
-            type="text"
-            id="university"
-            name="university"
-            value={formData.university}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="budget" className="block text-sm font-medium text-gray-700">Budget</label>
-          <input
-            type="number"
-            id="budget"
-            name="budget"
-            value={formData.budget}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="veg_nonveg" className="block text-sm font-medium text-gray-700">Veg/Non-Veg</label>
-          <select
-            id="veg_nonveg"
-            name="veg_nonveg"
-            value={formData.veg_nonveg}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
-          >
-            <option value="">Select Option</option>
-            <option value="Veg">Veg</option>
-            <option value="Non-Veg">Non-Veg</option>
-          </select>
-        </div>
-        <div className="mb-4">
-          <label htmlFor="other_requirements" className="block text-sm font-medium text-gray-700">Other Requirements</label>
-          <textarea
-            id="other_requirements"
-            name="other_requirements"
-            value={formData.other_requirements}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-        >
-          Register
-        </button>
+        {step === 1 && (
+          <>
+            <div className="mb-4">
+              <label htmlFor="full_name" className="block text-sm font-medium text-gray-700">Full Name</label>
+              <input
+                type="text"
+                id="full_name"
+                name="full_name"
+                value={formData.full_name}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="contact_no" className="block text-sm font-medium text-gray-700">Contact No</label>
+              <input
+                type="text"
+                id="contact_no"
+                name="contact_no"
+                value={formData.contact_no}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="city" className="block text-sm font-medium text-gray-700">City</label>
+              <input
+                type="text"
+                id="city"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="university" className="block text-sm font-medium text-gray-700">University</label>
+              <input
+                type="text"
+                id="university"
+                name="university"
+                value={formData.university}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <button type="button" onClick={handleNext} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+              Next
+            </button>
+          </>
+        )}
+        {step === 2 && (
+          <>
+            <div className="mb-4">
+              <label htmlFor="profile_pic" className="block text-sm font-medium text-gray-700">Profile Picture</label>
+              <input
+                type="text"
+                id="profile_pic"
+                name="profile_pic"
+                value={formData.profile_pic}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="age" className="block text-sm font-medium text-gray-700">Age</label>
+              <input
+                type="number"
+                id="age"
+                name="age"
+                value={formData.age}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
+              <select
+                id="gender"
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              >
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="budget" className="block text-sm font-medium text-gray-700">Budget</label>
+              <input
+                type="number"
+                id="budget"
+                name="budget"
+                value={formData.budget}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="veg_nonveg" className="block text-sm font-medium text-gray-700">Veg/Non-Veg</label>
+              <select
+                id="veg_nonveg"
+                name="veg_nonveg"
+                value={formData.veg_nonveg}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              >
+                <option value="">Select Option</option>
+                <option value="Veg">Veg</option>
+                <option value="Non-Veg">Non-Veg</option>
+              </select>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="drinker" className="block text-sm font-medium text-gray-700">Drinker</label>
+              <select
+                id="drinker"
+                name="drinker"
+                value={formData.drinker}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              >
+                <option value="">Select Option</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="smoker" className="block text-sm font-medium text-gray-700">Smoker</label>
+              <select
+                id="smoker"
+                name="smoker"
+                value={formData.smoker}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              >
+                <option value="">Select Option</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+              <textarea
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="have_room" className="block text-sm font-medium text-gray-700">Have Room</label>
+              <select
+                id="have_room"
+                name="have_room"
+                value={formData.have_room}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              >
+                <option value="">Select Option</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+            <div className="flex space-x-4">
+              <button type="button" onClick={handleBack} className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors">
+                Back
+              </button>
+              <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                Submit
+              </button>
+            </div>
+          </>
+        )}
       </form>
     </div>
   );

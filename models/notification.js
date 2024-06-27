@@ -1,11 +1,13 @@
-const { Model, DataTypes } = require('sequelize');
-
-module.exports = (sequelize) => {
-  class Notification extends Model {}
-
-  Notification.init({
-    userId: {
+// models/notifications.js
+module.exports = (sequelize, DataTypes) => {
+  const Notifications = sequelize.define('Notifications', {
+    user_id: {
       type: DataTypes.INTEGER,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
       allowNull: false,
     },
     message: {
@@ -13,9 +15,13 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
   }, {
-    sequelize,
-    modelName: 'Notification',
+    tableName: 'Notifications',
+    underscored: true,
   });
 
-  return Notification;
+  Notifications.associate = (models) => {
+    Notifications.belongsTo(models.User, { foreignKey: 'user_id' });
+  };
+
+  return Notifications;
 };

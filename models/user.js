@@ -1,23 +1,7 @@
+// models/user.js
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    age: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    gender: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    contact_info: {
+    full_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -26,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    country: {
+    contact_no: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    state: {
+    password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -42,6 +26,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    profile_pic: {
+      type: DataTypes.STRING,
+    },
+    age: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     budget: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -50,23 +45,29 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    other_requirements: {
+    drinker: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
-    hashed_password: {
+    smoker: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    have_room: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   }, {
-    timestamps: false,
+    tableName: 'Users',
+    underscored: true,
   });
 
-  User.associate = function(models) {
-    User.hasOne(models.Preferences, { foreignKey: 'userId', as: 'preferences' });
-  };
-  User.associate = function(models) {
-    User.hasMany(models.Notification, { foreignKey: 'userId' });
+  User.associate = (models) => {
+    User.hasOne(models.Preferences, { foreignKey: 'user_id' });
   };
 
   return User;
