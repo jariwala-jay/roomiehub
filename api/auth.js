@@ -14,13 +14,13 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.hashed_password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
 
     const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: '1h' });
-    res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
+    res.json({ token, user: { id: user.id, name: user.full_name, email: user.email } });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
