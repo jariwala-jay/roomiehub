@@ -9,9 +9,10 @@ const ProfileCard = ({ user, currentUser }) => {
     const fetchRequestStatus = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/requests/check', {
-          params: { senderId: currentUser.id, receiverId: user.id }
+          params: { sender_id: currentUser.id, receiver_id: user.id }
         });
         setRequestSent(response.data.exists);
+
       } catch (error) {
         console.error('Error checking request status:', error);
       }
@@ -23,8 +24,8 @@ const ProfileCard = ({ user, currentUser }) => {
   const handleConnect = async () => {
     try {
       const requestBody = {
-        senderId: currentUser.id,
-        receiverId: user.id,
+        sender_id: currentUser.id,
+        receiver_id: user.id,
       };
       console.log('Sending connection request:', requestBody); // Log the request body
       await axios.post('http://localhost:5000/api/requests', requestBody);

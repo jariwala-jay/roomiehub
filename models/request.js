@@ -29,5 +29,9 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
   });
 
+  Requests.associate = (models) => {
+    Requests.hasOne(models.User, { foreignKey: "user_id" });
+  };
+
   return Requests;
 };

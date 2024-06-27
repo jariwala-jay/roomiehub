@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const Notifications = ({ currentUser }) => {
   const [requests, setRequests] = useState([]);
@@ -8,23 +8,39 @@ const Notifications = ({ currentUser }) => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users/notifications', {
-          params: { userId: currentUser.id }
-        });
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          "http://localhost:5000/api/users/notifications",
+          {
+            params: { user_id: currentUser.id },
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setNotifications(response.data);
+        console.log(setNotifications);
       } catch (error) {
-        console.error('Error fetching notifications:', error);
+        console.error("Error fetching notifications:", error);
       }
     };
 
     const fetchRequests = async () => {
       try {
+        const token = localStorage.getItem("token");
         if (currentUser && currentUser.id) {
-          const response = await axios.get(`http://localhost:5000/api/requests/received/${currentUser.id}`);
+          const response = await axios.get(
+            `http://localhost:5000/api/requests/received/${currentUser.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
           setRequests(response.data);
         }
       } catch (error) {
-        console.error('Failed to fetch requests:', error);
+        console.error("Failed to fetch requests:", error);
       }
     };
 
@@ -34,10 +50,19 @@ const Notifications = ({ currentUser }) => {
 
   const handleResponse = async (requestId, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/requests/${requestId}`, { status });
-      setRequests(requests.filter(request => request.id !== requestId));
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://localhost:5000/api/requests/${requestId}`,
+        { status },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setRequests(requests.filter((request) => request.id !== requestId));
     } catch (error) {
-      console.error('Failed to respond to request:', error);
+      console.error("Failed to respond to request:", error);
     }
   };
 
@@ -59,11 +84,21 @@ const Notifications = ({ currentUser }) => {
       {requests.length === 0 ? (
         <p>No new requests</p>
       ) : (
-        requests.map(request => (
+        requests.map((request) => (
           <div key={request.id}>
             <p>{request.senderId} wants to connect</p>
-            <button onClick={() => handleResponse(request.id, 'accepted')} className="bg-green-500 text-white p-2 rounded">Accept</button>
-            <button onClick={() => handleResponse(request.id, 'rejected')} className="bg-red-500 text-white p-2 rounded">Reject</button>
+            <button
+              onClick={() => handleResponse(request.id, "accepted")}
+              className="bg-green-500 text-white p-2 rounded"
+            >
+              Accept
+            </button>
+            <button
+              onClick={() => handleResponse(request.id, "rejected")}
+              className="bg-red-500 text-white p-2 rounded"
+            >
+              Reject
+            </button>
           </div>
         ))
       )}

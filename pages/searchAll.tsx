@@ -4,15 +4,11 @@ import ProfileCard from "@/components/ProfileCard";
 import Modal from "react-modal";
 import Slider from "@mui/material/Slider";
 
-
 const SearchAll = () => {
   const [preferences, setPreferences] = useState({
-    gender: "Any",
-    age_min: 18,
-    age_max: 100,
-    budget_min: 0,
-    budget_max: 100000,
     veg_nonveg: "Any",
+    preference_checklist: [],
+    have_room: "Any",
   });
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
@@ -20,11 +16,11 @@ const SearchAll = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [filters, setFilters] = useState({
-    gender: "Any",
-    budget: [0, 100000],
+    budget: [0, 10000],
     city: "",
-    age: [18, 100],
     veg_nonveg: "Any",
+    preference_checklist: [],
+    have_room: "Any",
   });
 
   useEffect(() => {
@@ -35,22 +31,40 @@ const SearchAll = () => {
         const token = localStorage.getItem("token");
         if (token) {
           axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+          // Fetch preferences
           const preferencesResponse = await axios.get(
             "http://localhost:5000/api/users/preferences"
           );
           const prefs = preferencesResponse.data;
           setPreferences(prefs);
+
+          // Fetch user profile
+          const userProfileResponse = await axios.get(
+            "http://localhost:5000/api/users/profile"
+          );
+          const userProfile = userProfileResponse.data;
+          const userBudgetMax = userProfile.budget * 1.2;
+
           setFilters({
-            gender: prefs.gender || "Any",
-            budget: [prefs.budget_min || 0, prefs.budget_max || 100000],
-            city: prefs.city || "",
-            age: [prefs.age_min || 18, prefs.age_max || 100],
+            budget: [0, userBudgetMax],
+            city: userProfile.city || "",
             veg_nonveg: prefs.veg_nonveg || "Any",
+            preference_checklist: prefs.preference_checklist || [],
+            have_room: prefs.have_room || "Any",
           });
 
+          // Initial search with combined preferences and profile data
+          const initialSearchCriteria = {
+            ...prefs,
+            budget_min: 0,
+            budget_max: userBudgetMax,
+            city: userProfile.city || "",
+          };
+
           const searchResponse = await axios.post(
-            "http://localhost:5000/api/users/search",
-            prefs
+            "http://localhost:5000/api/users/searchAll",
+            initialSearchCriteria
           );
           setResults(searchResponse.data);
         }
@@ -71,12 +85,19 @@ const SearchAll = () => {
     setFilters({ ...filters, [name]: value });
   };
 
-  const handleBudgetChange = (event, newValue) => {
-    setFilters({ ...filters, budget: newValue });
+  const handleChecklistChange = (event) => {
+    const { value, checked } = event.target;
+    let updatedChecklist = [...filters.preference_checklist];
+    if (checked) {
+      updatedChecklist.push(value);
+    } else {
+      updatedChecklist = updatedChecklist.filter((item) => item !== value);
+    }
+    setFilters({ ...filters, preference_checklist: updatedChecklist });
   };
 
-  const handleAgeChange = (event, newValue) => {
-    setFilters({ ...filters, age: newValue });
+  const handleBudgetChange = (event, newValue) => {
+    setFilters({ ...filters, budget: newValue });
   };
 
   const applyFilters = async () => {
@@ -84,9 +105,18 @@ const SearchAll = () => {
       const token = localStorage.getItem("token");
       if (token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        const filterCriteria = {
+          city: filters.city,
+          preferred_veg_nonveg: filters.veg_nonveg,
+          preference_checklist: filters.preference_checklist,
+          have_room: filters.have_room,
+          budget_min: filters.budget[0],
+          budget_max: filters.budget[1],
+        };
+        console.log("Applying Filters:", filterCriteria); // Debugging line
         const searchResponse = await axios.post(
           "http://localhost:5000/api/users/searchAll",
-          filters
+          filterCriteria
         );
         setResults(searchResponse.data);
       }
@@ -101,6 +131,13 @@ const SearchAll = () => {
       value.toString().toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
+
+  const checklistOptions = [
+    "male only",
+    "female only",
+    "non-smoker",
+    "non-drinker",
+  ];
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
@@ -139,25 +176,6 @@ const SearchAll = () => {
         <h2 className="text-2xl font-bold mb-4">Filter Options</h2>
         <div className="mb-4">
           <label
-            htmlFor="gender"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Gender
-          </label>
-          <select
-            id="gender"
-            name="gender"
-            value={filters.gender}
-            onChange={handleFilterChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          >
-            <option value="Any">Any</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-        </div>
-        <div className="mb-4">
-          <label
             htmlFor="budget"
             className="block text-sm font-medium text-gray-700"
           >
@@ -169,7 +187,7 @@ const SearchAll = () => {
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             min={0}
-            max={100000}
+            max={4000}
           />
         </div>
         <div className="mb-4">
@@ -190,22 +208,6 @@ const SearchAll = () => {
         </div>
         <div className="mb-4">
           <label
-            htmlFor="age"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Age
-          </label>
-          <Slider
-            value={filters.age}
-            onChange={handleAgeChange}
-            valueLabelDisplay="auto"
-            aria-labelledby="range-slider"
-            min={1}
-            max={100}
-          />
-        </div>
-        <div className="mb-4">
-          <label
             htmlFor="veg_nonveg"
             className="block text-sm font-medium text-gray-700"
           >
@@ -221,6 +223,48 @@ const SearchAll = () => {
             <option value="Any">Any</option>
             <option value="Veg">Veg</option>
             <option value="Non-Veg">Non-Veg</option>
+          </select>
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="preference_checklist"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Preferences
+          </label>
+          <div>
+            {checklistOptions.map((item, index) => (
+              <div key={index}>
+                <input
+                  type="checkbox"
+                  id={`preference_${index}`}
+                  value={item}
+                  checked={filters.preference_checklist.includes(item)}
+                  onChange={handleChecklistChange}
+                  className="mr-2"
+                />
+                <label htmlFor={`preference_${index}`}>{item}</label>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="have_room"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Have Room
+          </label>
+          <select
+            id="have_room"
+            name="have_room"
+            value={filters.have_room}
+            onChange={handleFilterChange}
+            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+          >
+            <option value="Any">Any</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
           </select>
         </div>
         <button

@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const { User, Preferences, Notification } = require('../../models');
+const { User, Preferences, Notifications } = require('../../models');
 const router = express.Router();
 const { Op } = require('sequelize');
 
@@ -207,40 +207,74 @@ router.post('/search', passport.authenticate('jwt', { session: false }), async (
 });
 
 router.get('/notifications', async (req, res) => {
-  const { userId } = req.query;
-  if (!userId) {
+  const { user_id } = req.query;
+  console.log(req.query);
+  if (!user_id) {
     return res.status(400).json({ error: 'userId is required' });
   }
   try {
-    const notifications = await Notification.findAll({ where: { userId } });
+    const notifications = await Notifications.findAll({ where: { user_id : user_id } });
     res.json(notifications);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
 
-// Define your searchAll endpoint
-router.post('/searchAll', async (req, res) => {
-  try {
-    const { gender, budget, city, age, veg_nonveg } = req.body;
+// Route to search for roommates
+router.post(
+  "/searchAll",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const {
+        preferred_veg_nonveg,
+        preference_checklist,
+        have_room,
+        city,
+        budget_min,
+        budget_max,
+      } = req.body;
+      console.log(req.body);
 
-    const criteria = {
-      age: { [Op.between]: age },
-      budget: { [Op.between]: budget },
-      ...(gender !== 'Any' && { gender }),
-      ...(veg_nonveg !== 'Any' && { veg_nonveg }),
-      ...(city && { city: { [Op.iLike]: `%${city}%` } }),
-    };
+      let whereClause = {
+        veg_nonveg:
+          preferred_veg_nonveg === "Any"
+            ? { [Op.or]: ["Veg", "Non-Veg"] }
+            : preferred_veg_nonveg,
+        have_room: have_room === "Any" ? { [Op.or]: ["yes", "no"] } : have_room,
+        budget: { [Op.between]: [budget_min, budget_max] },
+      };
 
-    const users = await User.findAll({
-      where: criteria,
-    });
+      if (city) {
+        whereClause.city = city;
+      }
 
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+      if (
+        preference_checklist.includes("male only") &&
+        !preference_checklist.includes("female only")
+      ) {
+        whereClause.gender = "Male";
+      } else if (
+        preference_checklist.includes("female only") &&
+        !preference_checklist.includes("male only")
+      ) {
+        whereClause.gender = "Female";
+      }
+
+      if (preference_checklist.includes("non-drinker")) {
+        whereClause.drinker = "no";
+      }
+
+      if (preference_checklist.includes("non-smoker")) {
+        whereClause.smoker = "no";
+      }
+
+      const users = await User.findAll({ where: whereClause });
+      res.json(users);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
   }
-});
-
+);
 
 module.exports = router;

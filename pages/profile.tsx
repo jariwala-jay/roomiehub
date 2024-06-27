@@ -1,39 +1,43 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import ProtectedRoute from '@/components/ProtectedRoute';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 interface UserProfile {
-  name: string;
+  full_name: string;
   age: string;
   gender: string;
-  contact_info: string;
+  contact_no: string;
   email: string;
-  country: string;
-  state: string;
   city: string;
   university: string;
+  profile_pic: string;
   budget: string;
   veg_nonveg: string;
-  other_requirements: string;
+  drinker: string;
+  smoker: string;
+  description: string;
+  have_room: string;
 }
 
 const Profile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         if (token) {
-          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-          const response = await axios.get('http://localhost:5000/api/users/profile');
+          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+          const response = await axios.get(
+            "http://localhost:5000/api/users/profile"
+          );
           setProfile(response.data);
           setLoading(false);
         }
       } catch (err) {
-        setError('Failed to load profile.');
+        setError("Failed to load profile.");
         setLoading(false);
       }
     };
@@ -41,7 +45,11 @@ const Profile = () => {
     fetchProfile();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     if (profile) {
       setProfile({ ...profile, [e.target.name]: e.target.value });
     }
@@ -50,14 +58,14 @@ const Profile = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (token) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        await axios.put('http://localhost:5000/api/users/profile', profile);
-        alert('Profile updated successfully');
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        await axios.put("http://localhost:5000/api/users/profile", profile);
+        alert("Profile updated successfully");
       }
     } catch (err) {
-      setError('Failed to update profile.');
+      setError("Failed to update profile.");
     }
   };
 
@@ -71,18 +79,28 @@ const Profile = () => {
         {profile && (
           <form onSubmit={handleSubmit} className="w-full max-w-md">
             <div className="mb-4">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+              <label
+                htmlFor="full_name"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Full Name
+              </label>
               <input
                 type="text"
-                id="name"
-                name="name"
-                value={profile.name}
+                id="full_name"
+                name="full_name"
+                value={profile.full_name}
                 onChange={handleChange}
                 className="mt-1 p-2 w-full border border-gray-300 rounded-md"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="age" className="block text-sm font-medium text-gray-700">Age</label>
+              <label
+                htmlFor="age"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Age
+              </label>
               <input
                 type="number"
                 id="age"
@@ -93,7 +111,12 @@ const Profile = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
+              <label
+                htmlFor="gender"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Gender
+              </label>
               <select
                 id="gender"
                 name="gender"
@@ -107,18 +130,28 @@ const Profile = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label htmlFor="contact_info" className="block text-sm font-medium text-gray-700">Contact Info</label>
+              <label
+                htmlFor="contact_no"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Contact No
+              </label>
               <input
                 type="text"
-                id="contact_info"
-                name="contact_info"
-                value={profile.contact_info}
+                id="contact_no"
+                name="contact_no"
+                value={profile.contact_no}
                 onChange={handleChange}
                 className="mt-1 p-2 w-full border border-gray-300 rounded-md"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
@@ -129,29 +162,12 @@ const Profile = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="country" className="block text-sm font-medium text-gray-700">Country</label>
-              <input
-                type="text"
-                id="country"
-                name="country"
-                value={profile.country}
-                onChange={handleChange}
-                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
-              <input
-                type="text"
-                id="state"
-                name="state"
-                value={profile.state}
-                onChange={handleChange}
-                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="city" className="block text-sm font-medium text-gray-700">City</label>
+              <label
+                htmlFor="city"
+                className="block text-sm font-medium text-gray-700"
+              >
+                City
+              </label>
               <input
                 type="text"
                 id="city"
@@ -162,7 +178,12 @@ const Profile = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="university" className="block text-sm font-medium text-gray-700">University</label>
+              <label
+                htmlFor="university"
+                className="block text-sm font-medium text-gray-700"
+              >
+                University
+              </label>
               <input
                 type="text"
                 id="university"
@@ -173,7 +194,28 @@ const Profile = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="budget" className="block text-sm font-medium text-gray-700">Budget</label>
+              <label
+                htmlFor="profile_pic"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Profile Picture
+              </label>
+              <input
+                type="text"
+                id="profile_pic"
+                name="profile_pic"
+                value={profile.profile_pic}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="budget"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Budget
+              </label>
               <input
                 type="number"
                 id="budget"
@@ -184,7 +226,12 @@ const Profile = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="veg_nonveg" className="block text-sm font-medium text-gray-700">Veg/Non-Veg</label>
+              <label
+                htmlFor="veg_nonveg"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Veg/Non-Veg
+              </label>
               <select
                 id="veg_nonveg"
                 name="veg_nonveg"
@@ -197,14 +244,73 @@ const Profile = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label htmlFor="other_requirements" className="block text-sm font-medium text-gray-700">Other Requirements</label>
+              <label
+                htmlFor="drinker"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Drinker
+              </label>
+              <select
+                id="drinker"
+                name="drinker"
+                value={profile.drinker}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              >
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="smoker"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Smoker
+              </label>
+              <select
+                id="smoker"
+                name="smoker"
+                value={profile.smoker}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              >
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Description
+              </label>
               <textarea
-                id="other_requirements"
-                name="other_requirements"
-                value={profile.other_requirements}
+                id="description"
+                name="description"
+                value={profile.description}
                 onChange={handleChange}
                 className="mt-1 p-2 w-full border border-gray-300 rounded-md"
               />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="have_room"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Have Room
+              </label>
+              <select
+                id="have_room"
+                name="have_room"
+                value={profile.have_room}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              >
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
             </div>
             <button
               type="submit"
