@@ -26,3 +26,67 @@ body {
     text-wrap: balance;
   }
 }
+/* Add these styles to your global CSS or create a specific CSS module for the Chat component */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  width: 60vw;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  overflow: hidden;
+}
+
+.messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.message-sent,
+.message-received {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 8px;
+  max-width: 60%;
+}
+
+.message-sent {
+  align-self: flex-end;
+  background-color: #007bff;
+  color: white;
+}
+
+.message-received {
+  align-self: flex-start;
+  background-color: #f1f1f1;
+  color: black;
+}
+
+.message-input {
+  display: flex;
+  border-top: 1px solid #ccc;
+  padding: 10px;
+}
+
+.message-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-right: 10px;
+}
+
+.message-input button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.message-input button:hover {
+  background-color: #0056b3;
+}

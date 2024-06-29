@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import axios from 'axios';
+import { useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 interface FormData {
   full_name: string;
@@ -23,26 +23,30 @@ interface FormData {
 const Register = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
-    full_name: '',
-    email: '',
-    contact_no: '',
-    password: '',
-    city: '',
-    university: '',
-    profile_pic: '',
-    age: '',
-    gender: '',
-    budget: '',
-    veg_nonveg: '',
-    drinker: '',
-    smoker: '',
-    description: '',
-    have_room: '',
+    full_name: "",
+    email: "",
+    contact_no: "",
+    password: "",
+    city: "",
+    university: "",
+    profile_pic: "",
+    age: "",
+    gender: "",
+    budget: "",
+    veg_nonveg: "",
+    drinker: "",
+    smoker: "",
+    description: "",
+    have_room: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -58,13 +62,15 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const Response = await axios.post('http://localhost:5000/api/users/register', formData);
-      localStorage.setItem('token',Response.data.token);
-      router.push('/setPreferences');
-
+      const response = await axios.post(
+        "http://localhost:5000/api/users/register",
+        formData
+      );
+      localStorage.setItem("token", response.data.token);
+      router.push("/setPreferences");
     } catch (error) {
-      console.error('Error registering user:', error);
-      setError('Failed to register user.');
+      console.error("Error registering user:", error);
+      setError("Failed to register user.");
     }
   };
 
@@ -76,7 +82,12 @@ const Register = () => {
         {step === 1 && (
           <>
             <div className="mb-4">
-              <label htmlFor="full_name" className="block text-sm font-medium text-gray-700">Full Name</label>
+              <label
+                htmlFor="full_name"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Full Name
+              </label>
               <input
                 type="text"
                 id="full_name"
@@ -88,7 +99,12 @@ const Register = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
@@ -100,7 +116,12 @@ const Register = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="contact_no" className="block text-sm font-medium text-gray-700">Contact No</label>
+              <label
+                htmlFor="contact_no"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Contact No
+              </label>
               <input
                 type="text"
                 id="contact_no"
@@ -112,7 +133,12 @@ const Register = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
               <input
                 type="password"
                 id="password"
@@ -124,7 +150,12 @@ const Register = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="city" className="block text-sm font-medium text-gray-700">City</label>
+              <label
+                htmlFor="city"
+                className="block text-sm font-medium text-gray-700"
+              >
+                City
+              </label>
               <input
                 type="text"
                 id="city"
@@ -136,7 +167,12 @@ const Register = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="university" className="block text-sm font-medium text-gray-700">University</label>
+              <label
+                htmlFor="university"
+                className="block text-sm font-medium text-gray-700"
+              >
+                University
+              </label>
               <input
                 type="text"
                 id="university"
@@ -147,15 +183,24 @@ const Register = () => {
                 required
               />
             </div>
-            <button type="button" onClick={handleNext} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-              Next
+            <button
+              type="button"
+              onClick={handleNext}
+              className="w-full px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition-colors"
+            >
+              Next Step
             </button>
           </>
         )}
         {step === 2 && (
           <>
             <div className="mb-4">
-              <label htmlFor="profile_pic" className="block text-sm font-medium text-gray-700">Profile Picture</label>
+              <label
+                htmlFor="profile_pic"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Profile Picture
+              </label>
               <input
                 type="text"
                 id="profile_pic"
@@ -167,7 +212,12 @@ const Register = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="age" className="block text-sm font-medium text-gray-700">Age</label>
+              <label
+                htmlFor="age"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Age
+              </label>
               <input
                 type="number"
                 id="age"
@@ -179,7 +229,12 @@ const Register = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
+              <label
+                htmlFor="gender"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Gender
+              </label>
               <select
                 id="gender"
                 name="gender"
@@ -195,7 +250,12 @@ const Register = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label htmlFor="budget" className="block text-sm font-medium text-gray-700">Budget</label>
+              <label
+                htmlFor="budget"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Budget
+              </label>
               <input
                 type="number"
                 id="budget"
@@ -207,7 +267,12 @@ const Register = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="veg_nonveg" className="block text-sm font-medium text-gray-700">Veg/Non-Veg</label>
+              <label
+                htmlFor="veg_nonveg"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Veg/Non-Veg
+              </label>
               <select
                 id="veg_nonveg"
                 name="veg_nonveg"
@@ -222,7 +287,12 @@ const Register = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label htmlFor="drinker" className="block text-sm font-medium text-gray-700">Drinker</label>
+              <label
+                htmlFor="drinker"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Drinker
+              </label>
               <select
                 id="drinker"
                 name="drinker"
@@ -237,7 +307,12 @@ const Register = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label htmlFor="smoker" className="block text-sm font-medium text-gray-700">Smoker</label>
+              <label
+                htmlFor="smoker"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Smoker
+              </label>
               <select
                 id="smoker"
                 name="smoker"
@@ -252,7 +327,12 @@ const Register = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Description
+              </label>
               <textarea
                 id="description"
                 name="description"
@@ -263,7 +343,12 @@ const Register = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="have_room" className="block text-sm font-medium text-gray-700">Have Room</label>
+              <label
+                htmlFor="have_room"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Have Room
+              </label>
               <select
                 id="have_room"
                 name="have_room"
@@ -278,11 +363,18 @@ const Register = () => {
               </select>
             </div>
             <div className="flex space-x-4">
-              <button type="button" onClick={handleBack} className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors">
+              <button
+                type="button"
+                onClick={handleBack}
+                className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+              >
                 Back
               </button>
-              <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-                Submit
+              <button
+                type="submit"
+                className="px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition-colors"
+              >
+                Register
               </button>
             </div>
           </>

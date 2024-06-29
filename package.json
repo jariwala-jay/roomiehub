@@ -29,7 +29,9 @@
     "react-dom": "^18",
     "react-modal": "^3.16.1",
     "sequelize": "^6.37.3",
-    "sequelize-cli": "^6.6.2"
+    "sequelize-cli": "^6.6.2",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
     "@types/node": "^20",
