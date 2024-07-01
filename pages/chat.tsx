@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import axios from "axios";
 
@@ -11,6 +11,10 @@ const ChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [typingUsers, setTypingUsers] = useState([]);
+
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -41,6 +45,7 @@ const ChatPage = () => {
             },
           });
           setMessages(response.data);
+          scrollToBottom();
         } catch (error) {
           setError("Error fetching messages.");
         }
@@ -61,7 +66,24 @@ const ChatPage = () => {
         newMessage.receiver_id === selectedFriend?.id
       ) {
         setMessages((prevMessages) => [...prevMessages, newMessage]);
+        playNotificationSound();
+        scrollToBottom();
       }
+    });
+
+    socket.on("userTyping", (data) => {
+      if (
+        data.sender_id !== currentUser.id &&
+        data.receiver_id === currentUser.id
+      ) {
+        setTypingUsers((prevUsers) => [...prevUsers, data.sender_name]);
+      }
+    });
+
+    socket.on("stopTyping", (data) => {
+      setTypingUsers((prevUsers) =>
+        prevUsers.filter((name) => name !== data.sender_name)
+      );
     });
 
     socket.on("disconnect", () => {
@@ -71,11 +93,15 @@ const ChatPage = () => {
     return () => {
       socket.off("connect");
       socket.off("receiveMessage");
+      socket.off("userTyping");
+      socket.off("stopTyping");
       socket.off("disconnect");
     };
   }, [selectedFriend]);
 
   const sendMessage = async () => {
+    if (!message.trim()) return;
+
     const newMessage = {
       sender_id: currentUser.id,
       receiver_id: selectedFriend.id,
@@ -84,11 +110,49 @@ const ChatPage = () => {
     socket.emit("sendMessage", newMessage);
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     setMessage("");
+    socket.emit("stopTyping", {
+      sender_id: currentUser.id,
+      receiver_id: selectedFriend.id,
+      sender_name: currentUser.full_name,
+    });
+    scrollToBottom();
   };
 
   const handleFriendClick = (friend) => {
     setSelectedFriend(friend);
     setMessages([]);
+  };
+
+  const handleTyping = (e) => {
+    setMessage(e.target.value);
+    if (!isTyping) {
+      setIsTyping(true);
+      socket.emit("userTyping", {
+        sender_id: currentUser.id,
+        receiver_id: selectedFriend.id,
+        sender_name: currentUser.full_name,
+      });
+    }
+    if (isTyping) {
+      clearTimeout(isTyping);
+    }
+    setTimeout(() => {
+      setIsTyping(false);
+      socket.emit("stopTyping", {
+        sender_id: currentUser.id,
+        receiver_id: selectedFriend.id,
+        sender_name: currentUser.full_name,
+      });
+    }, 3000);
+  };
+
+  const playNotificationSound = () => {
+    const audio = new Audio("/notification.mp3");
+    audio.play();
+  };
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -124,22 +188,39 @@ const ChatPage = () => {
                         : "bg-gray-200 text-black self-start"
                     }`}
                   >
+                    <p className="text-sm text-gray-400">
+                      {msg.sender_id === currentUser.id
+                        ? "You"
+                        : selectedFriend.full_name}{" "}
+                      - {new Date(msg.timestamp).toLocaleTimeString()}
+                    </p>
                     <p>{msg.message}</p>
                   </div>
                 ))}
+                <div ref={messagesEndRef} />
               </div>
+              {typingUsers.length > 0 && (
+                <p className="text-sm text-gray-500">
+                  {typingUsers.join(", ")} is typing...
+                </p>
+              )}
             </div>
             <div className="flex">
               <input
                 type="text"
                 value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={handleTyping}
                 placeholder="Type a message"
                 className="p-2 border border-gray-300 rounded-lg w-full"
               />
               <button
                 onClick={sendMessage}
-                className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className={`ml-2 px-4 py-2 ${
+                  message.trim() ? "bg-blue-600" : "bg-gray-300"
+                } text-white rounded-lg ${
+                  message.trim() ? "hover:bg-blue-700" : "cursor-not-allowed"
+                }`}
+                disabled={!message.trim()}
               >
                 Send
               </button>
