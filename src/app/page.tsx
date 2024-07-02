@@ -1,52 +1,35 @@
 "use client";
+import Navbar from "@/components/Navbar";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="mx-auto">
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-gray-100 to-gray-200">
-        <header className="w-full p-4 bg-gradient-to-r from-[#7B68EE] to-gray-900 shadow-md">
-          <div className="max-w-[1440px] flex justify-between w-full mx-auto">
-            <div className="text-2xl font-bold text-white">RoomieHub</div>
-            <nav className="space-x-4">
-              <a href="#" className="text-gray-200 hover:text-white">
-                Find a Roommate
-              </a>
-              <a href="#" className="text-gray-200 hover:text-white">
-                About
-              </a>
-              <a href="#" className="text-gray-200 hover:text-white">
-                Contact
-              </a>
-            </nav>
-          </div>
-        </header>
+    <div className="mx-auto p-[1rem]">
+      <Navbar />
 
-        <main className="flex flex-col items-center mt-16 text-center px-4">
+      <div
+        className="flex flex-col max-w-[2160px] relative w-full relative rounded-xl  mx-auto
+       items-center  min-h-screen bg-[#fff7e4]"
+      >
+        <main className="flex flex-col items-center mt-[5%] text-center px-4">
           <div className="flex flex-col items-center">
-            {" "}
-            <h1 className="text-5xl font-bold mt-[8rem] mb-4 text-gray-800">
-              Find Your Perfect Roommate
+            <h1 className="text-7xl max-w-[75%] font-rubik font-bold mb-4 text-gray-800">
+              Home to your roommate search and community
             </h1>
-            <p className="text-lg text-gray-600 mb-8">
-              RoomieHub is the easiest way to find compatible roommates and
-              create your dream living situation.
+            <p className="text-lg max-w-[70%] font-medium text-gray-600 mb-8">
+              RoomieHub gives you the tools to find your ideal roommate and
+              create the perfect living situation.
             </p>
             <div className="flex space-x-4 mb-40">
-              <a href="/login">
-                <button className="px-6 py-3 text-lg font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-700 transition-colors duration-300">
-                  Login
-                </button>
-              </a>
               <a href="/register">
-                <button className="px-6 py-3 text-lg font-medium text-gray-800 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors duration-300">
-                  Register
+                <button className="px-5 py-3 border-black border-2 text-lg font-medium text-white bg-black rounded-lg hover:bg-white hover:text-black transition-colors duration-300">
+                  Sign up for free
                 </button>
               </a>
             </div>
           </div>
 
-          <section className="max-w-[1440px] w-full text-left bg-white p-8 rounded-lg shadow-lg">
+          <section className=" absolute -bottom-[20%] max-w-[76%]   w-full text-left bg-white p-8 rounded-lg shadow-lg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="my-auto flex-col">
                 <h2 className="text-md font-bold text-gray-800">
@@ -64,7 +47,7 @@ export default function Home() {
               </div>
               <div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-gradient-to-r from-purple-100 to-pink-100 border border-gray-200 rounded-lg shadow-sm flex flex-col items-start space-y-4">
+                  <div className="p-4 bg-gradient-to-r from-[#FAFAFA] to-[#FBF5E6] border border-gray-200 rounded-lg shadow-sm flex flex-col items-start space-y-4">
                     <div className="text-purple-500">
                       <svg
                         className="w-6 h-6"
@@ -91,7 +74,7 @@ export default function Home() {
                       </p>
                     </div>
                   </div>
-                  <div className="p-4 bg-gradient-to-r from-purple-100 to-pink-100 border border-gray-200 rounded-lg shadow-sm flex flex-col items-start space-y-4">
+                  <div className="p-4 bg-gradient-to-r from-[#FAFAFA] to-[#FBF5E6] border border-gray-200 rounded-lg shadow-sm flex flex-col items-start space-y-4">
                     <div className="text-purple-500">
                       <svg
                         className="w-6 h-6"
@@ -118,7 +101,7 @@ export default function Home() {
                       </p>
                     </div>
                   </div>
-                  <div className="p-4 bg-gradient-to-r from-purple-100 to-pink-100 border border-gray-200 rounded-lg shadow-sm flex flex-col items-start space-y-4">
+                  <div className="p-4 bg-gradient-to-r from-[#FAFAFA] to-[#FBF5E6] border border-gray-200 rounded-lg shadow-sm flex flex-col items-start space-y-4">
                     <div className="text-purple-500">
                       <svg
                         className="w-6 h-6"
@@ -145,7 +128,7 @@ export default function Home() {
                       </p>
                     </div>
                   </div>
-                  <div className="p-4 bg-gradient-to-r from-purple-100 to-pink-100 border border-gray-200 rounded-lg shadow-sm flex flex-col items-start space-y-4">
+                  <div className="p-4 bg-gradient-to-r from-[#FAFAFA] to-[#FBF5E6] border border-gray-200 rounded-lg shadow-sm flex flex-col items-start space-y-4">
                     <div className="text-purple-500">
                       <svg
                         className="w-6 h-6"
@@ -176,25 +159,206 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <section className="mt-20 py-8">
-            <div className="max-w-screen-lg mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-4 text-gray-800">
-                Ready to Find Your Ideal Roommate?
-              </h2>
-              <p className="text-lg text-gray-600 mb-6">
-                Join RoomieHub today and take the first step towards creating
-                your perfect living arrangement.
-              </p>
-              <a
-                href="/register"
-                className="inline-block px-8 py-3 text-lg font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-700 transition-colors duration-300"
-              >
-                Get Started
-              </a>
+        </main>
+      </div>
+      <div className="relative h-[10rem]"></div>
+      <div className="flex flex-col rounded-3xl max-w-[90%] mx-auto items-center mt-20 justify-center min-h-screen bg-gray-50">
+        <main className="flex flex-col items-center mt-16 text-center px-20">
+          <div className="grid mb-20 grid-cols-5">
+            {" "}
+            <h1 className="text-5xl px-3 col-span-3 text-left font-bold mb-6 text-gray-800">
+              The eaSiest way t0 find all your rO0m mates in One place
+            </h1>
+            <p className=" text-2xl font-medium col-span-2 text-left text-gray-600 mb-8">
+              Create and sell courses, livestreams, or coach with 1:1s. Manage
+              your community, and offer subscriptions to your content.
+            </p>
+          </div>
+
+          <div className="max-w-[1440px] w-full grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+            <div className="bg-white   grid grid-cols-2 pr-6 py-6 gap-4 rounded-lg shadow-lg">
+              <div className="relative   overflow-hidden">
+                <img
+                  src="/hero.jpg"
+                  alt="Beautiful livestreams"
+                  className="absolute -left-20 h-full w-[]  rounded-xl"
+                />
+              </div>
+              <div className="-ml-16 ">
+                {" "}
+                <h3 className="text-2xl text-left  font-semibold text-gray-800 mb-2">
+                  Beautiful livestreams
+                </h3>
+                <p className="text-left text-gray-600">
+                  The easiest and most engaging platform to go live with
+                  multiple guests and bring your audience on stage. Sell
+                  tickets, accept donations, utilize analytics, pre-sales and
+                  post-event engagement tools.
+                </p>
+                <a
+                  href="#"
+                  className="text-blue-500 text-left hover:underline mt-4 block"
+                >
+                  Explore more
+                </a>
+              </div>
+            </div>
+            <div className="bg-white   grid grid-cols-2 pr-6 py-6 gap-4 rounded-lg shadow-lg">
+              <div className="relative   overflow-hidden">
+                <img
+                  src="/hero.jpg"
+                  alt="Beautiful livestreams"
+                  className="absolute -left-20 h-full w-[]  rounded-xl"
+                />
+              </div>
+              <div className="-ml-16 ">
+                {" "}
+                <h3 className="text-2xl text-left  font-semibold text-gray-800 mb-2">
+                  Beautiful livestreams
+                </h3>
+                <p className="text-left text-gray-600">
+                  The easiest and most engaging platform to go live with
+                  multiple guests and bring your audience on stage. Sell
+                  tickets, accept donations, utilize analytics, pre-sales and
+                  post-event engagement tools.
+                </p>
+                <a
+                  href="#"
+                  className="text-blue-500 text-left hover:underline mt-4 block"
+                >
+                  Explore more
+                </a>
+              </div>
+            </div>
+            <div className="bg-white   grid grid-cols-2 pr-6 py-6 gap-4 rounded-lg shadow-lg">
+              <div className="relative   overflow-hidden">
+                <img
+                  src="/hero.jpg"
+                  alt="Beautiful livestreams"
+                  className="absolute -left-20 h-full w-[]  rounded-xl"
+                />
+              </div>
+              <div className="-ml-16 ">
+                {" "}
+                <h3 className="text-2xl text-left  font-semibold text-gray-800 mb-2">
+                  Beautiful livestreams
+                </h3>
+                <p className="text-left text-gray-600">
+                  The easiest and most engaging platform to go live with
+                  multiple guests and bring your audience on stage. Sell
+                  tickets, accept donations, utilize analytics, pre-sales and
+                  post-event engagement tools.
+                </p>
+                <a
+                  href="#"
+                  className="text-blue-500 text-left hover:underline mt-4 block"
+                >
+                  Explore more
+                </a>
+              </div>
+            </div>
+            <div className="bg-white   grid grid-cols-2 pr-6 py-6 gap-4 rounded-lg shadow-lg">
+              <div className="relative   overflow-hidden">
+                <img
+                  src="/hero.jpg"
+                  alt="Beautiful livestreams"
+                  className="absolute -left-20 h-full w-[]  rounded-xl"
+                />
+              </div>
+              <div className="-ml-16 ">
+                {" "}
+                <h3 className="text-2xl text-left  font-semibold text-gray-800 mb-2">
+                  Beautiful livestreams
+                </h3>
+                <p className="text-left text-gray-600">
+                  The easiest and most engaging platform to go live with
+                  multiple guests and bring your audience on stage. Sell
+                  tickets, accept donations, utilize analytics, pre-sales and
+                  post-event engagement tools.
+                </p>
+                <a
+                  href="#"
+                  className="text-blue-500 text-left hover:underline mt-4 block"
+                >
+                  Explore more
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <section className="w-full  p-8 rounded-lg ">
+            <h2 className="text-3xl font-bold mb-4 relative text-gray-800">
+              Community{" "}
+              <span className="bg-[#faeed0] absolute -top-5 text-black text-sm px-2 py-1 rounded ml-2">
+                NEW
+              </span>
+            </h2>
+            <p className="text-lg text-gray-600 mb-6">
+              Set up your community page and start building your tribe.
+            </p>
+            <div className="grid grid-cols-2 gap-6 mb-6">
+              <div className=" flex flex-col gap-6">
+                {" "}
+                <div className="custom-border p-4 rounded-lg border border-gray-200 shadow-sm">
+                  <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                    Publish posts, collect comments and likes
+                  </h4>
+                </div>
+                <div className=" custom-border p-4 rounded-lg border border-gray-200 shadow-sm">
+                  <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                    Choose who can see and comment on your posts
+                  </h4>
+                </div>
+                <div className=" custom-border p-4 rounded-lg border border-gray-200 shadow-sm">
+                  <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                    The members of your community can meet and connect
+                  </h4>
+                </div>
+              </div>
+
+              <div className=" w-full ">
+                <img
+                  src="/hero.jpg"
+                  alt="Community feature screenshot"
+                  className="w-full  rounded-lg shadow-lg"
+                />
+              </div>
             </div>
           </section>
         </main>
 
+        <footer className="w-full py-6 bg-gradient-to-r from-purple-500 to-purple-800 mt-12">
+          <div className="text-center text-white text-sm">
+            © 2024 RoomieHub. All rights reserved.
+          </div>
+          <div className="flex justify-center space-x-4 mt-2 text-white text-sm">
+            <a href="#" className="hover:underline">
+              Privacy Policy
+            </a>
+            <a href="#" className="hover:underline">
+              FAQ
+            </a>
+          </div>
+        </footer>
+      </div>
+      <div>
+        <section className="mt-20 py-8">
+          <div className="max-w-screen-lg mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-4 text-gray-800">
+              Ready to Find Your Ideal Roommate?
+            </h2>
+            <p className="text-lg text-gray-600 mb-6">
+              Join RoomieHub today and take the first step towards creating your
+              perfect living arrangement.
+            </p>
+            <a
+              href="/register"
+              className="inline-block px-8 py-3 text-lg font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-700 transition-colors duration-300"
+            >
+              Get Started
+            </a>
+          </div>
+        </section>
         <footer className="w-full py-6 bg-gradient-to-r from-[#7B68EE] to-gray-900 mt-12">
           <div className="text-center text-white text-sm">
             © 2024 RoomieHub. All rights reserved.
