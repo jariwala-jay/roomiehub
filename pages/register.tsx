@@ -9,7 +9,7 @@ interface FormData {
   password: string;
   city: string;
   university: string;
-  profile_pic: string;
+  profile_pic: File | null;
   age: string;
   gender: string;
   budget: string;
@@ -29,7 +29,7 @@ const Register = () => {
     password: "",
     city: "",
     university: "",
-    profile_pic: "",
+    profile_pic: null,
     age: "",
     gender: "",
     budget: "",
@@ -51,6 +51,12 @@ const Register = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFormData({ ...formData, profile_pic: e.target.files[0] });
+    }
+  };
+
   const handleNext = () => {
     setStep(step + 1);
   };
@@ -62,9 +68,22 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      const data = new FormData();
+      Object.keys(formData).forEach((key) => {
+        const value = formData[key as keyof FormData];
+        if (value !== null) {
+          data.append(key, value);
+        }
+      });
+
       const response = await axios.post(
         "http://localhost:5000/api/users/register",
-        formData
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       localStorage.setItem("token", response.data.token);
       router.push("/setPreferences");
@@ -202,11 +221,10 @@ const Register = () => {
                 Profile Picture
               </label>
               <input
-                type="text"
+                type="file"
                 id="profile_pic"
                 name="profile_pic"
-                value={formData.profile_pic}
-                onChange={handleChange}
+                onChange={handleFileChange}
                 className="mt-1 p-2 w-full border border-gray-300 rounded-md"
                 required
               />

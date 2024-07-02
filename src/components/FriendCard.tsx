@@ -15,6 +15,7 @@ interface User {
   budget: number;
   veg_nonveg: string;
   description: string;
+  profile_pic?: string; // Add this field
 }
 
 const FriendCard: React.FC<{ user: User }> = ({ user }) => {
@@ -31,7 +32,11 @@ const FriendCard: React.FC<{ user: User }> = ({ user }) => {
     <div className="w-full max-w-md mx-auto p-6 bg-white dark:bg-gray-950 rounded-lg shadow-lg">
       <div className="flex items-center space-x-4">
         <div className="w-16 h-16">
-          <img src="/man.png" alt="User avatar" />
+          <img
+            src={user.profile_pic ? `data:image/jpeg;base64,${Buffer.from(user.profile_pic).toString('base64')}` : "/man.png"}
+            alt="User avatar"
+            className="w-16 h-16 rounded-full"
+          />
         </div>
         <div>
           <h2 className="text-xl text-gray-700 dark:text-gray-300 font-semibold">
@@ -58,20 +63,7 @@ const FriendCard: React.FC<{ user: User }> = ({ user }) => {
           </span>
           <span className="text-gray-700 dark:text-gray-300">{user.email}</span>
         </div>
-        <div className="flex items-center justify-between">
-          <span className="text-gray-500 dark:text-gray-400 font-medium">
-            Country:
-          </span>
-          <span className="text-gray-700 dark:text-gray-300">
-            {user.country}
-          </span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-gray-500 dark:text-gray-400 font-medium">
-            State:
-          </span>
-          <span className="text-gray-700 dark:text-gray-300">{user.state}</span>
-        </div>
+       
         <div className="flex items-center justify-between">
           <span className="text-gray-500 dark:text-gray-400 font-medium">
             City:

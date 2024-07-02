@@ -66,7 +66,7 @@ const ChatPage = () => {
         newMessage.receiver_id === selectedFriend?.id
       ) {
         setMessages((prevMessages) => {
-          if (!prevMessages.find(msg => msg.id === newMessage.id)) {
+          if (!prevMessages.find((msg) => msg.id === newMessage.id)) {
             return [...prevMessages, newMessage];
           }
           return prevMessages;
@@ -168,6 +168,13 @@ const ChatPage = () => {
             }`}
             onClick={() => handleFriendClick(friend)}
           >
+            {friend.profile_pic && (
+              <img
+                src={`data:image/jpeg;base64,${Buffer.from(friend.profile_pic).toString('base64')}`}
+                alt="Profile"
+                className="w-8 h-8 rounded-full inline-block mr-2"
+              />
+            )}
             {friend.full_name}
           </div>
         ))}

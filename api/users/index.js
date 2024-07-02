@@ -1,15 +1,21 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const path = require('path');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const multer = require("multer");
 const { User, Preferences, Notifications } = require('../../models');
 const router = express.Router();
 const { Op } = require('sequelize');
 
 const secretKey = 'roomiehub'; // Use a secure key in production
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+
 // Create a new user
-router.post('/register', async (req, res) => {
+router.post('/register', upload.single('profile_pic'), async (req, res) => {
   try {
     const {
       full_name,
@@ -18,7 +24,6 @@ router.post('/register', async (req, res) => {
       password,
       city,
       university,
-      profile_pic,
       age,
       gender,
       budget,
@@ -28,7 +33,7 @@ router.post('/register', async (req, res) => {
       description,
       have_room,
     } = req.body;
-
+    const profile_pic = req.file ? req.file.buffer : null;
     // Validate input
     if (
       !full_name ||
@@ -78,14 +83,13 @@ router.post('/register', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-
 // Protected route to get user profile
 router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.json(req.user);
 });
 
 // Protected route to update user profile
-router.put('/profile', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.put('/profile', upload.single('profile_pic'), passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const {
       full_name,
@@ -93,7 +97,6 @@ router.put('/profile', passport.authenticate('jwt', { session: false }), async (
       contact_no,
       city,
       university,
-      profile_pic,
       age,
       gender,
       budget,
@@ -109,12 +112,15 @@ router.put('/profile', passport.authenticate('jwt', { session: false }), async (
       return res.status(404).json({ error: 'User not found' });
     }
 
+    if (req.file) {
+      user.profile_pic = req.file.buffer;
+    }
+
     user.full_name = full_name || user.full_name;
     user.email = email || user.email;
     user.contact_no = contact_no || user.contact_no;
     user.city = city || user.city;
     user.university = university || user.university;
-    user.profile_pic = profile_pic || user.profile_pic;
     user.age = age || user.age;
     user.gender = gender || user.gender;
     user.budget = budget || user.budget;

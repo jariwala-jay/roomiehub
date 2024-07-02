@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -23,6 +24,7 @@ const Profile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -55,13 +57,45 @@ const Profile = () => {
     }
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
       if (token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        await axios.put("http://localhost:5000/api/users/profile", profile);
+
+        const formData = new FormData();
+        if (profile) {
+          formData.append("full_name", profile.full_name);
+          formData.append("age", profile.age);
+          formData.append("gender", profile.gender);
+          formData.append("contact_no", profile.contact_no);
+          formData.append("email", profile.email);
+          formData.append("city", profile.city);
+          formData.append("university", profile.university);
+          formData.append("budget", profile.budget);
+          formData.append("veg_nonveg", profile.veg_nonveg);
+          formData.append("drinker", profile.drinker);
+          formData.append("smoker", profile.smoker);
+          formData.append("description", profile.description);
+          formData.append("have_room", profile.have_room);
+        }
+
+        if (selectedFile) {
+          formData.append("profile_pic", selectedFile);
+        }
+
+        await axios.put("http://localhost:5000/api/users/profile", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
         alert("Profile updated successfully");
       }
     } catch (err) {
@@ -78,6 +112,28 @@ const Profile = () => {
         <h1 className="text-3xl font-bold mb-4">Profile</h1>
         {profile && (
           <form onSubmit={handleSubmit} className="w-full max-w-md">
+            <div className="mb-4">
+              {profile.profile_pic && (
+                <img
+                  src={`data:image/jpeg;base64,${Buffer.from(profile.profile_pic).toString('base64')}`}
+                  alt="Profile"
+                  className="w-32 h-32 rounded-full mx-auto mb-4"
+                />
+              )}
+              <label
+                htmlFor="profile_pic"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Profile Picture
+              </label>
+              <input
+                type="file"
+                id="profile_pic"
+                name="profile_pic"
+                onChange={handleFileChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              />
+            </div>
             <div className="mb-4">
               <label
                 htmlFor="full_name"
@@ -193,22 +249,7 @@ const Profile = () => {
                 className="mt-1 p-2 w-full border border-gray-300 rounded-md"
               />
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="profile_pic"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Profile Picture
-              </label>
-              <input
-                type="text"
-                id="profile_pic"
-                name="profile_pic"
-                value={profile.profile_pic}
-                onChange={handleChange}
-                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-              />
-            </div>
+
             <div className="mb-4">
               <label
                 htmlFor="budget"
@@ -326,3 +367,4 @@ const Profile = () => {
 };
 
 export default Profile;
+

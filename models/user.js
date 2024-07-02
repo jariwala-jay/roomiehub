@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     profile_pic: {
-      type: DataTypes.STRING,
+      type: DataTypes.BLOB('long'), 
+      allowNull: true,
     },
     age: {
       type: DataTypes.INTEGER,
