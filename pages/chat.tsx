@@ -65,14 +65,22 @@ const ChatPage = () => {
         newMessage.sender_id === selectedFriend?.id ||
         newMessage.receiver_id === selectedFriend?.id
       ) {
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setMessages((prevMessages) => {
+          if (!prevMessages.find((msg) => msg.id === newMessage.id)) {
+            return [...prevMessages, newMessage];
+          }
+          return prevMessages;
+        });
         playNotificationSound();
         scrollToBottom();
       }
     });
 
     socket.on("userTyping", (data) => {
-      if (data.sender_id !== currentUser.id && data.receiver_id === currentUser.id) {
+      if (
+        data.sender_id !== currentUser.id &&
+        data.receiver_id === currentUser.id
+      ) {
         setTypingUsers((prevUsers) => [...prevUsers, data.sender_name]);
       }
     });
@@ -105,7 +113,6 @@ const ChatPage = () => {
       message,
     };
     socket.emit("sendMessage", newMessage);
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
     setMessage("");
     socket.emit("stopTyping", {
       sender_id: currentUser.id,
@@ -185,7 +192,12 @@ const ChatPage = () => {
                         : "bg-gray-200 text-black self-start"
                     }`}
                   >
-                    <p className="text-sm text-gray-400">{msg.sender_id === currentUser.id ? "You" : selectedFriend.full_name} - {new Date(msg.timestamp).toLocaleTimeString()}</p>
+                    <p className="text-sm text-gray-400">
+                      {msg.sender_id === currentUser.id
+                        ? "You"
+                        : selectedFriend.full_name}{" "}
+                      - {new Date(msg.timestamp).toLocaleTimeString()}
+                    </p>
                     <p>{msg.message}</p>
                   </div>
                 ))}
