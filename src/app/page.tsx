@@ -1,8 +1,28 @@
 "use client";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Home() {
+  const [currentImage, setCurrentImage] = useState("/hero.jpg");
+
+  const features = {
+    feature1: "/hero.jpg",
+    feature2: "/hero.jpg",
+    feature3: "/hero.jpg",
+  };
+
+  const changeImage = (feature) => {
+    const imgElement = document.getElementById("featureImage");
+    imgElement.classList.remove("scale-100");
+    imgElement.classList.add("scale-75");
+
+    setTimeout(() => {
+      setCurrentImage(features[feature]);
+      imgElement.classList.remove("scale-75");
+      imgElement.classList.add("scale-100");
+    }, 150);
+  };
   return (
     <div className="mx-auto p-[1rem]">
       <Navbar />
@@ -162,7 +182,7 @@ export default function Home() {
         </main>
       </div>
       <div className="relative h-[10rem]"></div>
-      <div className="flex flex-col rounded-3xl max-w-[90%] mx-auto items-center mt-20 justify-center min-h-screen bg-gray-50">
+      <div className="flex flex-col rounded-3xl max-w-[90%] mx-auto items-center mt-20 pb-20 justify-center min-h-screen bg-gray-50">
         <main className="flex flex-col items-center mt-16 text-center px-20">
           <div className="grid mb-20 grid-cols-5">
             {" "}
@@ -297,73 +317,76 @@ export default function Home() {
               Set up your community page and start building your tribe.
             </p>
             <div className="grid grid-cols-2 gap-6 mb-6">
-              <div className=" flex flex-col gap-6">
-                {" "}
-                <div className="custom-border p-4 rounded-lg border border-gray-200 shadow-sm">
+              <div className="flex flex-col gap-6">
+                <div
+                  id="feature1"
+                  className="custom-border p-4 rounded-lg border border-gray-200 shadow-sm cursor-pointer"
+                  onClick={() => changeImage("feature1")}
+                >
                   <h4 className="text-xl font-semibold text-gray-800 mb-2">
                     Publish posts, collect comments and likes
                   </h4>
                 </div>
-                <div className=" custom-border p-4 rounded-lg border border-gray-200 shadow-sm">
+                <div
+                  id="feature2"
+                  className="custom-border p-4 rounded-lg border border-gray-200 shadow-sm cursor-pointer"
+                  onClick={() => changeImage("feature2")}
+                >
                   <h4 className="text-xl font-semibold text-gray-800 mb-2">
                     Choose who can see and comment on your posts
                   </h4>
                 </div>
-                <div className=" custom-border p-4 rounded-lg border border-gray-200 shadow-sm">
+                <div
+                  id="feature3"
+                  className="custom-border p-4 rounded-lg border border-gray-200 shadow-sm cursor-pointer"
+                  onClick={() => changeImage("feature3")}
+                >
                   <h4 className="text-xl font-semibold text-gray-800 mb-2">
                     The members of your community can meet and connect
                   </h4>
                 </div>
               </div>
 
-              <div className=" w-full ">
+              <div className="w-full">
                 <img
-                  src="/hero.jpg"
+                  id="featureImage"
+                  src={currentImage}
                   alt="Community feature screenshot"
-                  className="w-full  rounded-lg shadow-lg"
+                  className="w-full rounded-lg shadow-lg transition-transform duration-300 scale-100"
                 />
               </div>
             </div>
           </section>
         </main>
-
-        <footer className="w-full py-6 bg-gradient-to-r from-purple-500 to-purple-800 mt-12">
-          <div className="text-center text-white text-sm">
-            © 2024 RoomieHub. All rights reserved.
-          </div>
-          <div className="flex justify-center space-x-4 mt-2 text-white text-sm">
-            <a href="#" className="hover:underline">
-              Privacy Policy
-            </a>
-            <a href="#" className="hover:underline">
-              FAQ
-            </a>
-          </div>
-        </footer>
       </div>
       <div>
-        <section className="mt-20 py-8">
-          <div className="max-w-screen-lg mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-4 text-gray-800">
-              Ready to Find Your Ideal Roommate?
+        <section className=" p-20  py-40 relative flex items-center justify-center">
+          <div className="max-w-screen-lg mx-auto text-center relative z-10">
+            <h2 className="text-7xl font-bold mb-14 text-gray-800">
+              Become a Roomie
             </h2>
-            <p className="text-lg text-gray-600 mb-6">
-              Join RoomieHub today and take the first step towards creating your
-              perfect living arrangement.
-            </p>
+            <input
+              type="email"
+              placeholder="Email address"
+              className="px-4 py-3 text-lg border mr-4 rounded-md mb-4"
+            />
             <a
               href="/register"
-              className="inline-block px-8 py-3 text-lg font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-700 transition-colors duration-300"
+              className="inline-block px-8 py-3 text-lg font-medium border-[#eeeeee00] border-r-4 text-black bg-[#FFE095] rounded-lg hover:bg-gradient-to-r hover:border-b-4 hover:border-r-4 hover:border-[#ffc336] transition-colors duration-300"
             >
-              Get Started
+              Sign up for free
             </a>
           </div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="bg-gradient-radial from-white to-yellow-100 rounded-full p-60 px-[800px]"></div>
+          </div>
         </section>
-        <footer className="w-full py-6 bg-gradient-to-r from-[#7B68EE] to-gray-900 mt-12">
-          <div className="text-center text-white text-sm">
+
+        <footer className="w-full py-6 bg-[#FFE095] mt-12 rounded-bl-2xl rounded-br-2xl">
+          <div className="text-center text-black text-sm">
             © 2024 RoomieHub. All rights reserved.
           </div>
-          <div className="flex justify-center space-x-4 mt-2 text-white text-sm">
+          <div className="flex justify-center space-x-4 mt-2 text-black text-sm">
             <a href="#" className="hover:underline">
               Privacy Policy
             </a>
