@@ -1,11 +1,12 @@
 import React from "react";
+import { useRouter } from "next/router";
 
 interface User {
   id: number;
-  name: string;
+  full_name: string;
   age: number;
   gender: string;
-  contact_info: string;
+  contact_no: string;
   email: string;
   country: string;
   state: string;
@@ -13,10 +14,19 @@ interface User {
   university: string;
   budget: number;
   veg_nonveg: string;
-  other_requirements: string;
+  description: string;
 }
 
 const FriendCard: React.FC<{ user: User }> = ({ user }) => {
+  const router = useRouter();
+
+  const handleChat = () => {
+    router.push({
+      pathname: "/chat",
+      query: { userId: user.id, userName: user.full_name },
+    });
+  };
+
   return (
     <div className="w-full max-w-md mx-auto p-6 bg-white dark:bg-gray-950 rounded-lg shadow-lg">
       <div className="flex items-center space-x-4">
@@ -25,7 +35,7 @@ const FriendCard: React.FC<{ user: User }> = ({ user }) => {
         </div>
         <div>
           <h2 className="text-xl text-gray-700 dark:text-gray-300 font-semibold">
-            {user.name}
+            {user.full_name}
           </h2>
           <p className="text-gray-500 dark:text-gray-400 text-sm">
             <span className="font-medium">Age:</span> {user.age} |{" "}
@@ -39,7 +49,7 @@ const FriendCard: React.FC<{ user: User }> = ({ user }) => {
             Contact:
           </span>
           <span className="text-gray-700 dark:text-gray-300">
-            {user.contact_info}
+            {user.contact_no}
           </span>
         </div>
         <div className="flex items-center justify-between">
@@ -91,6 +101,22 @@ const FriendCard: React.FC<{ user: User }> = ({ user }) => {
           <span className="text-gray-700 dark:text-gray-300">
             {user.veg_nonveg}
           </span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-gray-500 dark:text-gray-400 font-medium">
+            Description:
+          </span>
+          <span className="text-gray-700 dark:text-gray-300">
+            {user.description}
+          </span>
+        </div>
+        <div className="flex items-center justify-between">
+          <button
+            onClick={handleChat}
+            className="bg-blue-500 text-white p-2 rounded"
+          >
+            Chat
+          </button>
         </div>
       </div>
     </div>
