@@ -3,21 +3,19 @@ module.exports = (sequelize, DataTypes) => {
   const Requests = sequelize.define('Requests', {
     sender_id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
         model: 'Users',
         key: 'id',
       },
-      onDelete: 'CASCADE',
-      allowNull: false,
     },
     receiver_id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
         model: 'Users',
         key: 'id',
       },
-      onDelete: 'CASCADE',
-      allowNull: false,
     },
     status: {
       type: DataTypes.STRING,
@@ -30,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Requests.associate = (models) => {
-    Requests.hasOne(models.User, { foreignKey: "user_id" });
+    Requests.belongsTo(models.User, { as: 'sender', foreignKey: 'sender_id' });
+    Requests.belongsTo(models.User, { as: 'receiver', foreignKey: 'receiver_id' });
   };
 
   return Requests;

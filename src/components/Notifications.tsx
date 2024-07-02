@@ -19,7 +19,6 @@ const Notifications = ({ currentUser }) => {
           }
         );
         setNotifications(response.data);
-        console.log(setNotifications);
       } catch (error) {
         console.error("Error fetching notifications:", error);
       }
@@ -86,7 +85,7 @@ const Notifications = ({ currentUser }) => {
       ) : (
         requests.map((request) => (
           <div key={request.id}>
-            <p>{request.senderId} wants to connect</p>
+            <p>{request.sender.full_name} wants to connect</p>
             <button
               onClick={() => handleResponse(request.id, "accepted")}
               className="bg-green-500 text-white p-2 rounded"

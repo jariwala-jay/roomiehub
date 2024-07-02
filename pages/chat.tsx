@@ -65,7 +65,12 @@ const ChatPage = () => {
         newMessage.sender_id === selectedFriend?.id ||
         newMessage.receiver_id === selectedFriend?.id
       ) {
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setMessages((prevMessages) => {
+          if (!prevMessages.find(msg => msg.id === newMessage.id)) {
+            return [...prevMessages, newMessage];
+          }
+          return prevMessages;
+        });
         playNotificationSound();
         scrollToBottom();
       }
@@ -105,7 +110,6 @@ const ChatPage = () => {
       message,
     };
     socket.emit("sendMessage", newMessage);
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
     setMessage("");
     socket.emit("stopTyping", {
       sender_id: currentUser.id,
