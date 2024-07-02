@@ -77,7 +77,10 @@ const ChatPage = () => {
     });
 
     socket.on("userTyping", (data) => {
-      if (data.sender_id !== currentUser.id && data.receiver_id === currentUser.id) {
+      if (
+        data.sender_id !== currentUser.id &&
+        data.receiver_id === currentUser.id
+      ) {
         setTypingUsers((prevUsers) => [...prevUsers, data.sender_name]);
       }
     });
@@ -196,7 +199,12 @@ const ChatPage = () => {
                         : "bg-gray-200 text-black self-start"
                     }`}
                   >
-                    <p className="text-sm text-gray-400">{msg.sender_id === currentUser.id ? "You" : selectedFriend.full_name} - {new Date(msg.timestamp).toLocaleTimeString()}</p>
+                    <p className="text-sm text-gray-400">
+                      {msg.sender_id === currentUser.id
+                        ? "You"
+                        : selectedFriend.full_name}{" "}
+                      - {new Date(msg.timestamp).toLocaleTimeString()}
+                    </p>
                     <p>{msg.message}</p>
                   </div>
                 ))}
