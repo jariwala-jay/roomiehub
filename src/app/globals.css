@@ -133,3 +133,17 @@ body {
  .bg-gradient-radial {
     background: radial-gradient(circle, #fcf5e1,white,white,white);
   }
+
+  .sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  margin-left: -1rem;
+  background: white;
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.sticky + .content {
+  padding-top: 100px; /* Adjust based on your navbar height */
+}
