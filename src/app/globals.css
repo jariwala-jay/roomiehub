@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -17,7 +32,7 @@
 }
 
 body {
-  
+  font-family:"Rubik", sans-serif;
   
 }
 
@@ -89,4 +104,51 @@ body {
 
 .message-input button:hover {
   background-color: #0056b3;
+}
+.custom-border {
+  position: relative;
+  border: 1px solid #d1d1d1;
+  transition: all 0.3s ease-in-out;
+}
+
+.custom-border::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #facc15; /* Adjust this color to match the yellow color */
+  transform: scaleX(0);
+  transition: transform 0.1s ease-in-out;
+}
+
+.custom-border:hover {
+  border: 1px solid #000; /* Black border on hover */
+}
+
+.custom-border:hover::after {
+  transform: scaleX(1);
+}
+ .bg-gradient-radial {
+    background: radial-gradient(circle, #fcf5e1,white,white,white);
+  }
+
+  .sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  margin: auto;
+  background: white;
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 0%;
+  
+}
+
+.sticky + .content {
+  padding-top: 100px;
+  margin-left: 0%;
+  width: 100%;
+  max-width: 100%;/* Adjust based on your navbar height */
 }
