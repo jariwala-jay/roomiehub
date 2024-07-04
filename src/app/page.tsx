@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import { useState } from "react";
 
+
 export default function Home() {
   const [currentImage, setCurrentImage] = useState("/hero.jpg");
 
@@ -27,25 +28,27 @@ export default function Home() {
   };
   return (
     <>
-      <div className="mx-auto p-[1rem] pb-0">
-        <Navbar />
-
+      {" "}
+      <div className="mx-auto relative pt-0 p-2 sm:p-[1rem] pb-0">
+        <div className="max-w-[2160px] mt-2 sm:mt-0  overflow-hidden ">
+          {" "}
+          <Navbar />
+        </div>
         <div
           style={{
             backgroundImage: "url(/overlay-4.png)",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
-          className="flex flex-col max-w-[2160px] w-full relative rounded-br-xl rounded-bl-2xl  mx-auto
+          className="flex flex-col max-w-[2160px]  w-full relative rounded-br-xl rounded-bl-2xl  mx-auto
        items-center  min-h-screen  bg-[#fff7e4]"
         >
-          <main className="flex flex-col items-center mt-[5%] text-center px-4">
+          <main className="flex max-w-[1540px]  flex-col items-center mt-[20%] sm:mt-[5%] text-center px-4">
             <div className="flex flex-col items-center">
-              
-              <h1 className="text-7xl max-w-[75%] font-rubik font-bold mb-4 text-gray-800">
+              <h1 className="text-4xl lg:text-6xl xl:text-7xl max-w-[100%] sm:max-w-[75%] font-rubik font-bold mb-4 text-gray-800">
                 Home to your{" "}
                 <span className="relative inline-block px-2">
-                  <span className="relative  z-10">roommate</span>
+                  <span className="relative  z-10">Roommate</span>
                   <span
                     className="absolute inset-0  bg-[#ffef39]"
                     style={{ clipPath: "inset(50% 0 0 0)" }}
@@ -53,20 +56,20 @@ export default function Home() {
                 </span>
                 search and community
               </h1>
-              <p className="text-lg max-w-[70%] font-medium text-gray-600 mb-8">
+              <p className="text-lg lg:text-xl max-w-[95%] sm:max-w-[60%] font-medium text-gray-600 mb-8">
                 RoomieHub gives you the tools to find your ideal roommate and
                 create the perfect living situation.
               </p>
               <div className="flex space-x-4 mb-40">
                 <a href="/register">
-                  <button className="px-5 py-3 border-black border-2 text-lg font-medium text-white bg-black rounded-lg hover:bg-transparent hover:text-black transition-colors duration-300">
+                  <button className="px-5 py-3  border-black border-2  text-lg font-medium text-white bg-black rounded-lg hover:bg-transparent hover:text-black transition-colors duration-300">
                     Sign up for free
                   </button>
                 </a>
               </div>
             </div>
 
-            <section className=" absolute -bottom-[20%] max-w-[76%]   w-full text-left bg-white p-8 rounded-lg shadow-lg">
+            <section className=" absolute top-[50%] sm:top-[60%] max-w-[90%] sm:max-w-[76%] max-h-[40rem] overflow-hidden sm:max-h-[100%]  w-full text-left bg-white p-8 rounded-lg shadow-lg">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="my-auto flex-col">
                   <h2 className="text-md font-bold text-gray-800">
@@ -198,35 +201,35 @@ export default function Home() {
             </section>
           </main>
         </div>
-        <div className="relative h-[10rem]"></div>
-        <div className="flex flex-col rounded-3xl max-w-[90%] mx-auto items-center mt-20 pb-20 justify-center min-h-screen bg-gray-50">
-          <main className="flex flex-col items-center mt-16 text-center px-20">
-            <div className="grid mb-20 grid-cols-5">
+        <div className="flex relative max-w-[1540px] overflow-hidden h-[15rem] xl:h-[10rem]"></div>
+        <div className="flex  max-w-[1540px] overflow-hidden flex-col rounded-3xl  mx-auto items-center mt-20 pb-20 justify-center min-h-screen bg-gray-50">
+          <main className="flex flex-col items-center mt-16 text-center px-7 lg:px-20">
+            <div className="grid mb-20 grid-cols-1 lg:grid-cols-5">
               {" "}
-              <h1 className="text-5xl px-3 col-span-3 text-left font-bold mb-6 text-gray-800">
+              <h1 className=" text-3xl xl:text-5xl px-0 lg:px-3 col-span-3  text-center lg:text-left font-bold mb-6 text-gray-800">
                 The eaSiest way t0 find all your rO0m mates in One place
               </h1>
-              <p className=" text-2xl font-medium col-span-2 text-left text-gray-600 mb-8">
+              <p className="text-xl lg:text-2xl font-medium col-span-2 text-center lg:text-left text-gray-600 mb-8">
                 Create and sell courses, livestreams, or coach with 1:1s. Manage
                 your community, and offer subscriptions to your content.
               </p>
             </div>
 
-            <div className="max-w-[1440px] w-full grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-              <div className="bg-white   grid grid-cols-2 pr-6 py-6 gap-4 rounded-lg shadow-lg">
-                <div className="relative   overflow-hidden">
+            <div className="max-w-[1540px] overflow-hidden w-full grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+              <div className="bg-white p-4 xl:p-0  grid grid-cols-1 xl:grid-cols-2 xl:pr-6 xl:py-6 gap-4 rounded-lg shadow-lg">
+                <div className="relative  xl:overflow-hidden">
                   <img
                     src="/hero.jpg"
                     alt="Beautiful livestreams"
-                    className="absolute -left-20 h-full w-[]  rounded-xl"
+                    className="xl:absolute  xl:left-[-80px] h-48 mx-auto lg:h-full   rounded-xl"
                   />
                 </div>
-                <div className="-ml-16 ">
+                <div className="xl:-ml-16 ">
                   {" "}
-                  <h3 className="text-2xl text-left  font-semibold text-gray-800 mb-2">
+                  <h3 className="text-xl md:text-2xl text-left  font-semibold text-gray-800 mb-2">
                     Beautiful livestreams
                   </h3>
-                  <p className="text-left text-gray-600">
+                  <p className="text-left text-sm md:text-base text-gray-600">
                     The easiest and most engaging platform to go live with
                     multiple guests and bring your audience on stage. Sell
                     tickets, accept donations, utilize analytics, pre-sales and
@@ -234,26 +237,26 @@ export default function Home() {
                   </p>
                   <a
                     href="#"
-                    className="text-blue-500 text-left hover:underline mt-4 block"
+                    className="text-blue-500 text-sm md:text-base text-left hover:underline mt-4 block"
                   >
                     Explore more
                   </a>
                 </div>
               </div>
-              <div className="bg-white   grid grid-cols-2 pr-6 py-6 gap-4 rounded-lg shadow-lg">
-                <div className="relative   overflow-hidden">
+              <div className="bg-white p-4 xl:p-0  grid grid-cols-1 xl:grid-cols-2 xl:pr-6 xl:py-6 gap-4 rounded-lg shadow-lg">
+                <div className="relative  xl:overflow-hidden">
                   <img
                     src="/hero.jpg"
                     alt="Beautiful livestreams"
-                    className="absolute -left-20 h-full w-[]  rounded-xl"
+                    className="xl:absolute  xl:left-[-80px] h-48 mx-auto lg:h-full w-[]  rounded-xl"
                   />
                 </div>
-                <div className="-ml-16 ">
+                <div className="xl:-ml-16 ">
                   {" "}
-                  <h3 className="text-2xl text-left  font-semibold text-gray-800 mb-2">
+                  <h3 className="text-xl md:text-2xl text-left  font-semibold text-gray-800 mb-2">
                     Beautiful livestreams
                   </h3>
-                  <p className="text-left text-gray-600">
+                  <p className="text-left text-sm md:text-base text-gray-600">
                     The easiest and most engaging platform to go live with
                     multiple guests and bring your audience on stage. Sell
                     tickets, accept donations, utilize analytics, pre-sales and
@@ -261,26 +264,26 @@ export default function Home() {
                   </p>
                   <a
                     href="#"
-                    className="text-blue-500 text-left hover:underline mt-4 block"
+                    className="text-blue-500 text-sm md:text-base text-left hover:underline mt-4 block"
                   >
                     Explore more
                   </a>
                 </div>
               </div>
-              <div className="bg-white   grid grid-cols-2 pr-6 py-6 gap-4 rounded-lg shadow-lg">
-                <div className="relative   overflow-hidden">
+              <div className="bg-white p-4 xl:p-0  grid grid-cols-1 xl:grid-cols-2 xl:pr-6 xl:py-6 gap-4 rounded-lg shadow-lg">
+                <div className="relative  xl:overflow-hidden">
                   <img
                     src="/hero.jpg"
                     alt="Beautiful livestreams"
-                    className="absolute -left-20 h-full w-[]  rounded-xl"
+                    className="xl:absolute  xl:left-[-80px] h-48 mx-auto lg:h-full w-[]  rounded-xl"
                   />
                 </div>
-                <div className="-ml-16 ">
+                <div className="xl:-ml-16 ">
                   {" "}
-                  <h3 className="text-2xl text-left  font-semibold text-gray-800 mb-2">
+                  <h3 className="text-xl md:text-2xl text-left  font-semibold text-gray-800 mb-2">
                     Beautiful livestreams
                   </h3>
-                  <p className="text-left text-gray-600">
+                  <p className="text-left text-sm md:text-base text-gray-600">
                     The easiest and most engaging platform to go live with
                     multiple guests and bring your audience on stage. Sell
                     tickets, accept donations, utilize analytics, pre-sales and
@@ -288,26 +291,26 @@ export default function Home() {
                   </p>
                   <a
                     href="#"
-                    className="text-blue-500 text-left hover:underline mt-4 block"
+                    className="text-blue-500 text-sm md:text-base text-left hover:underline mt-4 block"
                   >
                     Explore more
                   </a>
                 </div>
               </div>
-              <div className="bg-white   grid grid-cols-2 pr-6 py-6 gap-4 rounded-lg shadow-lg">
-                <div className="relative   overflow-hidden">
+              <div className="bg-white p-4 xl:p-0  grid grid-cols-1 xl:grid-cols-2 xl:pr-6 xl:py-6 gap-4 rounded-lg shadow-lg">
+                <div className="relative  xl:overflow-hidden">
                   <img
                     src="/hero.jpg"
                     alt="Beautiful livestreams"
-                    className="absolute -left-20 h-full w-[]  rounded-xl"
+                    className="xl:absolute  xl:left-[-80px] h-48 mx-auto lg:h-full w-[]  rounded-xl"
                   />
                 </div>
-                <div className="-ml-16 ">
+                <div className="xl:-ml-16 ">
                   {" "}
-                  <h3 className="text-2xl text-left  font-semibold text-gray-800 mb-2">
+                  <h3 className="text-xl md:text-2xl text-left  font-semibold text-gray-800 mb-2">
                     Beautiful livestreams
                   </h3>
-                  <p className="text-left text-gray-600">
+                  <p className="text-left text-sm md:text-base text-gray-600">
                     The easiest and most engaging platform to go live with
                     multiple guests and bring your audience on stage. Sell
                     tickets, accept donations, utilize analytics, pre-sales and
@@ -315,7 +318,7 @@ export default function Home() {
                   </p>
                   <a
                     href="#"
-                    className="text-blue-500 text-left hover:underline mt-4 block"
+                    className="text-blue-500 text-sm md:text-base text-left hover:underline mt-4 block"
                   >
                     Explore more
                   </a>
@@ -323,8 +326,8 @@ export default function Home() {
               </div>
             </div>
 
-            <section className="w-full  p-8 rounded-lg ">
-              <h2 className="text-3xl font-bold mb-4 relative text-gray-800">
+            <section className="w-full max-w-[1540px] overflow-hidden  p-8 rounded-lg ">
+              <h2 className=" text-4xl sm:text-3xl font-bold mb-4 relative text-gray-800">
                 Community{" "}
                 <span className="bg-[#faeed0] absolute -top-5 text-black text-sm px-2 py-1 rounded ml-2">
                   NEW
@@ -333,32 +336,32 @@ export default function Home() {
               <p className="text-lg text-gray-600 mb-6">
                 Set up your community page and start building your tribe.
               </p>
-              <div className="grid grid-cols-2 gap-6 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                 <div className="flex flex-col gap-6">
                   <div
                     id="feature1"
-                    className="custom-border p-4 rounded-lg border border-gray-200 shadow-sm cursor-pointer"
+                    className="custom-border p-1 sm:p-4 rounded-lg border border-gray-200 shadow-sm cursor-pointer"
                     onClick={() => changeImage("feature1")}
                   >
-                    <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                    <h4 className=" text-base sm:text-xl font-semibold text-gray-800 mb-2">
                       Publish posts, collect comments and likes
                     </h4>
                   </div>
                   <div
                     id="feature2"
-                    className="custom-border p-4 rounded-lg border border-gray-200 shadow-sm cursor-pointer"
+                    className="custom-border p-1 sm:p-4 rounded-lg border border-gray-200 shadow-sm cursor-pointer"
                     onClick={() => changeImage("feature2")}
                   >
-                    <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                    <h4 className=" text-base sm:text-xl font-semibold text-gray-800 mb-2">
                       Choose who can see and comment on your posts
                     </h4>
                   </div>
                   <div
                     id="feature3"
-                    className="custom-border p-4 rounded-lg border border-gray-200 shadow-sm cursor-pointer"
+                    className="custom-border p-1 sm:p-4 rounded-lg border border-gray-200 shadow-sm cursor-pointer"
                     onClick={() => changeImage("feature3")}
                   >
-                    <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                    <h4 className=" text-base  sm:text-xl font-semibold text-gray-800 mb-2">
                       The members of your community can meet and connect
                     </h4>
                   </div>
@@ -378,7 +381,7 @@ export default function Home() {
         </div>
         <div>
           <MeetSuperpeers />
-          <section className=" p-20  py-40 relative flex items-center justify-center">
+          <section className=" max-w-[1540px] mx-auto overflow-hidden p-20  py-40 relative flex items-center justify-center">
             <div className="max-w-screen-lg  mx-auto text-center relative z-10">
               <div className="flex items-center mb-6 justify-center -space-x-2">
                 <img
@@ -422,13 +425,13 @@ export default function Home() {
                   className="h-8 w-8 rounded-full object-cover"
                 />
               </div>
-              <h2 className="text-7xl relative z-10  md:text-7xl  bg-clip-text text-transparent bg-gradient-to-b from-black to-gray-400  text-center font-sans  font-bold mb-14 text-gray-800">
+              <h2 className="text-5xl  sm:text-7xl relative z-10  md:text-7xl  bg-clip-text text-transparent bg-gradient-to-b from-black to-gray-400  text-center  font-sans  font-bold mb-14 text-gray-800">
                 Become a Roomie
               </h2>
 
               <a
                 href="/register"
-                className="inline-block px-8 py-3 text-lg font-medium border-[#eeeeee00] border-r-4 text-black bg-[#FFE095] rounded-lg hover:bg-gradient-to-r hover:border-b-4 hover:border-r-4 hover:border-[#ffc336] transition-colors duration-300"
+                className="inline-block font-semibold px-8 py-3 text-lg  border-[#eeeeee00] border-r-4 text-black bg-[#FFE095] rounded-lg hover:bg-gradient-to-r hover:border-b-4 hover:border-r-4 hover:border-[#ffc336] transition-colors duration-300"
               >
                 Sign up for free
               </a>

@@ -36,7 +36,7 @@ const MeetSuperpeers: React.FC = () => {
   const renderItems = items.map((item, index) => (
     <div
       key={index}
-      className="flex flex-col w-[90%] border-[#3d3d3d] border-2 m-auto  z-10 relative hover:bg-[#2B2B2B] items-center pb-20 mt-20 text-center h-[23rem] mx-4 p-4 rounded-xl"
+      className="flex flex-col  sm:w-[90%] bg-[#2B2B2B] sm:bg-transparent border-[#3d3d3d] border-2 m-auto  z-10 relative hover:bg-[#2B2B2B] items-center pb-20 mt-20 text-center h-[23rem] sm:mx-4 p-4 rounded-xl"
       onDragStart={handleDragStart}
       role="presentation"
     >
@@ -59,7 +59,7 @@ const MeetSuperpeers: React.FC = () => {
   ));
 
   return (
-    <div className="bg-[#1D1D1D] z-0 m-auto max-w-[92%] relative overflow-hidden mx-auto my-20 pb-40 rounded-2xl p-20">
+    <div className="bg-[#1D1D1D] z-0 m-auto max-w-[1540px]   relative overflow-hidden mx-auto my-20 pb-40 rounded-2xl p-10 pt-20 sm:p-20">
       <img
         src="/roomie-hub-favicon-color.png"
         alt=""
@@ -67,23 +67,23 @@ const MeetSuperpeers: React.FC = () => {
       />
       <img
         src="/alt-fixed-size.png"
-        className="absolute z-10 h-24 right-[2%] -top-5"
+        className="absolute z-10 h-12 sm:h-24 right-[2%] -top-3 sm:top-[-20px]"
         alt=""
       />
       <img
         src="/fixed-size.png"
-        className="absolute  z-10 h-[8rem] right-[8%] top-14"
+        className="absolute  z-10 h-[50px] sm:h-[8rem] right-[11%] sm:right-[8%] top-4 sm:top-14"
         alt=""
       />
       <img
         src="/alt-fixed-size.png"
-        className="absolute  z-10 h-20 right-[15%] -top-5"
+        className="absolute  z-10 h-10 sm:h-20 right-[18%] sm:right-[15%] -top-5"
         alt=""
       />
-      <h2 className="text-5xl   z-10 font-bold text-white text-left mb-4">
+      <h2 className="text-4xl sm:text-5xl   z-10 font-bold text-white text-center sm:text-left mb-4">
         Meet Roomies
       </h2>
-      <p className="text-white   z-10 font-medium text-2xl max-w-[75%] text-left mb-8">
+      <p className="text-white   z-10 font-medium text-xl sm:text-2xl sm:max-w-[75%] text-center sm:text-left mb-0 sm:mb-8">
         See how others use Superpeer to connect with the fans, build their
         community, and sell their work.
       </p>
@@ -92,6 +92,7 @@ const MeetSuperpeers: React.FC = () => {
         items={renderItems}
         responsive={{
           0: { items: 1 },
+          400:{items:1},
           568: { items: 2 },
           1024: { items: 3 },
         }}
@@ -100,12 +101,12 @@ const MeetSuperpeers: React.FC = () => {
         infinite
         disableDotsControls
         renderPrevButton={() => (
-          <button className="absolute  z-10 border-white border-2 -left-12 top-1/2  text-white p-2 pl-[10px] pr-2 rounded-full">
+          <button className="absolute  z-10 border-white border-2 left-[33%] sm:left-[-3rem] sm:top-1/2  text-white p-2 pl-[10px] pr-2 rounded-full">
             <ArrowBackIosIcon />
           </button>
         )}
         renderNextButton={() => (
-          <button className="absolute border-2  z-10 border-white -right-8 top-1/2 bg- text-white p-2  pr-2 rounded-full">
+          <button className="absolute border-2  z-10 border-white right-[33%] sm:right-[-3rem] sm:top-1/2 bg- text-white p-2  pr-2 rounded-full">
             <ArrowForwardIosIcon />
           </button>
         )}

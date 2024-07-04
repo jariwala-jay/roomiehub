@@ -138,12 +138,17 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
-  margin-left: -1rem;
+  margin: auto;
   background: white;
   box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  padding: 0%;
+  
 }
 
 .sticky + .content {
-  padding-top: 100px; /* Adjust based on your navbar height */
+  padding-top: 100px;
+  margin-left: 0%;
+  width: 100%;
+  max-width: 100%;/* Adjust based on your navbar height */
 }
