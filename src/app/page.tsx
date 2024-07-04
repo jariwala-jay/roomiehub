@@ -44,6 +44,7 @@ export default function Home() {
        items-center  min-h-screen  bg-[#fff7e4]"
         >
           <main className="flex max-w-[1540px]  flex-col items-center mt-[20%] sm:mt-[5%] text-center px-4">
+           
             <div className="flex flex-col items-center">
               <h1 className="text-4xl lg:text-6xl xl:text-7xl max-w-[100%] sm:max-w-[75%] font-rubik font-bold mb-4 text-gray-800">
                 Home to your{" "}

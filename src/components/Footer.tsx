@@ -4,13 +4,20 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full bg-[#fff7e4]  py-16">
+    <footer
+      style={{
+        backgroundImage: "url(/overlay-2.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+      className="w-full relative overflow-hidden bg-[#fff7e4]  py-16"
+    >
       <div className="md:px-12 lg:px-28">
         <div className="container m-auto space-y-6 text-black ">
           <img
             src="/new-banner-logo.png"
             alt="logo tailus"
-            className="m-auto w-60"
+            className="m-auto w-40 sm:w-60"
           />
           <ul
             role="list"
