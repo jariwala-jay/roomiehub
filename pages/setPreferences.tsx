@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Checkbox from '@mui/joy/Checkbox';
+
 
 interface Preferences {
   preferred_date: string;
@@ -48,9 +50,19 @@ const SetPreferences = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h2 className="text-2xl font-bold mb-4">Set Preferences</h2>
-      {error && <div className="text-red-500 mb-4">{error}</div>}
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#fff7e4] p-4">
+      <div className="bg-white p-8 rounded-3xl shadow-lg max-w-[1100px] min-h-[600px] w-full">
+      <img src="/logo.png" alt="RoomieHub Logo" className="mb-6 min-w-[150px] w-1/5 mx-auto  " />
+      <div className='grid grid-cols-1 sm:grid-cols-2 items-center h-full '>
+      
+      <div className='pic hidden sm:flex'>
+      
+        <img src="/login.png" alt="RoomieHub Login" className="mb-2 rounded-xl " />
+          </div>
+          <div className='flex flex-col items-center'>
+          <div className='w-[90%] sm:w-[80%]'>
+      <h2 className="text-2xl font-bold mb-4 text-center">Set Preferences</h2>
+
       <form onSubmit={handleSubmit} className="w-full max-w-md">
         <div className="mb-4">
           <label htmlFor="preferred_date" className="block text-sm font-medium text-gray-700">Preferred Date</label>
@@ -79,47 +91,31 @@ const SetPreferences = () => {
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Preferences Checklist</label>
-          <div className="mt-1 space-y-2">
-            <label>
-              <input
-                type="checkbox"
-                name="preference_checklist"
-                value="male only"
-                onChange={handleChange}
-                className="mr-2"
-              />
-              Male Only
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="preference_checklist"
-                value="female only"
-                onChange={handleChange}
-                className="mr-2"
-              />
-              Female Only
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="preference_checklist"
-                value="non-smoker"
-                onChange={handleChange}
-                className="mr-2"
-              />
-              Non-Smoker
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="preference_checklist"
-                value="non-drinker"
-                onChange={handleChange}
-                className="mr-2"
-              />
-              Non-Drinker
-            </label>
+          <div className=" flex flex-col mt-1 space-y-2">
+          <Checkbox
+          color="neutral"
+          label="Male Only"
+          size="md"
+          variant="soft"
+          />
+           <Checkbox
+          color="neutral"
+          label="Female Only"
+          size="md"
+          variant="soft"
+          />
+           <Checkbox
+          color="neutral"
+          label="Non-Smoker"
+          size="md"
+          variant="soft"
+          />
+           <Checkbox
+          color="neutral"
+          label="Non-Drinker"
+          size="md"
+          variant="soft"
+          />
           </div>
         </div>
         <div className="mb-4">
@@ -137,11 +133,16 @@ const SetPreferences = () => {
         </div>
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          className="w-full py-2 bg-[#333231]   transition-colors duration-300 text-white rounded-xl border-r-4 border-b-4  border-[#eeeeee00] border-r-4 hover:border-b-4 hover:border-r-4 hover:border-[#ffc336]"
         >
           Save Preferences
         </button>
       </form>
+      {error && <div className="text-red-500 mb-4 text-center mt-2  ">{error}</div>}
+      </div>
+      </div>
+      </div>
+      </div>
     </div>
   );
 };

@@ -27,18 +27,21 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#f2f8f3]">
-      <div className="bg-white p-8 rounded-3xl shadow-lg max-w-md w-full">
-        <div className="flex flex-col items-center mb-4">
-          <img src="/logo.png" alt="RoomieHub Logo" className="mb-2" />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#fff7e4]">
+      <div className="bg-white p-8 rounded-3xl shadow-lg max-w-[1100px] h-[600px] w-full">
+        <div className='grid grid-cols-2 items-center h-full '>
+          <div className='flex flex-col items-center'>
+          <div className=' w-[80%]'>
+        <div className="flex flex-col mb-12">
+          <img src="/logo.png" alt="RoomieHub Logo" className="mb-12 w-1/2" />
           <h2 className="text-2xl font-bold text-gray-800">
-            Welcome to RoomieHub
+            Welcome Back!
           </h2>
           <p className="text-gray-600">
-            Please sign in to your account to continue.
+            Please sign to your account
           </p>
         </div>
-        {error && <div className="text-red-500 mb-4">{error}</div>}
+        
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
@@ -53,7 +56,7 @@ const Login = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-2xl"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-xl"
             />
           </div>
           <div>
@@ -69,30 +72,37 @@ const Login = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-2xl"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-xl"
             />
           </div>
           <div className="flex items-center justify-between">
             <a
               href="/forgot-password"
-              className="text-sm text-blue-600 hover:underline"
+              className="text-sm text-gray-600 hover:underline"
             >
               Forgot password?
             </a>
           </div>
           <button
             type="submit"
-            className="w-full py-2 bg-gradient-to-r from-blue-500 to-purple-600  hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-700 transition-colors duration-300 text-white rounded-2xl  "
+            className="w-full py-2 bg-[#333231]   transition-colors duration-300 text-white rounded-xl border-r-4 border-b-4  border-[#eeeeee00] border-r-4 hover:border-b-4 hover:border-r-4 hover:border-[#ffc336]"
           >
             Sign in
           </button>
         </form>
+        {error && <div className="text-red-500 mb-4 text-center mt-2  ">{error}</div>}
         <p className="text-center text-sm text-gray-600 mt-4">
           Don’t have an account?{" "}
-          <a href="/register" className="text-blue-600 hover:underline">
+          <a href="/register" className="text-[#ffc336] underline">
             Register
           </a>
         </p>
+        </div>
+        </div>
+        <div className='pic'>
+        <img src="/login.png" alt="RoomieHub Login" className="mb-2 rounded-xl" />
+          </div>
+          </div>  
       </div>
     </div>
   );
