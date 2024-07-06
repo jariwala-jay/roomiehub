@@ -33,7 +33,7 @@ const Navbar = () => {
           : "bg-[#fff7e4]    max-w-[1540px] rounded-tl-2xl rounded-tr-2xl"
       }`}
     >
-      <header className="w-full max-w-[1440px] px-4 lg:px-20 flex items-center justify-between text-right p-4">
+      <header className="w-full mx-auto max-w-[1440px] px-4 lg:px-10 flex items-center justify-between text-center p-4">
         <img src="/new-banner-logo.png" className="h-6 lg:h-9" alt="" />
         <button
           className="lg:hidden fleex text-black"
@@ -54,7 +54,7 @@ const Navbar = () => {
             ></path>
           </svg>
         </button>
-        <nav className="hidden lg:flex items-center lg:space-x-4 xl:space-x-12">
+        <nav className="hidden text-right  lg:flex items-center lg:space-x-4 xl:space-x-12">
           <a href="#" className="text-black font-medium hover:text-[#464646]">
             FIND A ROOMMATE
           </a>
