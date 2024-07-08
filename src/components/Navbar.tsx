@@ -29,14 +29,14 @@ const Navbar = () => {
       ref={navbarRef}
       className={`w-full ${
         isSticky
-          ? "sticky top-0 z-20 bg-[#fff7e4]"
-          : "bg-[#fff7e4]    max-w-[1540px] rounded-tl-2xl rounded-tr-2xl"
+          ? "sticky"
+          : "bg-[#fff7e4]    max-w-[2160px] rounded-tl-2xl rounded-tr-2xl"
       }`}
     >
       <header className="w-full mx-auto max-w-[1440px] px-4 lg:px-10 flex items-center justify-between text-center p-4">
         <img src="/new-banner-logo.png" className="h-6 lg:h-9" alt="" />
         <button
-          className="lg:hidden fleex text-black"
+          className="lg:hidden flex text-black"
           onClick={toggleMobileMenu}
         >
           <svg

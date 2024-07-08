@@ -64,7 +64,7 @@ const MeetSuperpeers: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-[#1D1D1D] z-0 m-auto max-w-[90%]    relative overflow-hidden mx-auto my-20 pb-40 rounded-2xl p-10 pt-20 sm:p-20">
+    <div className="bg-[#1D1D1D] z-0 m-auto max-w-[80%]    relative overflow-hidden mx-auto my-20 pb-40 rounded-2xl p-10 pt-20 sm:p-20">
       <img
         src="/roomie-hub-favicon-color.png"
         alt=""
