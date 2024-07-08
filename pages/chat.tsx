@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import axios from "axios";
+import HomeNavbar from "@/components/HomeNavbar";
 
 const socket = io("http://localhost:5000");
 
@@ -166,123 +167,128 @@ const ChatPage = () => {
   };
 
   return (
-    
-    <div className="flex h-screen bg-[#fff7e4]">
-      <div className="w-1/4 bg-white p-4 overflow-y-scroll">
-        <h2 className="text-xl font-bold mb-4 text-[#333231]">Friends</h2>
-        {friends.map((friend) => (
-          <div
-            key={friend.id}
-            className={`p-2 mb-2 bg-[#fff7e4] cursor-pointer hover:bg-[#ffc336] ${
-              selectedFriend?.id === friend.id ? "bg-[#ffc336]" : ""
-            } rounded-lg flex items-center`}
-            onClick={() => handleFriendClick(friend)}
-          >
-            {friend.profile_pic && (
-              <img
-                src={`data:image/jpeg;base64,${Buffer.from(friend.profile_pic).toString("base64")}`}
-                alt="Profile"
-                className="w-8 h-8 rounded-full inline-block mr-2"
-              />
-            )}
-            <span className="text-[#333231]">{friend.full_name}</span>
-          </div>
-        ))}
-      </div>
-      <div className="w-3/4 p-4 flex flex-col bg-white">
-        {selectedFriend ? (
-          <>
-            <div className="flex-1 overflow-y-scroll mb-4">
-              <h2 className="text-xl font-bold mb-4 text-[#333231]">
-                Chat with {selectedFriend.full_name}
-              </h2>
-              <div className="messages">
-                {messages.map((msg, index) => {
-                  const profilePic =
-                    msg.sender_id === currentUser.id
-                      ? currentUser.profile_pic
-                      : selectedFriend.profile_pic;
-
-                  return (
-                    <>
-                    <div
-                      key={index}
-                      className={`relative mb-2 p-2 rounded-lg flex items-start ${
-                        msg.sender_id === currentUser.id
-                          ? "self-end flex-row-reverse"
-                          : "self-start"
-                      }`}
-                    >
-                      {profilePic && (
-                        <img
-                          src={`data:image/jpeg;base64,${Buffer.from(
-                            profilePic
-                          ).toString("base64")}`}
-                          alt="Profile"
-                          className="w-10 h-10 rounded-full mr-2"
-                        />
-                      )}
-                      <div
-                        className={`p-3 rounded-[2rem]  ${
-                          msg.sender_id === currentUser.id
-                            ? "bg-[#333231] text-white text-right "
-                            : "bg-gray-200 text-black text-left "
-                        }`}
-                      >
-                        <p className="px-2">{msg.message}</p>
-                        <p className={`absolute -bottom-[10px] text-xs text-gray-400 mt-1 ${
-                          msg.sender_id === currentUser.id
-                            ? "right-4 "
-                            : "left-16"
-                        }`}
-                        >
-                     {new Date(msg.timestamp).toLocaleTimeString([], {
-                       hour: "2-digit",
-                       minute: "2-digit",
-                     })}
-                   </p>
-                      </div>
-                       
-                    </div>
-                    
-                   </>
-                  );
-                })}
-                <div ref={messagesEndRef} />
-              </div>
-              {typingUsers.length > 0 && (
-                <p className="text-sm text-gray-500">
-                  {typingUsers.join(", ")} is typing...
-                </p>
+    <>
+    <HomeNavbar />
+      <div className="flex h-screen bg-[#fff7e4]">
+        <div className="w-1/4 bg-white p-4 overflow-y-scroll">
+          <h2 className="text-xl font-bold mb-4 text-[#333231]">Friends</h2>
+          {friends.map((friend) => (
+            <div
+              key={friend.id}
+              className={`p-2 mb-2 bg-[#fff7e4] cursor-pointer hover:bg-[#ffc336] ${
+                selectedFriend?.id === friend.id ? "bg-[#ffc336]" : ""
+              } rounded-lg flex items-center`}
+              onClick={() => handleFriendClick(friend)}
+            >
+              {friend.profile_pic && (
+                <img
+                  src={`data:image/jpeg;base64,${Buffer.from(
+                    friend.profile_pic
+                  ).toString("base64")}`}
+                  alt="Profile"
+                  className="w-8 h-8 rounded-full inline-block mr-2"
+                />
               )}
+              <span className="text-[#333231]">{friend.full_name}</span>
             </div>
-            <div className="flex">
-              <input
-                type="text"
-                value={message}
-                onChange={handleTyping}
-                onKeyPress={handleKeyPress}
-                placeholder="Type a message"
-                className="p-2 border border-gray-300 active:border-[#333231] rounded-lg w-full"
-              />
-              <button
-                onClick={sendMessage}
-                className={`ml-2 px-6 py-2 ${
-                  message.trim() ? "bg-[#333231]" : "bg-gray-300"
-                } text-white rounded-lg ${
-                  message.trim() ? "hover:bg-[#333231]" : "cursor-not-allowed"
-                }`}
-                disabled={!message.trim()}
-              >
-                Send
-              </button>
+          ))}
+        </div>
+        <div className="w-3/4 p-4 flex flex-col bg-white">
+          {selectedFriend ? (
+            <>
+              <div className="flex-1 overflow-y-scroll mb-4">
+                <h2 className="text-xl font-bold mb-4 text-[#333231]">
+                  Chat with {selectedFriend.full_name}
+                </h2>
+                <div className="messages">
+                  {messages.map((msg, index) => {
+                    const profilePic =
+                      msg.sender_id === currentUser.id
+                        ? currentUser.profile_pic
+                        : selectedFriend.profile_pic;
+
+                    return (
+                      <>
+                        <div
+                          key={index}
+                          className={`relative mb-2 p-2 rounded-lg flex items-start ${
+                            msg.sender_id === currentUser.id
+                              ? "self-end flex-row-reverse"
+                              : "self-start"
+                          }`}
+                        >
+                          {profilePic && (
+                            <img
+                              src={`data:image/jpeg;base64,${Buffer.from(
+                                profilePic
+                              ).toString("base64")}`}
+                              alt="Profile"
+                              className="w-10 h-10 rounded-full mr-2"
+                            />
+                          )}
+                          <div
+                            className={`p-3 rounded-[2rem]  ${
+                              msg.sender_id === currentUser.id
+                                ? "bg-[#333231] text-white text-right "
+                                : "bg-gray-200 text-black text-left "
+                            }`}
+                          >
+                            <p className="px-2">{msg.message}</p>
+                            <p
+                              className={`absolute -bottom-[10px] text-xs text-gray-400 mt-1 ${
+                                msg.sender_id === currentUser.id
+                                  ? "right-4 "
+                                  : "left-16"
+                              }`}
+                            >
+                              {new Date(msg.timestamp).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </p>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })}
+                  <div ref={messagesEndRef} />
+                </div>
+                {typingUsers.length > 0 && (
+                  <p className="text-sm text-gray-500">
+                    {typingUsers.join(", ")} is typing...
+                  </p>
+                )}
+              </div>
+              <div className="flex">
+                <input
+                  type="text"
+                  value={message}
+                  onChange={handleTyping}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Type a message"
+                  className="p-2 border border-gray-300 active:border-[#333231] rounded-lg w-full"
+                />
+                <button
+                  onClick={sendMessage}
+                  className={`ml-2 px-6 py-2 ${
+                    message.trim() ? "bg-[#333231]" : "bg-gray-300"
+                  } text-white rounded-lg ${
+                    message.trim() ? "hover:bg-[#333231]" : "cursor-not-allowed"
+                  }`}
+                  disabled={!message.trim()}
+                >
+                  Send
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="text-gray-500">
+              Select a friend to start chatting.
             </div>
-          </>
-        ) : (
-          <div className="text-gray-500">Select a friend to start chatting.</div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

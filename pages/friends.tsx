@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import FriendCard from '@/components/FriendCard';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import HomeNavbar from '@/components/HomeNavbar';
 
 interface User {
   id: number;
@@ -43,6 +44,7 @@ const Friends = () => {
 
   return (
     <ProtectedRoute>
+      <HomeNavbar />
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
         <h1 className="text-3xl font-bold mb-4">My Friends</h1>
         {error && <div className="text-red-500 mb-4">{error}</div>}

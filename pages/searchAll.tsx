@@ -3,6 +3,7 @@ import axios from "axios";
 import ProfileCard from "@/components/ProfileCard";
 import Slider from "@mui/material/Slider";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
+import HomeNavbar from "@/components/HomeNavbar";
 
 const SearchAll = () => {
   const [preferences, setPreferences] = useState({
@@ -138,155 +139,158 @@ const SearchAll = () => {
   ];
 
   return (
-    <div className="flex min-h-screen  bg-gray-100 p-6">
-      <div className="w-1/4  bg-white max-h-screen p-4 rounded-lg shadow-md">
-        <div className="flex items-center mb-4  ">
-          {" "}
-          <h2 className="text-2xl font-bold mr-2 ">Filters</h2>
-          <TuneRoundedIcon className="text-[#ffd062]" />
-        </div>
-
-        <div className="mb-4">
-          <label
-            htmlFor="budget"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Budget
-          </label>
-          <Slider
-            value={filters.budget}
-            onChange={handleBudgetChange}
-            valueLabelDisplay="auto"
-            aria-labelledby="range-slider"
-            min={0}
-            max={4000}
-            style={{ color: "#FFEF39" }}
-          />{" "}
-          <div className="flex items-center justify-between mb-2 text-gray-600">
-            <span>{filters.budget[0]}</span>
-            <span>{filters.budget[1]}</span>
+    <>
+  <HomeNavbar />
+      <div className="flex min-h-screen  bg-gray-100 p-6">
+        <div className="w-1/4  bg-white max-h-screen p-4 rounded-lg shadow-md">
+          <div className="flex items-center mb-4  ">
+            {" "}
+            <h2 className="text-2xl font-bold mr-2 ">Filters</h2>
+            <TuneRoundedIcon className="text-[#ffd062]" />
           </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="budget"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Budget
+            </label>
+            <Slider
+              value={filters.budget}
+              onChange={handleBudgetChange}
+              valueLabelDisplay="auto"
+              aria-labelledby="range-slider"
+              min={0}
+              max={4000}
+              style={{ color: "#FFEF39" }}
+            />{" "}
+            <div className="flex items-center justify-between mb-2 text-gray-600">
+              <span>{filters.budget[0]}</span>
+              <span>{filters.budget[1]}</span>
+            </div>
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="city"
+              className="block text-sm font-medium text-gray-700"
+            >
+              City
+            </label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              value={filters.city}
+              onChange={handleFilterChange}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="veg_nonveg"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Veg/Non-Veg
+            </label>
+            <select
+              id="veg_nonveg"
+              name="veg_nonveg"
+              value={filters.veg_nonveg}
+              onChange={handleFilterChange}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            >
+              <option value="Any">Any</option>
+              <option value="Veg">Veg</option>
+              <option value="Non-Veg">Non-Veg</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="preference_checklist"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Preferences
+            </label>
+            <div>
+              {checklistOptions.map((item, index) => (
+                <div key={index}>
+                  <input
+                    type="checkbox"
+                    id={`preference_${index}`}
+                    value={item}
+                    checked={filters.preference_checklist.includes(item)}
+                    onChange={handleChecklistChange}
+                    className="mr-2"
+                  />
+                  <label htmlFor={`preference_${index}`}>{item}</label>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="have_room"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Have Room
+            </label>
+            <select
+              id="have_room"
+              name="have_room"
+              value={filters.have_room}
+              onChange={handleFilterChange}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            >
+              <option value="Any">Any</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+          <button
+            onClick={applyFilters}
+            className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors"
+          >
+            Apply Filters
+          </button>
         </div>
-        <div className="mb-4">
-          <label
-            htmlFor="city"
-            className="block text-sm font-medium text-gray-700"
-          >
-            City
-          </label>
-          <input
-            type="text"
-            id="city"
-            name="city"
-            value={filters.city}
-            onChange={handleFilterChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="veg_nonveg"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Veg/Non-Veg
-          </label>
-          <select
-            id="veg_nonveg"
-            name="veg_nonveg"
-            value={filters.veg_nonveg}
-            onChange={handleFilterChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          >
-            <option value="Any">Any</option>
-            <option value="Veg">Veg</option>
-            <option value="Non-Veg">Non-Veg</option>
-          </select>
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="preference_checklist"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Preferences
-          </label>
-          <div>
-            {checklistOptions.map((item, index) => (
-              <div key={index}>
-                <input
-                  type="checkbox"
-                  id={`preference_${index}`}
-                  value={item}
-                  checked={filters.preference_checklist.includes(item)}
-                  onChange={handleChecklistChange}
-                  className="mr-2"
+        <div className="w-3/4 pl-6">
+          <div className="flex items-center mb-6 ">
+            {" "}
+            <img
+              src="/search.png"
+              className="w-10 items-center justify-center"
+              alt=""
+            />
+            <h2 className="text-3xl ml-2 font-bold ">Search Results</h2>
+          </div>
+
+          <div className="flex space-x-4 mb-6">
+            <input
+              type="text"
+              placeholder="Search by any keyword"
+              value={searchTerm}
+              onChange={handleSearch}
+              className="p-2 border border-gray-300 rounded-lg"
+            />
+          </div>
+          {error && <div className="text-red-500 mb-4">{error}</div>}
+          <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
+            {filteredResults.length === 0 ? (
+              <p className="text-lg">No results found</p>
+            ) : (
+              filteredResults.map((user) => (
+                <ProfileCard
+                  key={user.id}
+                  user={user}
+                  currentUser={currentUser}
                 />
-                <label htmlFor={`preference_${index}`}>{item}</label>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
-        <div className="mb-4">
-          <label
-            htmlFor="have_room"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Have Room
-          </label>
-          <select
-            id="have_room"
-            name="have_room"
-            value={filters.have_room}
-            onChange={handleFilterChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          >
-            <option value="Any">Any</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-        </div>
-        <button
-          onClick={applyFilters}
-          className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors"
-        >
-          Apply Filters
-        </button>
       </div>
-      <div className="w-3/4 pl-6">
-        <div className="flex items-center mb-6 ">
-          {" "}
-          <img
-            src="/search.png"
-            className="w-10 items-center justify-center"
-            alt=""
-          />
-          <h2 className="text-3xl ml-2 font-bold ">Search Results</h2>
-        </div>
-
-        <div className="flex space-x-4 mb-6">
-          <input
-            type="text"
-            placeholder="Search by any keyword"
-            value={searchTerm}
-            onChange={handleSearch}
-            className="p-2 border border-gray-300 rounded-lg"
-          />
-        </div>
-        {error && <div className="text-red-500 mb-4">{error}</div>}
-        <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
-          {filteredResults.length === 0 ? (
-            <p className="text-lg">No results found</p>
-          ) : (
-            filteredResults.map((user) => (
-              <ProfileCard
-                key={user.id}
-                user={user}
-                currentUser={currentUser}
-              />
-            ))
-          )}
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

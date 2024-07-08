@@ -40,6 +40,7 @@ const HomeNavbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     window.location.href = "/login";
   };
 
@@ -85,13 +86,10 @@ const HomeNavbar = () => {
   }, []);
 
   return (
+    <div className="mb-[5rem] ">
     <div
       ref={navbarRef}
-      className={`w-full ${
-        isSticky
-          ? "sticky top-0 z-20 bg-[#fff7e4]"
-          : "bg-[#fff7e4] max-w-[1540px] rounded-tl-2xl rounded-tr-2xl"
-      }`}
+      className='sticky'
     >
       <header className="w-full max-w-[1440px] px-4 lg:px-20 flex items-center justify-between text-right p-4">
         <Link href="/dashboard" passHref>
@@ -213,6 +211,7 @@ const HomeNavbar = () => {
         </div>
       )}
     </div>
+    </ div >
   );
 };
 
