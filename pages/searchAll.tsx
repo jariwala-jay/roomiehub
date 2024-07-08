@@ -152,7 +152,7 @@ const SearchAll = () => {
   return (
     <>
       <HomeNavbar />
-      <div className="flex min-h-screen bg-gray-100 p-6">
+      <div className="flex max-w-[2160px] mx-auto min-h-[93vh] bg-gray-100 p-6">
         <div className="w-1/4 bg-white max-h-[82vh] p-4 rounded-lg shadow-md">
           <div className="flex items-center mb-4">
             <h2 className="text-2xl font-bold mr-2">Filters</h2>
@@ -286,7 +286,7 @@ const SearchAll = () => {
             />
           </div>
           {error && <div className="text-red-500 mb-4">{error}</div>}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  2xl:grid-cols-5 gap-6 w-full">
             {filteredResults.length === 0 ? (
               <p className="text-lg">No results found</p>
             ) : (
