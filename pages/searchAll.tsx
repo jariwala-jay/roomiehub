@@ -286,7 +286,7 @@ const SearchAll = () => {
             />
           </div>
           {error && <div className="text-red-500 mb-4">{error}</div>}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 w-full">
             {filteredResults.length === 0 ? (
               <p className="text-lg">No results found</p>
             ) : (
