@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import CityInput from "@/components/CityInput";
+import UniversityInput from "@/components/UniversityInput"
 
 interface FormData {
   full_name: string;
@@ -193,40 +195,8 @@ const Register = () => {
                           required
                         />
                       </div>
-                      <div className="mb-4">
-                        <label
-                          htmlFor="city"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          City
-                        </label>
-                        <input
-                          type="text"
-                          id="city"
-                          name="city"
-                          value={formData.city}
-                          onChange={handleChange}
-                          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-                          required
-                        />
-                      </div>
-                      <div className="mb-4">
-                        <label
-                          htmlFor="university"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          University
-                        </label>
-                        <input
-                          type="text"
-                          id="university"
-                          name="university"
-                          value={formData.university}
-                          onChange={handleChange}
-                          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-                          required
-                        />
-                      </div>
+                      <CityInput formData={formData} setFormData={setFormData} />
+                      <UniversityInput formData={formData} setFormData={setFormData} />
                       <button
                         type="button"
                         onClick={handleNext}
