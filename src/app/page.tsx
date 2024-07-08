@@ -27,7 +27,7 @@ export default function Home() {
     }, 150);
   };
   return (
-    <>
+    <>  
       {" "}
       <div className="mx-auto relative pt-0 p-2 sm:p-[1rem] pb-0">
         <div className="max-w-[2160px] mt-2 sm:mt-0  overflow-hidden ">
@@ -432,7 +432,7 @@ export default function Home() {
 
               <a
                 href="/register"
-                className="inline-block font-semibold px-8 py-3 text-lg  border-[#eeeeee00] border-r-4 text-black bg-[#FFE095] rounded-lg hover:bg-gradient-to-r hover:border-b-4 hover:border-r-4 hover:border-[#ffc336] transition-colors duration-300"
+                className="inline-block border-b-4 border-transparent font-semibold px-8 py-3 text-lg   border-r-4 text-black bg-[#FFE095] rounded-lg hover:bg-gradient-to-r hover:border-b-4 hover:border-r-4 hover:border-[#ffc336] transition-colors duration-300"
               >
                 Sign up for free
               </a>
