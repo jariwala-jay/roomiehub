@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-const handleDragStart = (e: React.DragEvent) => e.preventDefault();
-
-const items = [
+const itemsData = [
   {
     name: "Joe Cornelius",
     description: "Artist and independent art teacher.",
@@ -32,31 +30,38 @@ const items = [
   },
 ];
 
+const handleDragStart = (e: React.DragEvent) => e.preventDefault();
+
 const MeetSuperpeers: React.FC = () => {
-  const renderItems = items.map((item, index) => (
-    <div
-      key={index}
-      className="flex flex-col  sm:w-[90%] bg-[#2B2B2B] sm:bg-transparent border-[#3d3d3d] border-2 m-auto  z-10 relative hover:bg-[#2B2B2B] items-center pb-20 mt-20 text-center h-[23rem] sm:mx-4 p-4 rounded-xl"
-      onDragStart={handleDragStart}
-      role="presentation"
-    >
-      <img
-        src={item.image}
-        alt={item.name}
-        className="w-[11rem] h-[11rem] rounded-full mb-4 object-cover"
-      />
-      <h3 className="text-white font-bold text-xl">{item.name}</h3>
-      <p className="text-gray-400">{item.description}</p>
-      <div className="flex items-center justify-center space-x-2 mt-2">
-        {/* <img src={item.platformIcon} alt="platform icon" className="w-5 h-5" /> */}
-        <span className="text-gray-400">{item.youtubeFollowers}</span>
-        <span className="text-gray-400">{item.instagramFollowers}</span>
+  const [items, setItems] = useState<JSX.Element[]>([]);
+
+  useEffect(() => {
+    const renderItems = itemsData.map((item, index) => (
+      <div
+        key={index}
+        className="flex flex-col  sm:w-[90%] bg-[#2B2B2B] sm:bg-transparent border-[#3d3d3d] border-2 m-auto  z-10 relative hover:bg-[#2B2B2B] items-center pb-20 mt-20 text-center h-[23rem] sm:mx-4 p-4 rounded-xl"
+        onDragStart={handleDragStart}
+        role="presentation"
+      >
+        <img
+          src={item.image}
+          alt={item.name}
+          className="w-[11rem] h-[11rem] rounded-full mb-4 object-cover"
+        />
+        <h3 className="text-white font-bold text-xl">{item.name}</h3>
+        <p className="text-gray-400">{item.description}</p>
+        <div className="flex items-center justify-center space-x-2 mt-2">
+          {/* <img src={item.platformIcon} alt="platform icon" className="w-5 h-5" /> */}
+          <span className="text-gray-400">{item.youtubeFollowers}</span>
+          <span className="text-gray-400">{item.instagramFollowers}</span>
+        </div>
+        <button className="mt-4 absolute bottom-6 px-4 py-2 border-white border-2 text-white font-lg rounded-lg">
+          View Profile
+        </button>
       </div>
-      <button className="mt-4 absolute bottom-6 px-4 py-2 border-white border-2 text-white font-lg rounded-lg">
-        View Profile
-      </button>
-    </div>
-  ));
+    ));
+    setItems(renderItems);
+  }, []);
 
   return (
     <div className="bg-[#1D1D1D] z-0 m-auto max-w-[1540px]   relative overflow-hidden mx-auto my-20 pb-40 rounded-2xl p-10 pt-20 sm:p-20">
@@ -89,10 +94,10 @@ const MeetSuperpeers: React.FC = () => {
       </p>
       <AliceCarousel
         mouseTracking
-        items={renderItems}
+        items={items}
         responsive={{
           0: { items: 1 },
-          400:{items:1},
+          400: { items: 1 },
           568: { items: 2 },
           1024: { items: 3 },
         }}
