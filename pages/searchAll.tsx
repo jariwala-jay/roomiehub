@@ -143,8 +143,7 @@ const SearchAll = () => {
         <div className="flex items-center mb-4  ">
           {" "}
           <h2 className="text-2xl font-bold mr-2 ">Filters</h2>
-          <TuneRoundedIcon className="text-[#ffc02e]"/>
-         
+          <TuneRoundedIcon className="text-[#ffd062]" />
         </div>
 
         <div className="mb-4">
@@ -162,7 +161,11 @@ const SearchAll = () => {
             min={0}
             max={4000}
             style={{ color: "#FFEF39" }}
-          />
+          />{" "}
+          <div className="flex items-center justify-between mb-2 text-gray-600">
+            <span>{filters.budget[0]}</span>
+            <span>{filters.budget[1]}</span>
+          </div>
         </div>
         <div className="mb-4">
           <label
