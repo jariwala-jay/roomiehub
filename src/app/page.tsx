@@ -29,8 +29,8 @@ export default function Home() {
   return (
     <>  
       {" "}
-      <div className="mx-auto relative pt-0 p-2 sm:p-[1rem] pb-0">
-        <div className="max-w-[2160px] mt-2 sm:mt-0  overflow-hidden ">
+      <div className="mx-auto relative pt-0 p-2 sm:pt-[1rem] pb-0">
+        <div className="max-w-[2160px] mx-auto mt-2 sm:mt-0  overflow-hidden ">
           {" "}
           <Navbar />
         </div>
