@@ -4,6 +4,7 @@ import ProfileCard from "@/components/ProfileCard";
 import Slider from "@mui/material/Slider";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import HomeNavbar from "@/components/HomeNavbar";
+import Checkbox from "@mui/joy/Checkbox";
 
 const SearchAll = () => {
   const [preferences, setPreferences] = useState({
@@ -132,15 +133,15 @@ const SearchAll = () => {
   );
 
   const checklistOptions = [
-    "male only",
-    "female only",
-    "non-smoker",
-    "non-drinker",
+    "Male Only",
+    "Female Only",
+    "Non-Smoker",
+    "Non-Drinker",
   ];
 
   return (
     <>
-  <HomeNavbar />
+      <HomeNavbar />
       <div className="flex min-h-screen  bg-gray-100 p-6">
         <div className="w-1/4  bg-white max-h-screen p-4 rounded-lg shadow-md">
           <div className="flex items-center mb-4  ">
@@ -215,13 +216,15 @@ const SearchAll = () => {
             <div>
               {checklistOptions.map((item, index) => (
                 <div key={index}>
-                  <input
-                    type="checkbox"
+                  <Checkbox
+                    color="neutral"
+                    size="md"
+                    variant="soft"
                     id={`preference_${index}`}
                     value={item}
                     checked={filters.preference_checklist.includes(item)}
                     onChange={handleChecklistChange}
-                    className="mr-2"
+                    className="mr-2 "
                   />
                   <label htmlFor={`preference_${index}`}>{item}</label>
                 </div>

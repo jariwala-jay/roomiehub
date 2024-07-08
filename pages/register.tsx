@@ -94,7 +94,14 @@ const Register = () => {
   };
 
   return (
-    <div className="relative bg-[#fff7e4] min-h-screen">
+    <div
+      style={{
+        backgroundImage: "url(/overlay-2.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+      className="relative bg-[#fff7e4] min-h-screen"
+    >
       <div className="flex flex-col items-center justify-center min-h-screen p-4 ">
         <div className="bg-white p-8 rounded-3xl shadow-lg max-w-[1100px] min-h-[600px] w-full">
           <img
