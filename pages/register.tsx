@@ -195,8 +195,8 @@ const Register = () => {
                           required
                         />
                       </div>
-                      <CityInput formData={formData} setFormData={setFormData} />
-                      <UniversityInput formData={formData} setFormData={setFormData} />
+                      <CityInput value={formData.city} onChange={handleChange} />
+                      <UniversityInput value={formData.university} onChange={handleChange}/>
                       <button
                         type="button"
                         onClick={handleNext}
