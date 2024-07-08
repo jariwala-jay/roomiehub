@@ -89,8 +89,18 @@ const SearchAll = () => {
   const handleChecklistChange = (event) => {
     const { value, checked } = event.target;
     let updatedChecklist = [...filters.preference_checklist];
+
     if (checked) {
       updatedChecklist.push(value);
+      if (value === "Male Only") {
+        updatedChecklist = updatedChecklist.filter(
+          (item) => item !== "Female Only"
+        );
+      } else if (value === "Female Only") {
+        updatedChecklist = updatedChecklist.filter(
+          (item) => item !== "Male Only"
+        );
+      }
     } else {
       updatedChecklist = updatedChecklist.filter((item) => item !== value);
     }
@@ -133,20 +143,19 @@ const SearchAll = () => {
   );
 
   const checklistOptions = [
-    "Male Only",
-    "Female Only",
-    "Non-Smoker",
-    "Non-Drinker",
+    { label: "Male Only", value: "Male Only" },
+    { label: "Female Only", value: "Female Only" },
+    { label: "Non-Smoker", value: "Non-Smoker" },
+    { label: "Non-Drinker", value: "Non-Drinker" },
   ];
 
   return (
     <>
       <HomeNavbar />
-      <div className="flex min-h-screen  bg-gray-100 p-6">
-        <div className="w-1/4  bg-white max-h-screen p-4 rounded-lg shadow-md">
-          <div className="flex items-center mb-4  ">
-            {" "}
-            <h2 className="text-2xl font-bold mr-2 ">Filters</h2>
+      <div className="flex min-h-screen bg-gray-100 p-6">
+        <div className="w-1/4 bg-white max-h-[82vh] p-4 rounded-lg shadow-md">
+          <div className="flex items-center mb-4">
+            <h2 className="text-2xl font-bold mr-2">Filters</h2>
             <TuneRoundedIcon className="text-[#ffd062]" />
           </div>
 
@@ -165,7 +174,7 @@ const SearchAll = () => {
               min={0}
               max={4000}
               style={{ color: "#FFEF39" }}
-            />{" "}
+            />
             <div className="flex items-center justify-between mb-2 text-gray-600">
               <span>{filters.budget[0]}</span>
               <span>{filters.budget[1]}</span>
@@ -221,12 +230,12 @@ const SearchAll = () => {
                     size="md"
                     variant="soft"
                     id={`preference_${index}`}
-                    value={item}
-                    checked={filters.preference_checklist.includes(item)}
+                    value={item.value}
+                    checked={filters.preference_checklist.includes(item.value)}
                     onChange={handleChecklistChange}
-                    className="mr-2 "
+                    className="mr-2"
                   />
-                  <label htmlFor={`preference_${index}`}>{item}</label>
+                  <label htmlFor={`preference_${index}`}>{item.label}</label>
                 </div>
               ))}
             </div>
@@ -258,14 +267,13 @@ const SearchAll = () => {
           </button>
         </div>
         <div className="w-3/4 pl-6">
-          <div className="flex items-center mb-6 ">
-            {" "}
+          <div className="flex items-center mb-6">
             <img
               src="/search.png"
               className="w-10 items-center justify-center"
               alt=""
             />
-            <h2 className="text-3xl ml-2 font-bold ">Search Results</h2>
+            <h2 className="text-3xl ml-2 font-bold">Search Results</h2>
           </div>
 
           <div className="flex space-x-4 mb-6">
@@ -278,7 +286,7 @@ const SearchAll = () => {
             />
           </div>
           {error && <div className="text-red-500 mb-4">{error}</div>}
-          <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
             {filteredResults.length === 0 ? (
               <p className="text-lg">No results found</p>
             ) : (
