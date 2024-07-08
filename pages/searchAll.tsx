@@ -5,6 +5,7 @@ import Slider from "@mui/material/Slider";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import HomeNavbar from "@/components/HomeNavbar";
 import Checkbox from "@mui/joy/Checkbox";
+import CityInput from "@/components/CityInput"
 
 const SearchAll = () => {
   const [preferences, setPreferences] = useState({
@@ -180,22 +181,7 @@ const SearchAll = () => {
               <span>{filters.budget[1]}</span>
             </div>
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="city"
-              className="block text-sm font-medium text-gray-700"
-            >
-              City
-            </label>
-            <input
-              type="text"
-              id="city"
-              name="city"
-              value={filters.city}
-              onChange={handleFilterChange}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            />
-          </div>
+          <CityInput value={filters.city} onChange={handleFilterChange} />
           <div className="mb-4">
             <label
               htmlFor="veg_nonveg"

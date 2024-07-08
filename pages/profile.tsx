@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import CityInput from "@/components/CityInput";
+import UniversityInput from "@/components/UniversityInput";
 
 interface UserProfile {
   full_name: string;
@@ -217,38 +219,8 @@ const Profile = () => {
                 className="mt-1 p-2 w-full border border-gray-300 rounded-md"
               />
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="city"
-                className="block text-sm font-medium text-gray-700"
-              >
-                City
-              </label>
-              <input
-                type="text"
-                id="city"
-                name="city"
-                value={profile.city}
-                onChange={handleChange}
-                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="university"
-                className="block text-sm font-medium text-gray-700"
-              >
-                University
-              </label>
-              <input
-                type="text"
-                id="university"
-                name="university"
-                value={profile.university}
-                onChange={handleChange}
-                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-              />
-            </div>
+            <CityInput value={profile.city} onChange={handleChange} />
+            <UniversityInput value={profile.university} onChange={handleChange} />
 
             <div className="mb-4">
               <label

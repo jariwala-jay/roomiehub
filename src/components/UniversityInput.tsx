@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
-const UniversityInput = ({ formData, setFormData }) => {
+const UniversityInput = ({ value, onChange }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const handleChange = async (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    onChange(e);
 
     if (value.length > 1) {
       try {
@@ -29,13 +29,13 @@ const UniversityInput = ({ formData, setFormData }) => {
   };
 
   const handleSuggestionClick = (university) => {
-    setFormData({ ...formData, university: university.name });
+    onChange({ target: { name: "university", value: university.name } });
     setShowSuggestions(false);
   };
 
   const handleBlur = () => {
-    if (!suggestions.some(suggestion => suggestion.name === formData.university)) {
-      setFormData({ ...formData, university: "" });
+    if (!suggestions.some(suggestion => suggestion.name === value)) {
+      onChange({ target: { name: "university", value: "" } });
     }
     setShowSuggestions(false);
   };
@@ -49,7 +49,7 @@ const UniversityInput = ({ formData, setFormData }) => {
         type="text"
         id="university"
         name="university"
-        value={formData.university}
+        value={value}
         onChange={handleChange}
         onBlur={handleBlur}
         className="mt-1 p-2 w-full border border-gray-300 rounded-md"
@@ -61,9 +61,9 @@ const UniversityInput = ({ formData, setFormData }) => {
             <li
               key={university.name}
               className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"
-              onClick={() => handleSuggestionClick(university)}
+              onMouseDown={() => handleSuggestionClick(university)}
             >
-              <AccountBalanceIcon  className="w-5 h-5 mr-2"/>
+              <AccountBalanceIcon className="w-5 h-5 mr-2"/>
               {university.name}
             </li>
           ))}
@@ -74,8 +74,3 @@ const UniversityInput = ({ formData, setFormData }) => {
 };
 
 export default UniversityInput;
-
-
-
-
-
