@@ -7,6 +7,8 @@ import SearchAll from './searchAll';
 import Chat from './chat';
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Notifications from '@/components/Notifications';
+import MyFriends from '@/components/MyFriends'; // Import the Friends component
+import Friends from './friends';
 
 const Dashboard = () => {
   const [profile, setProfile] = useState({
@@ -57,7 +59,7 @@ const Dashboard = () => {
 
   return (
     <ProtectedRoute>
-      <div className="flex h-screen  bg-gray-100">
+      <div className="flex min-h-screen h-full  bg-gray-100">
         {/* Sidebar */}
         <aside
           className={`fixed z-50 inset-y-0 left-0 transform ${
@@ -170,28 +172,32 @@ const Dashboard = () => {
               {/* Tabs */}
               <div className="mb-6">
                 <ul className="flex space-x-4">
-                  <li className="border-b-2 border-blue-500 pb-2">
-                    Preferences
-                  </li>
-                  <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">
-                    Match History
-                  </li>
-                  <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">
-                    Account Settings
-                  </li>
+                  <li className="border-b-2 border-blue-500 pb-2">Preferences</li>
+                  <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">Match History</li>
+                  <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">Account Settings</li>
                 </ul>
               </div>
 
               {/* Dashboard Content */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Chart */}
-                <div className="bg-white p-6 rounded-lg shadow-lg col-span-2">
-                  <h3 className="text-lg font-bold mb-4">Roommate Matching</h3>
-                  <div className="h-48 bg-gray-200 rounded-lg"></div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* My Friends Section */}
+                <div className="bg-white p-6 rounded-lg shadow-lg col-span-1 md:col-span-2">
+                <div className='flex justify-between items-center'>
+                <h1 className="text-lg font-bold mb-4">Suggested Profiles</h1>
+                <button className='p-2 bg-blue-500 rounded-xl  mb-4' onClick={() => handleSectionClick('findRoommate')}> View more</button>
+                </div>
+                </div>
+
+                <div className="bg-white p-6 rounded-lg shadow-lg  col-span-1 min-w-[300px]">
+                <div className='flex justify-between items-center'>
+                <h1 className="text-lg font-bold mb-4">My Friends</h1>
+                <button className='p-2 bg-blue-500 rounded-xl  mb-4' onClick={() => handleSectionClick('myfriends')}> View more</button>
+                </div>
+                  <MyFriends />
                 </div>
 
                 {/* Recent Activity */}
-                <div className="bg-white p-6 rounded-lg shadow-lg">
+                <div className="bg-white p-6 rounded-lg shadow-lg col-span-1 min-w-[300px]">
                   <h3 className="text-lg font-bold mb-4">Recent Activity</h3>
                   <ul className="space-y-4">
                     <Notifications currentUser={currentUser} />
@@ -200,23 +206,30 @@ const Dashboard = () => {
               </div>
             </div>
           )}
-          {section === "profile" && (
+         {section === 'profile' && (
             <div>
               <Profile />
             </div>
           )}
-          {section === "findRoommate" && (
+          {section === 'findRoommate' && (
             <div>
               <SearchAll />
             </div>
           )}
-          {section === "chat" && (
+          {section === 'chat' && (
             <div>
               <Chat />
             </div>
           )}
-          {section === "settings" && (
-            <div>{/* Settings component goes here */}</div>
+          {section === 'settings' && (
+            <div>
+              {/* Settings component goes here */}
+            </div>
+          )}
+           {section === 'myfriends' && (
+            <div>
+              <Friends />
+            </div>
           )}
         </div>
       </div>
