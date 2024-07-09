@@ -57,16 +57,20 @@ const Dashboard = () => {
 
   return (
     <ProtectedRoute>
-      <div className="flex h-screen bg-gray-100">
+      <div className="flex h-screen  bg-gray-100">
         {/* Sidebar */}
         <aside
-          className={`fixed z-30 inset-y-0 left-0 transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0 lg:static'} transition-transform duration-300 ease-in-out w-64 bg-white p-6 lg:relative`}
+          className={`fixed z-50 inset-y-0 left-0 transform ${
+            sidebarOpen
+              ? "translate-x-0"
+              : "-translate-x-full lg:translate-x-0 lg:static"
+          } transition-transform duration-300 ease-in-out w-64 bg-white p-6 lg:relative`}
         >
           <div className="flex items-center justify-between mb-8">
             <img
               src="/logo.png"
               alt="RoomieHub logo"
-              className="mb-4 min-w-[150px] w-1/5"
+              className="mb-4 lg:block hidden min-w-[150px] w-1/5"
             />
             <button onClick={() => setSidebarOpen(false)} className="lg:hidden">
               <CloseIcon className="h-6 w-6 text-black" />
@@ -74,27 +78,45 @@ const Dashboard = () => {
           </div>
           <nav>
             <ul className="space-y-2">
-              <li className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer" onClick={() => handleSectionClick('home')}>
+              <li
+                className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer"
+                onClick={() => handleSectionClick("home")}
+              >
                 <span>🏠</span>
                 <span>Home</span>
               </li>
-              <li className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer" onClick={() => handleSectionClick('profile')}>
+              <li
+                className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer"
+                onClick={() => handleSectionClick("profile")}
+              >
                 <span>📄</span>
                 <span>Profile</span>
               </li>
-              <li className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer" onClick={() => handleSectionClick('findRoommate')}>
+              <li
+                className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer"
+                onClick={() => handleSectionClick("findRoommate")}
+              >
                 <span>🔍</span>
                 <span>Find Roommate</span>
               </li>
-              <li className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer" onClick={() => handleSectionClick('chat')}>
+              <li
+                className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer"
+                onClick={() => handleSectionClick("chat")}
+              >
                 <span>💬</span>
                 <span>Chat</span>
               </li>
-              <li className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer" onClick={() => handleSectionClick('settings')}>
+              <li
+                className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer"
+                onClick={() => handleSectionClick("settings")}
+              >
                 <span>⚙️</span>
                 <span>Settings</span>
               </li>
-              <li className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer" onClick={handleLogout}>
+              <li
+                className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer"
+                onClick={handleLogout}
+              >
                 <span>🚪</span>
                 <span>Logout</span>
               </li>
@@ -103,21 +125,32 @@ const Dashboard = () => {
         </aside>
 
         {/* Hamburger Button */}
-        <div className="p-4 lg:hidden fixed z-40 top-4 left-1">
+        <div className="p-4 pl-6  w-full flex justify-center items-center  bg-white lg:hidden fixed z-40 top-0 left-0">
           <button onClick={() => setSidebarOpen(!sidebarOpen)}>
-            <MenuIcon className="h-6 w-6 text-black lg:hidden" />
+            <MenuIcon className="h-6 w-6 absolute left-4 top-4 text-black lg:hidden" />
           </button>
+          <img
+            src="/logo.png"
+            alt="RoomieHub logo"
+            className=" min-w-[150px] w-1/5"
+          />
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 p-6 ml-[2rem]">
+        <div className="flex-1 p-6 lg:mt-0 mt-[3rem]">
           {/* Profile Header */}
-          {section === 'home' && (
+          {section === "home" && (
             <div>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-4">
                   {profile.profile_pic ? (
-                    <img src={`data:image/jpeg;base64,${Buffer.from(profile.profile_pic).toString('base64')}`} alt="Profile" className="w-16 h-16 rounded-full" />
+                    <img
+                      src={`data:image/jpeg;base64,${Buffer.from(
+                        profile.profile_pic
+                      ).toString("base64")}`}
+                      alt="Profile"
+                      className="w-16 h-16 rounded-full"
+                    />
                   ) : (
                     <div className="w-16 h-16 bg-gray-300 rounded-full"></div>
                   )}
@@ -126,15 +159,26 @@ const Dashboard = () => {
                     <p className="text-gray-600">Roommate Seeker</p>
                   </div>
                 </div>
-                <button className="bg-red-500 text-white px-4 py-2 rounded-md" onClick={handleLogout}>Logout</button>
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded-md"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
               </div>
 
               {/* Tabs */}
               <div className="mb-6">
                 <ul className="flex space-x-4">
-                  <li className="border-b-2 border-blue-500 pb-2">Preferences</li>
-                  <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">Match History</li>
-                  <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">Account Settings</li>
+                  <li className="border-b-2 border-blue-500 pb-2">
+                    Preferences
+                  </li>
+                  <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">
+                    Match History
+                  </li>
+                  <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">
+                    Account Settings
+                  </li>
                 </ul>
               </div>
 
@@ -156,25 +200,23 @@ const Dashboard = () => {
               </div>
             </div>
           )}
-          {section === 'profile' && (
+          {section === "profile" && (
             <div>
               <Profile />
             </div>
           )}
-          {section === 'findRoommate' && (
+          {section === "findRoommate" && (
             <div>
               <SearchAll />
             </div>
           )}
-          {section === 'chat' && (
+          {section === "chat" && (
             <div>
               <Chat />
             </div>
           )}
-          {section === 'settings' && (
-            <div>
-              {/* Settings component goes here */}
-            </div>
+          {section === "settings" && (
+            <div>{/* Settings component goes here */}</div>
           )}
         </div>
       </div>

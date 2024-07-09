@@ -157,8 +157,8 @@ const SearchAll = () => {
   return (
     <>
      
-      <div className="flex flex-col lg:flex-row max-w-[2160px] mx-auto min-h-screen  bg-gray-100 p-6">
-        <div className="lg:w-1/4 bg-white max-h-[82vh] p-4 rounded-lg shadow-md hidden lg:block">
+      <div className="flex flex-col lg:flex-row max-w-[2160px] mx-auto min-h-screen  bg-gray-100 p-6 pl-0 pt-0">
+        <div className="lg:w-1/2 bg-white max-h-[82vh] p-4 rounded-lg shadow-md hidden ">
           <div className="flex items-center mb-4">
             <h2 className="text-2xl font-bold mr-2">Filters</h2>
             <TuneRoundedIcon className="text-[#ffd062]" />
@@ -256,7 +256,7 @@ const SearchAll = () => {
             Apply Filters
           </button>
         </div>
-        <div className="w-full lg:w-3/4 lg:pl-6">
+        <div className="w-full pl-6">
           <div className="flex items-center mb-6 justify-between">
             <div className="flex items-center">
               <img
@@ -266,7 +266,7 @@ const SearchAll = () => {
               />
               <h2 className="text-3xl ml-2 font-bold">Search Results</h2>
             </div>
-            <div className="lg:hidden">
+            <div >
               <IconButton onClick={() => setIsFilterModalOpen(true)}>
                 <TuneRoundedIcon className="text-[#ffd062]" />
               </IconButton>
@@ -303,7 +303,7 @@ const SearchAll = () => {
         open={isFilterModalOpen}
         onClose={() => setIsFilterModalOpen(false)}
       >
-        <div className="flex flex-col p-4 bg-white rounded-lg shadow-md max-w-lg mx-auto mt-20">
+        <div className="flex flex-col p-8 bg-white rounded-lg shadow-md max-w-xl sm:mx-auto mt-10 mx-4">
           <div className="flex items-center mb-4">
             <h2 className="text-2xl font-bold mr-2">Filters</h2>
             <TuneRoundedIcon className="text-[#ffd062]" />

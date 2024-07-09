@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import axios from "axios";
-import HomeNavbar from "@/components/HomeNavbar";
+
 
 const socket = io("http://localhost:5000");
 
@@ -168,8 +168,8 @@ const ChatPage = () => {
 
   return (
     <>
-    <HomeNavbar />
-      <div className="flex h-[93vh] mt-4 mx-auto max-w-[2160px] bg-[#fff7e4]">
+    
+      <div className="flex h-[95vh]  mx-auto max-w-[2160px] bg-[#fff7e4]">
         <div className="w-1/4 bg-white p-4 overflow-y-scroll">
           <h2 className="text-xl font-bold mb-4 text-[#333231]">Friends</h2>
           {friends.map((friend) => (
