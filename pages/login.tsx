@@ -48,7 +48,7 @@ const Login = () => {
                 <h2 className="text-2xl font-bold text-gray-800">
                   Welcome Back!
                 </h2>
-                <p className="text-gray-600">Please sign to your account</p>
+                <p className="text-gray-600">Please sign in to your account</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">

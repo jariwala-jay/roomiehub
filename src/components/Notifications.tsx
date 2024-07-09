@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { IconButton, Menu, MenuItem } from "@mui/material";
-import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const Notifications = ({ currentUser }) => {
-  const [requests, setRequests] = useState([]);
   const [notifications, setNotifications] = useState([]);
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [requests, setRequests] = useState([]);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -62,73 +59,71 @@ const Notifications = ({ currentUser }) => {
           },
         }
       );
-      setRequests(requests.filter((request) => request.id !== requestId));
+      setRequests((prevRequests) => prevRequests.filter((request) => request.id !== requestId));
     } catch (error) {
       console.error("Failed to respond to request:", error);
     }
   };
 
-  const handleNotificationsClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
   return (
-    <div>
-      <IconButton onClick={handleNotificationsClick}>
-        <NotificationsIcon  className='text-black'/>
-      </IconButton>
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
-      >
-        <MenuItem onClick={handleMenuClose}>
-          <div className="p-4">
-            <h2 className="text-xl font-bold mb-4">Notifications</h2>
-            {notifications.length === 0 ? (
-              <p>No notifications</p>
-            ) : (
-              notifications.map((notification, index) => (
-                <div key={index} className="bg-gray-200 p-2 mb-2 rounded">
-                  {notification.message}
-                </div>
-              ))
-            )}
-          </div>
-        </MenuItem>
-        {requests.length === 0 ? (
-          <MenuItem onClick={handleMenuClose}>
-            No new requests
-          </MenuItem>
+    <>
+      <ul className="space-y-4">
+        {notifications.length === 0 && requests.length === 0 ? (
+          <p>No recent activity</p>
         ) : (
-          requests.map((request) => (
-            <MenuItem key={request.id}>
-              <div className="flex items-center justify-between p-2">
-                <p>{request.sender.full_name} wants to connect</p>
-                <div className="space-x-2">
-                  <button
-                    onClick={() => handleResponse(request.id, "accepted")}
-                    className="bg-green-500 text-white p-2 rounded"
-                  >
-                    Accept
-                  </button>
-                  <button
-                    onClick={() => handleResponse(request.id, "rejected")}
-                    className="bg-red-500 text-white p-2 rounded"
-                  >
-                    Reject
-                  </button>
+          <>
+            {notifications.map((notification, index) => (
+              <li key={index} className="flex items-center space-x-4">
+                {notification.sender && notification.sender.profile_pic ? (
+                  <img
+                    src={`data:image/jpeg;base64,${Buffer.from(notification.sender.profile_pic).toString('base64')}`}
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full"
+                  />
+                ) : (
+                  <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+                )}
+                <div>
+                  <p className="font-bold">{notification.message}</p>
+                  <p className="text-gray-600">{notification.timestamp}</p>
                 </div>
-              </div>
-            </MenuItem>
-          ))
+              </li>
+            ))}
+            {requests.map((request) => (
+              <li key={request.id} className="flex items-center space-x-4">
+                {request.sender && request.sender.profile_pic ? (
+                  <img
+                    src={`data:image/jpeg;base64,${Buffer.from(request.sender.profile_pic).toString('base64')}`}
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full"
+                  />
+                ) : (
+                  <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+                )}
+                <div>
+                  <p className="font-bold">{request.sender.full_name} wants to connect</p>
+                  <p className="text-gray-600">{request.timestamp}</p>
+                  <div className="space-x-2">
+                    <button
+                      onClick={() => handleResponse(request.id, "accepted")}
+                      className="bg-green-500 text-white p-2 rounded"
+                    >
+                      Accept
+                    </button>
+                    <button
+                      onClick={() => handleResponse(request.id, "rejected")}
+                      className="bg-red-500 text-white p-2 rounded"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </>
         )}
-      </Menu>
-    </div>
+      </ul>
+    </>
   );
 };
 

@@ -214,12 +214,20 @@ router.post('/search', passport.authenticate('jwt', { session: false }), async (
 
 router.get('/notifications', async (req, res) => {
   const { user_id } = req.query;
-  console.log(req.query);
   if (!user_id) {
     return res.status(400).json({ error: 'userId is required' });
   }
   try {
-    const notifications = await Notifications.findAll({ where: { user_id : user_id } });
+    const notifications = await Notifications.findAll({
+      where: { user_id },
+      include: [
+        {
+          model: User,
+          as: 'sender', // Adjust this alias to match your Sequelize model associations
+          attributes: ['id', 'full_name', 'profile_pic'],
+        }
+      ],
+    });
     res.json(notifications);
   } catch (error) {
     res.status(400).json({ error: error.message });

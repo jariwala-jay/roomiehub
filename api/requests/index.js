@@ -6,13 +6,11 @@ const passport = require("passport");
 // Send a connection request
 router.post('/', async (req, res) => {
   const { sender_id, receiver_id } = req.body;
-  console.log('Received connection request:', req.body);
   try {
     if (!sender_id || !receiver_id) {
       return res.status(400).json({ error: 'senderId and receiverId are required' });
     }
 
-    // Check if a request already exists
     const existingRequest = await Requests.findOne({ where: { sender_id, receiver_id } });
     if (existingRequest) {
       return res.status(400).json({ error: 'Request already sent' });
@@ -32,14 +30,12 @@ router.put(
   async (req, res) => {
     const { requestId } = req.params;
     const { status } = req.body;
-    console.log(requestId);
     try {
       const request = await Requests.findByPk(requestId);
       if (!request) {
         return res.status(404).json({ error: "Request not found" });
       }
 
-      // Ensure only the receiver can accept/reject the request
       if (req.user.id !== request.receiver_id) {
         return res.status(403).json({ error: "Unauthorized action" });
       }
@@ -47,20 +43,15 @@ router.put(
       request.status = status;
       await request.save();
 
-      // Notify the sender if the request is accepted
       if (status === "accepted") {
         const sender = await User.findByPk(request.sender_id);
         const receiver = await User.findByPk(request.receiver_id);
 
-        // Create a notification
         await Notifications.create({
           user_id: sender.id,
+          sender_id: receiver.id,  // Correctly set the sender ID
           message: `${receiver.full_name} has accepted your connection request.`,
         });
-
-        console.log(
-          `Notification: ${receiver.full_name} has accepted your connection request.`
-        );
       }
 
       res.json(request);
@@ -69,14 +60,12 @@ router.put(
     }
   }
 );
-
 // Get received connection requests
 router.get(
   "/received/:user_id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { user_id } = req.params;
-    console.log(user_id);
     try {
       const requests = await Requests.findAll({
         where: { receiver_id: user_id, status: "pending" },
@@ -84,7 +73,7 @@ router.get(
           {
             model: User,
             as: "sender",
-            attributes: ["id", "full_name", "email"],
+            attributes: ["id", "full_name", "email", "profile_pic"],
           },
         ],
       });
@@ -107,7 +96,7 @@ router.get(
           {
             model: User,
             as: "receiver",
-            attributes: ["id", "full_name", "email"],
+            attributes: ["id", "full_name", "email", "profile_pic"],
           },
         ],
       });
@@ -117,21 +106,5 @@ router.get(
     }
   }
 );
-
-// Check if a request exists
-router.get('/check', async (req, res) => {
-  const { sender_id, receiver_id } = req.query;
-  console.log(req.query);
-
-  try {
-     console.log(sender_id, receiver_id);
-    const request = await Requests.findOne({ where: { sender_id, receiver_id } });
-    console.log(request);
-    res.json({ exists: !!request });
-    console.log(res.body);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
 
 module.exports = router;

@@ -70,6 +70,10 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = (models) => {
     User.hasOne(models.Preferences, { foreignKey: 'user_id' });
   };
-
+  User.associate = (models) => {
+    User.hasMany(models.Requests, { as: 'sentRequests', foreignKey: 'sender_id' });
+    User.hasMany(models.Requests, { as: 'receivedRequests', foreignKey: 'receiver_id' });
+    User.hasMany(models.Notifications, { as: 'sentNotifications', foreignKey: 'user_id' });
+  };
   return User;
 };
