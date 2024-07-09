@@ -87,131 +87,142 @@ const HomeNavbar = () => {
 
   return (
     <div className="mb-[5rem] ">
-    <div
-      ref={navbarRef}
-      className='sticky'
-    >
-      <header className="w-full max-w-[1440px] px-4 lg:px-20 flex items-center justify-between text-right p-4">
-        <Link href="/dashboard" passHref>
-          <img src="/new-banner-logo.png" className="h-6 lg:h-9" alt="Logo" />
-        </Link>
-        
-        <button
-          className="lg:hidden flex text-black"
-          onClick={toggleMobileMenu}
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+      <div ref={navbarRef} className="sticky mx-auto w-full">
+        <header className="w-full mx-auto px-4 max-w-[2160px] lg:px-20 flex items-center justify-between text-right p-4">
+          <Link href="/dashboard" passHref>
+            <img src="/new-banner-logo.png" className="h-6 lg:h-9" alt="Logo" />
+          </Link>
+
+          <button
+            className="lg:hidden flex text-black"
+            onClick={toggleMobileMenu}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16m-7 6h7"
-            ></path>
-          </svg>
-        </button>
-        
-        <nav className="hidden lg:flex items-center lg:space-x-4 xl:space-x-6">
-          <Link href="/searchAll" passHref>
-            <IconButton>
-              <SearchIcon className='text-black' />
-            </IconButton>
-          </Link>
-          
-          <Link href="/friends" passHref>
-            <IconButton>
-              <PeopleIcon className='text-black' />
-            </IconButton>
-          </Link>
-          
-          <Link href="/chat" passHref>
-            <IconButton>
-              <ChatIcon className='text-black' />
-            </IconButton>
-          </Link>
-          
-          <Notifications currentUser={currentUser} />
-          
-          <div className="flex items-center space-x-4">
-            {profile && profile.profile_pic ? (
-              <IconButton onClick={handleProfileMenuClick}>
-                <img
-                  src={`data:image/jpeg;base64,${Buffer.from(
-                    profile.profile_pic
-                  ).toString("base64")}`}
-                  alt="Profile"
-                  className="w-8 h-8 rounded-full"
-                />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              ></path>
+            </svg>
+          </button>
+
+          <nav className="hidden lg:flex items-center lg:space-x-4 xl:space-x-6">
+            <Link href="/searchAll" passHref>
+              <IconButton>
+                <SearchIcon className="text-black" />
               </IconButton>
-            ) : (
-              <p>
-                <button className="px-3 py-2 -mr-8 text-lg font-medium text-black bg-none border-black border-2 rounded-lg hover:bg-black hover:text-white transition-colors duration-300">
-                  Sign in
-                </button>
-              </p>
-            )}
-          </div>
-          
-          <Menu
-            anchorEl={profileAnchorEl}
-            open={Boolean(profileAnchorEl)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem onClick={handleMenuClose}>
-              <Link href="/profile" passHref>
-                Edit Profile
-              </Link>
-            </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
-              <Link href="/updatePreferences" passHref>
-                Edit Preferences
-              </Link>
-            </MenuItem>
-            <MenuItem onClick={handleLogout}>
-              Logout
-            </MenuItem>
-          </Menu>
-          
-          
-        </nav>
-      </header>
-      
-      {isMobileMenuOpen && (
-        <div className="lg:hidden absolute bg-[#fff7e4] p-4 top-14 left-0 right-0 z-30">
-          <nav className="flex flex-col space-y-4">
-            <a href="#" className="text-black font-medium hover:text-[#464646]">
-              Find a Roommate
-            </a>
-            <a href="#" className="text-black font-medium hover:text-[#464646]">
-              My Friends
-            </a>
-            <a href="#" className="text-black font-medium hover:text-[#464646]">
-              Chat
-            </a>
-            <a href="#" className="text-black font-medium hover:text-[#464646]">
-              Notifications
-            </a>
-            <a href="#" className="text-black font-medium hover:text-[#464646]">
-              Edit Profile
-            </a>
-            <a href="#" className="text-black font-medium hover:text-[#464646]">
-              Edit Preferences
-            </a>
-            <a href="/register">
-              <button className="w-full px-3 py-2 text-lg font-medium text-white bg-black border-black border-2 rounded-lg hover:bg-transparent hover:text-black transition-colors duration-300">
-                Logout
-              </button>
-            </a>
+            </Link>
+
+            <Link href="/friends" passHref>
+              <IconButton>
+                <PeopleIcon className="text-black" />
+              </IconButton>
+            </Link>
+
+            <Link href="/chat" passHref>
+              <IconButton>
+                <ChatIcon className="text-black" />
+              </IconButton>
+            </Link>
+
+            <Notifications currentUser={currentUser} />
+
+            <div className="flex items-center space-x-4">
+              {profile && profile.profile_pic ? (
+                <IconButton onClick={handleProfileMenuClick}>
+                  <img
+                    src={`data:image/jpeg;base64,${Buffer.from(
+                      profile.profile_pic
+                    ).toString("base64")}`}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full"
+                  />
+                </IconButton>
+              ) : (
+                <p>
+                  <button className="px-3 py-2 -mr-8 text-lg font-medium text-black bg-none border-black border-2 rounded-lg hover:bg-black hover:text-white transition-colors duration-300">
+                    Sign in
+                  </button>
+                </p>
+              )}
+            </div>
+
+            <Menu
+              anchorEl={profileAnchorEl}
+              open={Boolean(profileAnchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={handleMenuClose}>
+                <Link href="/profile" passHref>
+                  Edit Profile
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={handleMenuClose}>
+                <Link href="/updatePreferences" passHref>
+                  Edit Preferences
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
           </nav>
-        </div>
-      )}
+        </header>
+
+        {isMobileMenuOpen && (
+          <div className="lg:hidden absolute bg-[#fff7e4] p-4 top-14 left-0 right-0 z-30">
+            <nav className="flex flex-col space-y-4">
+              <a
+                href="#"
+                className="text-black font-medium hover:text-[#464646]"
+              >
+                Find a Roommate
+              </a>
+              <a
+                href="#"
+                className="text-black font-medium hover:text-[#464646]"
+              >
+                My Friends
+              </a>
+              <a
+                href="#"
+                className="text-black font-medium hover:text-[#464646]"
+              >
+                Chat
+              </a>
+              <a
+                href="#"
+                className="text-black font-medium hover:text-[#464646]"
+              >
+                Notifications
+              </a>
+              <a
+                href="#"
+                className="text-black font-medium hover:text-[#464646]"
+              >
+                Edit Profile
+              </a>
+              <a
+                href="#"
+                className="text-black font-medium hover:text-[#464646]"
+              >
+                Edit Preferences
+              </a>
+              <a href="/register">
+                <button className="w-full px-3 py-2 text-lg font-medium text-white bg-black border-black border-2 rounded-lg hover:bg-transparent hover:text-black transition-colors duration-300">
+                  Logout
+                </button>
+              </a>
+            </nav>
+          </div>
+        )}
+      </div>
     </div>
-    </ div >
   );
 };
 

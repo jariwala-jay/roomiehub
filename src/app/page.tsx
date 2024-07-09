@@ -27,13 +27,13 @@ export default function Home() {
     }, 150);
   };
   return (
-    <>  
+    <>
       {" "}
-      <div className="mx-auto relative pt-0 p-2 sm:pt-2 pb-0">
-        <div className="max-w-[2160px] mx-auto  sm:mt-0  overflow-hidden ">
-          {" "}
-          <Navbar />
-        </div>
+      <div className=" mx-auto pt-2 sm:mt-0 ">
+        {" "}
+        <Navbar />
+      </div>
+      <div className="mx-auto relative pt-0 p-2 sm:pt-0 pb-0">
         <div
           style={{
             backgroundImage: "url(/overlay-4.png)",
@@ -41,10 +41,9 @@ export default function Home() {
             backgroundPosition: "center",
           }}
           className="flex flex-col max-w-[2160px]  w-full relative rounded-br-xl rounded-bl-2xl  mx-auto
-       items-center  min-h-screen  bg-[#fff7e4]"
+       items-center  min-h-screen xl:min-h-[70vh]  bg-[#fff7e4]"
         >
           <main className="flex max-w-[1540px]  flex-col items-center mt-[20%] sm:mt-[5%] text-center px-4">
-           
             <div className="flex flex-col items-center">
               <h1 className="text-4xl lg:text-6xl xl:text-7xl max-w-[100%] sm:max-w-[75%] font-rubik font-bold mb-4 text-gray-800">
                 Home to your{" "}
@@ -70,7 +69,7 @@ export default function Home() {
               </div>
             </div>
 
-            <section className=" absolute top-[50%] sm:top-[60%] max-w-[90%] sm:max-w-[76%] max-h-[40rem] overflow-hidden sm:max-h-[100%]  w-full text-left bg-white p-8 rounded-lg shadow-lg">
+            <section className=" absolute 2xl:min-h-[500px] items-center flex top-[50%] sm:top-[60%] xl:top-[75%] 2xl:top-[60%] max-w-[90%] sm:max-w-[76%] max-h-[40rem] overflow-hidden sm:max-h-[100%]  w-full text-left bg-white p-8 rounded-lg shadow-lg">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="my-auto flex-col">
                   <h2 className="text-md font-bold text-gray-800">
@@ -202,7 +201,7 @@ export default function Home() {
             </section>
           </main>
         </div>
-        <div className="flex relative max-w-[1540px] overflow-hidden h-[15rem] xl:h-[10rem]"></div>
+        <div className="flex relative max-w-[1540px] overflow-hidden h-[15rem] xl:h-[20rem] 2xl:h-[10rem]"></div>
         <div className="flex  max-w-[1540px] overflow-hidden flex-col rounded-3xl  mx-auto items-center mt-20 pb-20 justify-center min-h-screen bg-gray-50">
           <main className="flex flex-col items-center mt-16 text-center px-7 lg:px-20">
             <div className="grid mb-20 grid-cols-1 lg:grid-cols-5">

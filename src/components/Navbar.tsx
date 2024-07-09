@@ -29,8 +29,8 @@ const Navbar = () => {
       ref={navbarRef}
       className={`w-full ${
         isSticky
-          ? "sticky"
-          : "bg-[#fff7e4]    max-w-[2160px] rounded-tl-2xl rounded-tr-2xl"
+          ? "sticky mx-auto "
+          : "bg-[#fff7e4] mx-auto   max-w-[2160px] rounded-tl-2xl rounded-tr-2xl"
       }`}
     >
       <header className="w-full mx-auto max-w-[1440px] px-4 lg:px-10 flex items-center justify-between text-center p-4">
