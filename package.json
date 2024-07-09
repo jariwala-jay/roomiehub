@@ -11,8 +11,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@mui/joy": "^5.0.0-beta.36",
     "@mui/icons-material": "^5.15.21",
+    "@mui/joy": "^5.0.0-beta.36",
     "@mui/material": "^5.15.21",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
@@ -33,9 +33,12 @@
     "react-alice-carousel": "^2.9.1",
     "react-autocomplete": "^1.8.1",
     "react-dom": "^18",
+    "react-loading-skeleton": "^3.4.0",
     "react-modal": "^3.16.1",
+    "react-slick": "^0.30.2",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",
+    "slick-carousel": "^1.8.1",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5"
   },
