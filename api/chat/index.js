@@ -32,12 +32,13 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const { sender_id, receiver_id, message } = req.body;
+    const { sender_id, receiver_id, message, is_read } = req.body;
     try {
       const newMessage = await Chat.create({
         sender_id,
         receiver_id,
         message,
+        is_read,
       });
       res.json(newMessage);
     } catch (error) {
@@ -45,5 +46,33 @@ router.post(
     }
   }
 );
+
+// Mark messages as read
+router.post(
+  "/markAsRead",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { sender_id, receiver_id } = req.body;
+     console.log( sender_id + ' ' + receiver_id + "before try..." );
+    try {
+      console.log('executing api for isread update...');
+      await Chat.update(
+        { is_read: true },
+        {
+          where: {
+            sender_id: sender_id,
+            receiver_id: receiver_id,
+            is_read: false,
+          },
+        }
+      );
+      console.log('after try...');
+      res.json({ message: "Messages marked as read" });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+);
+
 
 module.exports = router;
