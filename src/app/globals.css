@@ -150,3 +150,37 @@ body {
   width: 100%;
   max-width: 100%;/* Adjust based on your navbar height */
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #eeeeee;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.custom-scrollbar1::-webkit-scrollbar {
+  width: 2px;
+}
+
+.custom-scrollbar1::-webkit-scrollbar-track {
+  background: #eeeeee;
+}
+
+.custom-scrollbar1::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.custom-scrollbar1::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

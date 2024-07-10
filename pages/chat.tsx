@@ -260,7 +260,7 @@ const ChatPage = () => {
       <div className="flex h-[93vh] md:h-[86vh] lg:h-[93vh] mx-auto max-w-[2160px] bg-[#fff7e4]">
         {/* Friends Section */}
         <div
-          className={`w-full h-full md:w-1/4 bg-white rounded-tl-xl rounded-bl-xl  p-4 md:min-w-[300px] overflow-y-scroll ${
+          className={`w-full h-full md:w-1/4 bg-white md:rounded-tl-xl md:rounded-bl-xl  p-4 md:min-w-[300px]  overflow-y-scroll custom-scrollbar1 ${
             selectedFriend ? "hidden md:block" : "block"
           }`}
         >
@@ -326,13 +326,13 @@ const ChatPage = () => {
         </div>
         {/* Chat Section */}
         <div
-          className={`w-full rounded-tr-xl rounded-br-xl  h-full md:w-3/4 p-4 pt-0 px-0 flex  flex-col bg-white ${
+          className={`w-full md:rounded-tr-xl md:rounded-br-xl  h-full md:w-3/4 p-4 pt-0 px-0 flex  flex-col bg-white ${
             selectedFriend ? "block" : "hidden md:block"
           }`}
         >
           {selectedFriend ? (
             <>
-              <div className="flex drop-shadow-lg p-4  rounded-tr-xl bg-[#333231] w-full items-center justify-start">
+              <div className="flex drop-shadow-lg p-4  md:rounded-tr-xl bg-[#333231] w-full items-center justify-start">
                 {" "}
                 <button
                   onClick={() => setSelectedFriend(null)}
@@ -351,8 +351,10 @@ const ChatPage = () => {
 
           {selectedFriend ? (
             <>
-              {" "}
-              <div className="flex-1  relative overflow-y-scroll mb-4">
+              <div
+               
+                className="flex-1   relative overflow-y-scroll custom-scrollbar mb-4"
+              >
                 <div className="messages">
                   {messages.map((msg, index) => {
                     const profilePic =
@@ -434,7 +436,7 @@ const ChatPage = () => {
               </div>
             </>
           ) : (
-            <div className="text-gray-500">
+            <div className="text-gray-500 p-6">
               Select a friend to start chatting.
             </div>
           )}
