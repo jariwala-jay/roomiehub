@@ -110,10 +110,13 @@ const Profile = () => {
 
   return (
     <ProtectedRoute>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-        <h1 className="text-3xl font-bold mb-4">Profile</h1>
-        {profile && (
-          <form onSubmit={handleSubmit} className="w-full max-w-md">
+      <div className="flex justify-center p-4 space-x-2 ">
+        {/* Profile Form */}
+        <div className="w-full max-w-4xl">
+          <div className="bg-white p-8 rounded-3xl shadow-lg max-w-[1100px] min-h-[600px] w-full">
+            <h1 className="text-2xl font-bold mb-4 text-center">Profile</h1>
+            <form onSubmit={handleSubmit} className="space-y-4">
+            
             <div className="mb-4">
               {profile.profile_pic && (
                 <img
@@ -136,6 +139,7 @@ const Profile = () => {
                 className="mt-1 p-2 w-full border border-gray-300 rounded-md"
               />
             </div>
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 h-full">
             <div className="mb-4">
               <label
                 htmlFor="full_name"
@@ -292,21 +296,7 @@ const Profile = () => {
                 <option value="no">No</option>
               </select>
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="description"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Description
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                value={profile.description}
-                onChange={handleChange}
-                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-              />
-            </div>
+            
             <div className="mb-4">
               <label
                 htmlFor="have_room"
@@ -325,18 +315,36 @@ const Profile = () => {
                 <option value="no">No</option>
               </select>
             </div>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={profile.description}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              />
+            </div>
+            
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              className="w-full py-2 bg-[#333231] transition-colors duration-300 text-white rounded-xl border-r-4 border-b-4 border-[#eeeeee00] hover:border-[#ffc336]"
             >
               Update Profile
             </button>
-          </form>
-        )}
+            
+            </form>
+          </div>
+        </div>
       </div>
     </ProtectedRoute>
   );
 };
 
 export default Profile;
-

@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const Notifications = ({ currentUser }) => {
   const [notifications, setNotifications] = useState([]);
   const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -21,7 +24,7 @@ const Notifications = ({ currentUser }) => {
         setNotifications(response.data);
       } catch (error) {
         console.error("Error fetching notifications:", error);
-      }
+      } 
     };
 
     const fetchRequests = async () => {
@@ -40,11 +43,15 @@ const Notifications = ({ currentUser }) => {
         }
       } catch (error) {
         console.error("Failed to fetch requests:", error);
-      }
+      } 
     };
 
-    fetchNotifications();
-    fetchRequests();
+    const fetchData = async () => {
+      await Promise.all([fetchNotifications(), fetchRequests()]);
+      setLoading(false);
+    }
+
+    fetchData();
   }, [currentUser]);
 
   const handleResponse = async (requestId, status) => {
@@ -68,11 +75,15 @@ const Notifications = ({ currentUser }) => {
   return (
     <>
       <ul className="space-y-4">
-        {notifications.length === 0 && requests.length === 0 ? (
+        {loading ? (
+          <>
+            <Skeleton height={40} count={5} />
+          </>
+        ) : notifications.length === 0 && requests.length === 0 ? (
           <p>No recent activity</p>
         ) : (
           <>
-            {notifications.map((notification, index) => (
+            {notifications.slice(0,3).map((notification, index) => (
               <li key={index} className="flex items-center space-x-4">
                 {notification.sender && notification.sender.profile_pic ? (
                   <img
