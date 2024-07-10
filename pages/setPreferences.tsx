@@ -159,6 +159,7 @@ const SetPreferences = () => {
                     onChange={handleChange}
                     className="mt-1 p-2 w-full border border-gray-300 rounded-md"
                   >
+                    <option value="yes">Any</option>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
                   </select>
