@@ -59,7 +59,7 @@ const Dashboard = () => {
 
   return (
     <ProtectedRoute>
-      <div className="flex min-h-screen h-full  bg-gray-100">
+      <div className="flex  h-full  bg-gray-100">
         {/* Sidebar */}
         <aside
           className={`fixed z-50 inset-y-0 left-0 transform ${
@@ -139,10 +139,10 @@ const Dashboard = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 p-6 lg:mt-0 mt-[3rem]">
+        <div className="flex-1 items-center md:p-6 lg:mt-0 mt-[3rem]">
           {/* Profile Header */}
           {section === "home" && (
-            <div>
+            <div className='p-6'>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-4">
                   {profile.profile_pic ? (

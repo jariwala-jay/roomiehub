@@ -146,7 +146,7 @@ body {
 }
 
 .sticky + .content {
-  padding-top: 100px;
+  padding-top: 90px;
   width: 100%;
   max-width: 100%;/* Adjust based on your navbar height */
 }

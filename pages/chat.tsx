@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import axios from "axios";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const socket = io("http://localhost:5000");
 
@@ -170,7 +171,6 @@ const ChatPage = () => {
         friend.latestMessage.sender_id === friend.id &&
         friend.latestMessage.receiver_id === currentUser.id
       ) {
-        console.log("inside..");
         const response = await axios.post(
           "http://localhost:5000/api/chat/markAsRead",
           {
@@ -251,15 +251,19 @@ const ChatPage = () => {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
       block: "end",
     });
   };
 
   return (
     <>
-      <div className="flex h-[90vh] mx-auto max-w-[2160px] bg-[#fff7e4]">
-        <div className="w-1/4 bg-white p-4 overflow-y-scroll">
+      <div className="flex h-[93vh] md:h-[86vh] lg:h-[93vh] mx-auto max-w-[2160px] bg-[#fff7e4]">
+        {/* Friends Section */}
+        <div
+          className={`w-full h-full md:w-1/4 bg-white rounded-tl-xl rounded-bl-xl  p-4 md:min-w-[300px] overflow-y-scroll ${
+            selectedFriend ? "hidden md:block" : "block"
+          }`}
+        >
           <h2 className="text-xl font-bold mb-4 text-[#333231]">Friends</h2>
           {friends.map((friend) => (
             <div
@@ -269,64 +273,86 @@ const ChatPage = () => {
               } rounded-lg flex flex-col  justify-between`}
               onClick={() => handleFriendClick(friend)}
             >
-              <div className="flex relative  items-center">
-                {friend.profile_pic && (
-                  <img
-                    src={`data:image/jpeg;base64,${Buffer.from(
-                      friend.profile_pic
-                    ).toString("base64")}`}
-                    alt="Profile"
-                    className="w-8 h-8 rounded-full inline-block mr-2"
-                  />
-                )}
-                {friend.latestMessage && isRead ? (
-                  friend.latestMessage.is_read ||
-                  friend.latestMessage.sender_id === currentUser.id ? (
-                    <span className="text-[#333231] ">{friend.full_name}</span>
-                  ) : (
-                    <span className="text-[#333231] font-bold">
-                      {friend.full_name}
-                    </span>
-                  )
-                ) : (
-                  <span className="text-[#333231] ">{friend.full_name}</span>
-                )}
-                {/* <span
-                  className={`text-[#333231] ${
-                    friend.latestMessage?.is_read ||
-                    friend.latestMessage.sender_id === currentUser.id
-                      ? ""
-                      : "font-bold"
-                  }`}
-                >
-                  {friend.full_name}
-                </span> */}
-                {friend.latestMessage && isRead ? (
-                  friend.latestMessage.is_read ||
-                  friend.latestMessage.sender_id === currentUser.id ? (
-                    ""
-                  ) : (
-                    <span className="mr-2 absolute right-0">•</span>
-                  )
-                ) : (
-                  " "
-                )}
-              </div>
-              {friend.latestMessage && (
-                <div className="text-xs text-gray-600">
-                  {friend.latestMessage.message}
+              <div className="grid p-1 grid-cols-6 md:grid-cols-5 gap-2 w-full relative  items-center">
+                <div className=" col-span-1 w-full justify-center items-center">
+                  {friend.profile_pic && (
+                    <img
+                      src={`data:image/jpeg;base64,${Buffer.from(
+                        friend.profile_pic
+                      ).toString("base64")}`}
+                      alt="Profile"
+                      className="w-10 h-10 justify-center rounded-full inline-block mr-2"
+                    />
+                  )}
                 </div>
-              )}
+                <div className=" flex flex-col items-start col-span-5 md:col-span-4 ">
+                  {friend.latestMessage && isRead ? (
+                    friend.latestMessage.is_read ||
+                    friend.latestMessage.sender_id === currentUser.id ? (
+                      <span className="text-[#333231] ">
+                        {friend.full_name}
+                      </span>
+                    ) : (
+                      <span className="text-[#333231] font-bold">
+                        {friend.full_name}
+                      </span>
+                    )
+                  ) : (
+                    <span className="text-[#333231] ">{friend.full_name}</span>
+                  )}
+                  {friend.latestMessage && isRead ? (
+                    friend.latestMessage.is_read ||
+                    friend.latestMessage.sender_id === currentUser.id ? (
+                      ""
+                    ) : (
+                      <span className="absolute right-4 top-4">
+                        {" "}
+                        <div className="  bg-black w-[6px] h-[5.5px] rounded-full "></div>
+                      </span>
+                    )
+                  ) : (
+                    " "
+                  )}
+
+                  {friend.latestMessage && (
+                    <div className="text-xs text-gray-600">
+                      {friend.latestMessage.message}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           ))}
         </div>
-        <div className="w-3/4 p-4 flex flex-col bg-white">
+        {/* Chat Section */}
+        <div
+          className={`w-full rounded-tr-xl rounded-br-xl  h-full md:w-3/4 p-4 pt-0 px-0 flex  flex-col bg-white ${
+            selectedFriend ? "block" : "hidden md:block"
+          }`}
+        >
           {selectedFriend ? (
             <>
-              <div className="flex-1 overflow-y-scroll mb-4">
-                <h2 className="text-xl font-bold mb-4 text-[#333231]">
-                  Chat with {selectedFriend.full_name}
+              <div className="flex drop-shadow-lg p-4  rounded-tr-xl bg-[#333231] w-full items-center justify-start">
+                {" "}
+                <button
+                  onClick={() => setSelectedFriend(null)}
+                  className="text-[#ffffff] md:hidden"
+                >
+                  <ArrowBackIcon />
+                </button>
+                <h2 className="text-xl items-center font-bold ml-2  text-[#ffffff]">
+                  {selectedFriend.full_name}
                 </h2>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
+
+          {selectedFriend ? (
+            <>
+              {" "}
+              <div className="flex-1  relative overflow-y-scroll mb-4">
                 <div className="messages">
                   {messages.map((msg, index) => {
                     const profilePic =
@@ -385,8 +411,7 @@ const ChatPage = () => {
                   </p>
                 )}
               </div>
-
-              <div className="flex">
+              <div className="flex px-4">
                 <input
                   type="text"
                   value={message}

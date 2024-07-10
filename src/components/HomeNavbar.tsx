@@ -87,7 +87,7 @@ const HomeNavbar = () => {
 
   return (
     <div className="mb-[5rem] ">
-      <div ref={navbarRef} className="sticky mx-auto w-full">
+      <div ref={navbarRef} className="sticky min-h-screen  mx-auto w-full">
         <header className="w-full mx-auto px-4 max-w-[2160px] lg:px-20 flex items-center justify-between text-right p-4">
           <Link href="/dashboard" passHref>
             <img src="/new-banner-logo.png" className="h-6 lg:h-9" alt="Logo" />
