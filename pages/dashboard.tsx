@@ -9,6 +9,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import Notifications from '@/components/Notifications';
 import MyFriends from '@/components/MyFriends'; // Import the Friends component
 import Friends from './friends';
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 
 const Dashboard = () => {
   const [profile, setProfile] = useState({
@@ -59,10 +60,10 @@ const Dashboard = () => {
 
   return (
     <ProtectedRoute>
-      <div className="flex  h-full  bg-gray-100">
+      <div className="flex  h-full  bg-white">
         {/* Sidebar */}
         <aside
-          className={`fixed z-50 inset-y-0 left-0 transform ${
+          className={`fixed z-50 inset-y-0 border-r-2 border-gray-200  left-0 transform ${
             sidebarOpen
               ? "translate-x-0"
               : "-translate-x-full lg:translate-x-0 lg:static"
@@ -139,94 +140,113 @@ const Dashboard = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 items-center md:p-6 lg:mt-0 mt-[3.4rem]">
+        <div className="flex-1 items-center md:p-6  md:pt-0 lg:mt-0 mt-[3.4rem]">
           {/* Profile Header */}
           {section === "home" && (
-            <div className='p-6'>
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center space-x-4">
-                  {profile.profile_pic ? (
-                    <img
-                      src={`data:image/jpeg;base64,${Buffer.from(
-                        profile.profile_pic
-                      ).toString("base64")}`}
-                      alt="Profile"
-                      className="w-16 h-16 rounded-full"
-                    />
-                  ) : (
-                    <div className="w-16 h-16 bg-gray-300 rounded-full"></div>
-                  )}
-                  <div>
-                    <h2 className="text-xl font-bold">{profile.full_name}</h2>
-                    <p className="text-gray-600">Roommate Seeker</p>
+            <div className="">
+              {/* Dashboard Content */}
+              <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* My Friends Section */}
+
+                <div className="col-span-1 p-6 h-[97vh] border-r-2 border-gray-200 pr-6 md:col-span-2">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-4">
+                      {profile.profile_pic ? (
+                        <img
+                          src={`data:image/jpeg;base64,${Buffer.from(
+                            profile.profile_pic
+                          ).toString("base64")}`}
+                          alt="Profile"
+                          className="w-20 h-20 rounded-full"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 bg-gray-300 rounded-full"></div>
+                      )}
+                      <div>
+                        <h2 className="text-xl font-bold">
+                          {profile.full_name}
+                        </h2>
+                        <p className="text-gray-600">Roommate Seeker</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Tabs */}
+                  <div className="mb-6">
+                    <ul className="flex space-x-4">
+                      <li className="border-b-2 border-blue-500 pb-2">
+                        Preferences
+                      </li>
+                      <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">
+                        Match History
+                      </li>
+                      <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">
+                        Account Settings
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="bg-white p-6 rounded-lg shadow-lg ">
+                    <div className="flex justify-between items-center">
+                      <h1 className="text-lg font-bold mb-4">
+                        Suggested Profiles
+                      </h1>
+                      <button
+                        className="p-2 bg-blue-500 rounded-xl  mb-4"
+                        onClick={() => handleSectionClick("findRoommate")}
+                      >
+                        {" "}
+                        View more
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <button
-                  className="bg-red-500 text-white px-4 py-2 rounded-md"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
-              </div>
-
-              {/* Tabs */}
-              <div className="mb-6">
-                <ul className="flex space-x-4">
-                  <li className="border-b-2 border-blue-500 pb-2">Preferences</li>
-                  <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">Match History</li>
-                  <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">Account Settings</li>
-                </ul>
-              </div>
-
-              {/* Dashboard Content */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* My Friends Section */}
-                <div className="bg-white p-6 rounded-lg shadow-lg col-span-1 md:col-span-2">
-                <div className='flex justify-between items-center'>
-                <h1 className="text-lg font-bold mb-4">Suggested Profiles</h1>
-                <button className='p-2 bg-blue-500 rounded-xl  mb-4' onClick={() => handleSectionClick('findRoommate')}> View more</button>
-                </div>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-lg  col-span-1 min-w-[300px]">
-                <div className='flex justify-between items-center'>
-                <h1 className="text-lg font-bold mb-4">My Friends</h1>
-                <button className='p-2 bg-blue-500 rounded-xl  mb-4' onClick={() => handleSectionClick('myfriends')}> View more</button>
-                </div>
-                  <MyFriends />
-                </div>
-
-                {/* Recent Activity */}
-                <div className="bg-white p-6 rounded-lg shadow-lg col-span-1 min-w-[300px]">
-                  <h3 className="text-lg font-bold mb-4">Recent Activity</h3>
-                  <ul className="space-y-4">
-                    <Notifications currentUser={currentUser} />
-                  </ul>
+                <div className="col-span-1 min-w-[300px]  grid grid-cols-1">
+                  <div className="bg-white p-6 pb-0 col-span-1 min-w-[300px]">
+                    <div className="flex justify-between items-center">
+                      <h1 className="text-lg font-bold mb-4">My Friends</h1>
+                      <div>
+                      <button
+                        className="p-2 text-blue-500 rounded-xl text-sm font-semibold  mb-4"
+                        onClick={() => handleSectionClick("myfriends")}
+                      >
+                        {" "}
+                        View more
+                      </button>
+                      
+                      < ArrowOutwardIcon fontSize='sm' className='text-blue-500' /></div>
+                    </div>
+                    <MyFriends />
+                  </div>
+                  {/* Recent Activity */}
+                  <div className="bg-white p-6 pt-0 col-span-1 min-w-[300px]">
+                    <h3 className="text-lg font-bold mb-6">Recent Activity</h3>
+                    <ul className="space-y-6">
+                      <Notifications currentUser={currentUser} />
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
           )}
-         {section === 'profile' && (
+          {section === "profile" && (
             <div>
               <Profile />
             </div>
           )}
-          {section === 'findRoommate' && (
+          {section === "findRoommate" && (
             <div>
               <SearchAll />
             </div>
           )}
-          {section === 'chat' && (
+          {section === "chat" && (
             <div>
               <Chat />
             </div>
           )}
-          {section === 'settings' && (
-            <div>
-              {/* Settings component goes here */}
-            </div>
+          {section === "settings" && (
+            <div>{/* Settings component goes here */}</div>
           )}
-           {section === 'myfriends' && (
+          {section === "myfriends" && (
             <div>
               <Friends />
             </div>

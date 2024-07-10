@@ -332,7 +332,7 @@ const ChatPage = () => {
         >
           {selectedFriend ? (
             <>
-              <div className="flex drop-shadow-lg p-4  rounded-tr-xl bg-[#333231] w-full items-center justify-start">
+              <div className="flex drop-shadow-lg p-4  md:rounded-tr-xl bg-[#333231] w-full items-center justify-start">
                 {" "}
                 <button
                   onClick={() => setSelectedFriend(null)}
@@ -351,8 +351,10 @@ const ChatPage = () => {
 
           {selectedFriend ? (
             <>
-              {" "}
-              <div className="flex-1  relative overflow-y-scroll custom-scrollbar mb-4">
+              <div
+               
+                className="flex-1   relative overflow-y-scroll custom-scrollbar mb-4"
+              >
                 <div className="messages">
                   {messages.map((msg, index) => {
                     const profilePic =

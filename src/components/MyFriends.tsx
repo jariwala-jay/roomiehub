@@ -41,14 +41,14 @@ const Friends = ( ) => {
 
   return (
     <ProtectedRoute>
-      <div className="flex flex-col bg-gray-100 p-4 rounded-xl">
+      <div className="flex flex-col items-center  rounded-xl">
         {error && <div className="text-red-500 mb-4">{error}</div>}
-        <div className="w-full">
+        <div className="w-full flex flex-col gap-4 ">
           {loading
-            ? [1, 2, 3,4].map((skeleton) => (
+            ? [1, 2, 3].map((skeleton) => (
                 <div
                   key={skeleton}
-                  className="bg-white rounded-lg p-2 flex items-center justify-between shadow-md mb-4 animate-pulse"
+                  className="bg-white drop-shadow-sm hover:drop-shadow-xl rounded-lg p-2 flex items-center justify-between shadow-md mb-4 animate-pulse"
                 >
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
@@ -57,10 +57,10 @@ const Friends = ( ) => {
                   <div className="h-6 w-6 bg-gray-300 rounded-full"></div>
                 </div>
               ))
-            : friends.slice(0, 4).map((friend) => (
+            : friends.slice(0, 3).map((friend) => (
                 <div
                   key={friend.id}
-                  className={`bg-white rounded-lg p-2 flex items-center justify-between shadow-md mb-4`}
+                  className={`bg-white rounded-lg hover:drop-shadow-xl p-2 flex items-center justify-between drop-shadow-md `}
                 >
                   <div className="flex items-center space-x-4">
                     {friend.profile_pic && (
@@ -80,7 +80,7 @@ const Friends = ( ) => {
                     className="text-[#333231] hover:text-black"
                     href="/chat"
                   >
-                    <Chat className="h-6 w-6" />
+                    <Chat className="h-6 text-[#333231] w-6" />
                   </a>
                 </div>
               ))}
