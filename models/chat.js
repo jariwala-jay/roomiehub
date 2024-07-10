@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.NOW,
         allowNull: false,
       },
+      is_read: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       tableName: "Chats",

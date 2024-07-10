@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import axios from "axios";
 
-
 const socket = io("http://localhost:5000");
 
 const ChatPage = () => {
@@ -14,7 +13,8 @@ const ChatPage = () => {
   const [error, setError] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [typingUsers, setTypingUsers] = useState([]);
-
+  const typingTimeoutRef = useRef(null);
+  const [isRead, setIsRead] = useState(true);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -75,6 +75,38 @@ const ChatPage = () => {
         playNotificationSound();
         scrollToBottom();
       }
+
+      setFriends((prevFriends) =>
+        prevFriends.map((friend) => {
+          if (
+            friend.id === newMessage.sender_id ||
+            friend.id === newMessage.receiver_id
+          ) {
+            return {
+              ...friend,
+              latestMessage: newMessage,
+            };
+          }
+          return friend;
+        })
+      );
+    });
+
+    socket.on("updateMessageStatus", (updatedMessage) => {
+      setFriends((prevFriends) =>
+        prevFriends.map((friend) => {
+          if (
+            friend.id === updatedMessage.sender_id ||
+            friend.id === updatedMessage.receiver_id
+          ) {
+            return {
+              ...friend,
+              latestMessage: updatedMessage,
+            };
+          }
+          return friend;
+        })
+      );
     });
 
     socket.on("userTyping", (data) => {
@@ -82,7 +114,9 @@ const ChatPage = () => {
         data.sender_id !== currentUser.id &&
         data.receiver_id === currentUser.id
       ) {
-        setTypingUsers((prevUsers) => [...prevUsers, data.sender_name]);
+        setTypingUsers((prevUsers) => [
+          ...new Set([...prevUsers, data.sender_name]),
+        ]);
       }
     });
 
@@ -99,6 +133,7 @@ const ChatPage = () => {
     return () => {
       socket.off("connect");
       socket.off("receiveMessage");
+      socket.off("updateMessageStatus");
       socket.off("userTyping");
       socket.off("stopTyping");
       socket.off("disconnect");
@@ -112,6 +147,7 @@ const ChatPage = () => {
       sender_id: currentUser.id,
       receiver_id: selectedFriend.id,
       message,
+      is_read: false,
     };
     socket.emit("sendMessage", newMessage);
     setMessage("");
@@ -123,9 +159,56 @@ const ChatPage = () => {
     scrollToBottom();
   };
 
-  const handleFriendClick = (friend) => {
+  const handleFriendClick = async (friend) => {
     setSelectedFriend(friend);
     setMessages([]);
+    scrollToBottom();
+
+    try {
+      // Only mark messages as read if the current user is the receiver
+      if (
+        friend.latestMessage.sender_id === friend.id &&
+        friend.latestMessage.receiver_id === currentUser.id
+      ) {
+        console.log("inside..");
+        const response = await axios.post(
+          "http://localhost:5000/api/chat/markAsRead",
+          {
+            sender_id: friend.id,
+            receiver_id: currentUser.id,
+          }
+        );
+
+        if (response.status === 200) {
+          // Fetch updated messages
+          const messagesResponse = await axios.get(
+            "http://localhost:5000/api/chat",
+            {
+              params: {
+                sender_id: currentUser.id,
+                receiver_id: friend.id,
+              },
+            }
+          );
+          setMessages(messagesResponse.data);
+          setIsRead(false);
+        }
+      } else {
+        // Fetch messages without marking them as read
+        const messagesResponse = await axios.get(
+          "http://localhost:5000/api/chat",
+          {
+            params: {
+              sender_id: currentUser.id,
+              receiver_id: friend.id,
+            },
+          }
+        );
+        setMessages(messagesResponse.data);
+      }
+    } catch (error) {
+      setError("Error marking messages as read.");
+    }
   };
 
   const handleTyping = (e) => {
@@ -138,10 +221,10 @@ const ChatPage = () => {
         sender_name: currentUser.full_name,
       });
     }
-    if (isTyping) {
-      clearTimeout(isTyping);
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
     }
-    setTimeout(() => {
+    typingTimeoutRef.current = setTimeout(() => {
       setIsTyping(false);
       socket.emit("stopTyping", {
         sender_id: currentUser.id,
@@ -162,14 +245,20 @@ const ChatPage = () => {
     audio.play();
   };
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
   };
 
   return (
     <>
-    
-      <div className="flex h-[95vh]  mx-auto max-w-[2160px] bg-[#fff7e4]">
+      <div className="flex h-[90vh] mx-auto max-w-[2160px] bg-[#fff7e4]">
         <div className="w-1/4 bg-white p-4 overflow-y-scroll">
           <h2 className="text-xl font-bold mb-4 text-[#333231]">Friends</h2>
           {friends.map((friend) => (
@@ -177,19 +266,57 @@ const ChatPage = () => {
               key={friend.id}
               className={`p-2 mb-2 bg-[#fff7e4] cursor-pointer hover:bg-[#ffc336] ${
                 selectedFriend?.id === friend.id ? "bg-[#ffc336]" : ""
-              } rounded-lg flex items-center`}
+              } rounded-lg flex flex-col  justify-between`}
               onClick={() => handleFriendClick(friend)}
             >
-              {friend.profile_pic && (
-                <img
-                  src={`data:image/jpeg;base64,${Buffer.from(
-                    friend.profile_pic
-                  ).toString("base64")}`}
-                  alt="Profile"
-                  className="w-8 h-8 rounded-full inline-block mr-2"
-                />
+              <div className="flex relative  items-center">
+                {friend.profile_pic && (
+                  <img
+                    src={`data:image/jpeg;base64,${Buffer.from(
+                      friend.profile_pic
+                    ).toString("base64")}`}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full inline-block mr-2"
+                  />
+                )}
+                {friend.latestMessage && isRead ? (
+                  friend.latestMessage.is_read ||
+                  friend.latestMessage.sender_id === currentUser.id ? (
+                    <span className="text-[#333231] ">{friend.full_name}</span>
+                  ) : (
+                    <span className="text-[#333231] font-bold">
+                      {friend.full_name}
+                    </span>
+                  )
+                ) : (
+                  <span className="text-[#333231] ">{friend.full_name}</span>
+                )}
+                {/* <span
+                  className={`text-[#333231] ${
+                    friend.latestMessage?.is_read ||
+                    friend.latestMessage.sender_id === currentUser.id
+                      ? ""
+                      : "font-bold"
+                  }`}
+                >
+                  {friend.full_name}
+                </span> */}
+                {friend.latestMessage && isRead ? (
+                  friend.latestMessage.is_read ||
+                  friend.latestMessage.sender_id === currentUser.id ? (
+                    ""
+                  ) : (
+                    <span className="mr-2 absolute right-0">•</span>
+                  )
+                ) : (
+                  " "
+                )}
+              </div>
+              {friend.latestMessage && (
+                <div className="text-xs text-gray-600">
+                  {friend.latestMessage.message}
+                </div>
               )}
-              <span className="text-[#333231]">{friend.full_name}</span>
             </div>
           ))}
         </div>
@@ -208,47 +335,46 @@ const ChatPage = () => {
                         : selectedFriend.profile_pic;
 
                     return (
-                      <>
+                      <div
+                        key={index}
+                        className={`relative mb-2 p-2 rounded-lg flex items-start ${
+                          msg.sender_id === currentUser.id
+                            ? "self-end flex-row-reverse"
+                            : "self-start"
+                        }`}
+                      >
+                        {profilePic && (
+                          <img
+                            src={`data:image/jpeg;base64,${Buffer.from(
+                              profilePic
+                            ).toString("base64")}`}
+                            alt="Profile"
+                            className="w-10 h-10 rounded-full mr-2"
+                          />
+                        )}
                         <div
-                          key={index}
-                          className={`relative mb-2 p-2 rounded-lg flex items-start ${
+                          className={`p-3 rounded-[2rem] ${
                             msg.sender_id === currentUser.id
-                              ? "self-end flex-row-reverse"
-                              : "self-start"
+                              ? "bg-[#333231] text-white text-right "
+                              : "bg-gray-200 text-black text-left "
                           }`}
                         >
-                          {profilePic && (
-                            <img
-                              src={`data:image/jpeg;base64,${Buffer.from(
-                                profilePic
-                              ).toString("base64")}`}
-                              alt="Profile"
-                              className="w-10 h-10 rounded-full mr-2"
-                            />
-                          )}
-                          <div
-                            className={`p-3 rounded-[2rem]  ${
+                          <p className="px-2">{msg.message}</p>
+
+                          <p
+                            className={`absolute -bottom-[10px] text-xs text-gray-400 mt-1 ${
                               msg.sender_id === currentUser.id
-                                ? "bg-[#333231] text-white text-right "
-                                : "bg-gray-200 text-black text-left "
+                                ? "right-4 "
+                                : "left-16"
                             }`}
                           >
-                            <p className="px-2">{msg.message}</p>
-                            <p
-                              className={`absolute -bottom-[10px] text-xs text-gray-400 mt-1 ${
-                                msg.sender_id === currentUser.id
-                                  ? "right-4 "
-                                  : "left-16"
-                              }`}
-                            >
-                              {new Date(msg.timestamp).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}
-                            </p>
-                          </div>
+                            {new Date(msg.timestamp).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </p>
                         </div>
-                      </>
+                      </div>
                     );
                   })}
                   <div ref={messagesEndRef} />
@@ -259,6 +385,7 @@ const ChatPage = () => {
                   </p>
                 )}
               </div>
+
               <div className="flex">
                 <input
                   type="text"
