@@ -9,7 +9,8 @@ import SmokeFreeIcon from '@mui/icons-material/SmokeFree';
 import SmokingRoomsIcon from "@mui/icons-material/SmokingRooms";
 import NoDrinksRoundedIcon from "@mui/icons-material/NoDrinksRounded";
 import LiquorRoundedIcon from "@mui/icons-material/LiquorRounded";
-const ProfileCard = ({ user, currentUser }) => {
+
+const ProfileCard = ({ user, currentUser, matchPercentage }) => {
   const [requestSent, setRequestSent] = useState(false);
 
   useEffect(() => {
@@ -99,55 +100,6 @@ const ProfileCard = ({ user, currentUser }) => {
           </div>
         </div>
         <div className="mt-4 space-y-2">
-          {/* <div className="flex items-center justify-between">
-            <span className="text-gray-500 dark:text-gray-400 font-medium">
-              City:
-            </span>
-            <span className="text-gray-700 dark:text-gray-300">
-              {user.city}
-            </span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-gray-500 dark:text-gray-400 font-medium">
-              University:
-            </span>
-            <span className="text-gray-700 dark:text-gray-300">
-              {user.university}
-            </span>
-          </div> */}
-          {/* <div className="flex items-center justify-between">
-            <span className="text-gray-500 dark:text-gray-400 font-medium">
-              Budget:
-            </span>
-            <span className="text-gray-700 dark:text-gray-300">
-              ${user.budget}
-            </span>
-          </div> */}
-          {/* <div className="flex items-center justify-between">
-            <span className="text-gray-500 dark:text-gray-400 font-medium">
-              Dietary Preference:
-            </span>
-            <span className="text-gray-700 dark:text-gray-300">
-              {user.veg_nonveg}
-            </span>
-          </div> */}
-          {/* <div className="flex items-center justify-between">
-            <span className="text-gray-500 dark:text-gray-400 font-medium">
-              Contact:
-            </span>
-            <span className="text-gray-700 dark:text-gray-300">
-              {user.contact_no}
-            </span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-gray-500 dark:text-gray-400 font-medium">
-              Email:
-            </span>
-            <span className="text-gray-700 dark:text-gray-300">
-              {user.email}
-            </span>
-          </div> */}
-
           <div className="flex flex-col px-2 items-start justify-between">
             <div className="flex items-center w-full justify-between">
               {" "}
@@ -199,6 +151,9 @@ const ProfileCard = ({ user, currentUser }) => {
             Sent
           </p>
         )}
+        <p className="text-[#4dc63b] text-sm">
+          Match: {matchPercentage.toFixed(2)}%
+        </p>
       </div>
     </div>
   );

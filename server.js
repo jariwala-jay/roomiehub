@@ -12,8 +12,9 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 const secretKey = "roomiehub";
-
-app.use(bodyParser.json());
+// Increase payload size limit
+app.use(bodyParser.json({ limit: '50mb' })); // Increase the limit as needed
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true })); // Increase the limit as needed
 app.use(cors());
 
 // Passport JWT Strategy
@@ -58,7 +59,7 @@ const io = socketIo(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("A user connected");
+
 
   socket.on("sendMessage", async (message) => {
     // Save the message to the database

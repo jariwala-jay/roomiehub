@@ -71,7 +71,17 @@ const SearchAll = () => {
             "http://localhost:5000/api/users/searchAll",
             initialSearchCriteria
           );
-          setResults(searchResponse.data);
+          
+          // Calculate match percentage
+          const matchResponse = await axios.post(
+            "http://localhost:5000/api/users/match-percentage",
+            {
+              currentUser: userProfile,
+              profiles: searchResponse.data,
+            }
+          );
+
+          setResults(matchResponse.data);
         }
       } catch (err) {
         setError("Failed to fetch preferences or search for roommates.");
@@ -133,7 +143,17 @@ const SearchAll = () => {
           "http://localhost:5000/api/users/searchAll",
           filterCriteria
         );
-        setResults(searchResponse.data);
+        
+        // Calculate match percentage
+        const matchResponse = await axios.post(
+          "http://localhost:5000/api/users/match-percentage",
+          {
+            currentUser,
+            profiles: searchResponse.data,
+          }
+        );
+
+        setResults(matchResponse.data);
         setIsFilterModalOpen(false);
       }
     } catch (err) {
@@ -156,7 +176,6 @@ const SearchAll = () => {
 
   return (
     <>
-     
       <div className="flex flex-col lg:flex-row max-w-[2160px] mx-auto min-h-screen  bg-gray-100 p-6 pl-0 pt-0">
         <div className="lg:w-1/2 bg-white max-h-[82vh] p-4 rounded-lg shadow-md hidden ">
           <div className="flex items-center mb-4">
@@ -292,6 +311,7 @@ const SearchAll = () => {
                   key={user.id}
                   user={user}
                   currentUser={currentUser}
+                  matchPercentage={user.matchPercentage} // Pass match percentage to ProfileCard
                 />
               ))
             )}

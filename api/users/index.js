@@ -14,6 +14,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 
+
 // Create a new user
 router.post('/register', upload.single('profile_pic'), async (req, res) => {
   try {
@@ -233,7 +234,6 @@ router.get('/notifications', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-
 // Route to search for roommates
 router.post(
   "/searchAll",
@@ -250,7 +250,10 @@ router.post(
       } = req.body;
       console.log(req.body);
 
+      const userId = req.user.id; // Get the current user's ID
+
       let whereClause = {
+        id: { [Op.ne]: userId }, // Exclude the user's own profile
         veg_nonveg:
           preferred_veg_nonveg === "Any"
             ? { [Op.or]: ["Veg", "Non-Veg"] }
@@ -290,5 +293,49 @@ router.post(
     }
   }
 );
+
+
+// Add this new endpoint to calculate match percentage
+router.post('/match-percentage', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+    const { currentUser, profiles } = req.body;
+
+    // Assuming you have the match percentage calculation logic in a separate function
+    const calculateMatchPercentage = (currentUser, profile) => {
+      let matchScore = 0;
+      let totalWeight = 0;
+
+      const criteria = [
+        { key: 'city', weight: 20 },
+        { key: 'veg_nonveg', weight: 15 },
+        { key: 'gender', weight: 15 },
+        { key: 'university', weight: 10 },
+        { key: 'budget', weight: 10 },
+        { key: 'drinker', weight: 10 },
+        { key: 'smoker', weight: 10 },
+        { key: 'preferred_move_in_date', weight: 10 },
+      ];
+
+      criteria.forEach(({ key, weight }) => {
+        if (currentUser[key] === profile[key]) {
+          matchScore += weight;
+        }
+        totalWeight += weight;
+      });
+
+      return (matchScore / totalWeight) * 100;
+    };
+
+    const results = profiles.map(profile => ({
+      ...profile,
+      matchPercentage: calculateMatchPercentage(currentUser, profile)
+    }));
+
+    res.json(results);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 
 module.exports = router;
