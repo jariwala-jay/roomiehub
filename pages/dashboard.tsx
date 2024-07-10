@@ -139,7 +139,7 @@ const Dashboard = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 items-center md:p-6 lg:mt-0 mt-[3rem]">
+        <div className="flex-1 items-center md:p-6 lg:mt-0 mt-[3.4rem]">
           {/* Profile Header */}
           {section === "home" && (
             <div className='p-6'>
