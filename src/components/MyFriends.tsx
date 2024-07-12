@@ -48,7 +48,7 @@ const Friends = ( ) => {
             ? [1, 2, 3].map((skeleton) => (
                 <div
                   key={skeleton}
-                  className="bg-white drop-shadow-sm hover:drop-shadow-xl rounded-lg p-2 flex items-center justify-between shadow-md mb-4 animate-pulse"
+                  className="bg-white rounded-lg hover:drop-shadow-xl p-2 flex items-center justify-between drop-shadow-md animate-pulse"
                 >
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
@@ -67,7 +67,7 @@ const Friends = ( ) => {
                       <img
                         src={`data:image/jpeg;base64,${Buffer.from(
                           friend.profile_pic
-                        ).toString('base64')}`}
+                        ).toString("base64")}`}
                         alt="Profile"
                         className="w-12 h-12 rounded-full"
                       />
@@ -76,10 +76,7 @@ const Friends = ( ) => {
                       {friend.full_name}
                     </span>
                   </div>
-                  <a
-                    className="text-[#333231] hover:text-black"
-                    href="/chat"
-                  >
+                  <a className="text-[#333231] hover:text-black" href="/chat">
                     <Chat className="h-6 text-[#333231] w-6" />
                   </a>
                 </div>
