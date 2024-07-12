@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Checkbox from '@mui/joy/Checkbox'; // Import MUI Checkbox
 
 interface Preferences {
   preferred_date: string;
@@ -77,8 +78,6 @@ const UpdatePreferences = () => {
 
   return (
     <ProtectedRoute>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-        <h1 className="text-3xl font-bold mb-4">Update Preferences</h1>
         {preferences && (
           <form onSubmit={handleSubmit} className="w-full max-w-md">
             <div className="mb-4">
@@ -120,59 +119,47 @@ const UpdatePreferences = () => {
               <label className="block text-sm font-medium text-gray-700">
                 Preferences Checklist
               </label>
-              <div className="mt-1 space-y-2">
-                <label>
-                  <input
-                    type="checkbox"
+              <div className=" flex flex-col mt-1 space-y-2">
+                  <Checkbox
+                    color="neutral"
+                    size="md"
+                    variant="soft"
+                    label='Male Only'
                     name="preference_checklist"
                     value="male only"
                     onChange={handleChange}
-                    checked={preferences.preference_checklist.includes(
-                      "male only"
-                    )}
-                    className="mr-2"
+                    checked={preferences.preference_checklist.includes("male only")}
                   />
-                  Male Only
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
+                  <Checkbox
+                    color="neutral"
+                    size="md"
+                    variant="soft"
+                    label='Female Only'
                     name="preference_checklist"
                     value="female only"
                     onChange={handleChange}
-                    checked={preferences.preference_checklist.includes(
-                      "female only"
-                    )}
-                    className="mr-2"
+                    checked={preferences.preference_checklist.includes("female only")}
                   />
-                  Female Only
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
+                  <Checkbox
+                    color="neutral"
+                    size="md"
+                    variant="soft"
+                    label='Non-Smoker'
                     name="preference_checklist"
                     value="non-smoker"
                     onChange={handleChange}
-                    checked={preferences.preference_checklist.includes(
-                      "non-smoker"
-                    )}
-                    className="mr-2"
+                    checked={preferences.preference_checklist.includes("non-smoker")}
                   />
-                  Non-Smoker
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
+                  <Checkbox
+                    color="neutral"
+                    size="md"
+                    variant="soft"
+                    label='Non-Drinker'
                     name="preference_checklist"
                     value="non-drinker"
                     onChange={handleChange}
-                    checked={preferences.preference_checklist.includes(
-                      "non-drinker"
-                    )}
-                    className="mr-2"
+                    checked={preferences.preference_checklist.includes("non-drinker")}
                   />
-                  Non-Drinker
-                </label>
               </div>
             </div>
             <div className="mb-4">
@@ -195,13 +182,12 @@ const UpdatePreferences = () => {
             </div>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              className="w-full py-2 bg-[#333231] transition-colors duration-300 text-white rounded-xl border-r-4 border-b-4 border-[#eeeeee00] hover:border-[#ffc336]"
             >
               Save Preferences
             </button>
           </form>
         )}
-      </div>
     </ProtectedRoute>
   );
 };

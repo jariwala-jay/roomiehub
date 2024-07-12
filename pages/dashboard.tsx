@@ -10,6 +10,7 @@ import Notifications from '@/components/Notifications';
 import MyFriends from '@/components/MyFriends'; // Import the Friends component
 import Friends from './friends';
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import UpdatePreferences from './updatePreferences';
 
 const Dashboard = () => {
   const [profile, setProfile] = useState({
@@ -21,6 +22,7 @@ const Dashboard = () => {
   const [section, setSection] = useState('home'); // Section state to switch between sections
   const [sidebarOpen, setSidebarOpen] = useState(false); // State for sidebar visibility
   const [currentUser, setCurrentUser] = useState(null);
+  const [activeTab, setActiveTab] = useState('preferences'); // State for active tab
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -174,30 +176,52 @@ const Dashboard = () => {
                   {/* Tabs */}
                   <div className="mb-6">
                     <ul className="flex space-x-4">
-                      <li className="border-b-2 border-blue-500 pb-2">
+                      <li
+                        className={`pb-2 cursor-pointer ${
+                          activeTab === 'preferences' ? 'border-b-2 border-blue-500' : 'border-b-2 border-transparent hover:border-gray-300'
+                        }`}
+                        onClick={() => setActiveTab('preferences')}
+                      >
                         Preferences
                       </li>
-                      <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">
-                        Match History
+                      <li
+                        className={`pb-2 cursor-pointer ${
+                          activeTab === 'editPreferences' ? 'border-b-2 border-blue-500' : 'border-b-2 border-transparent hover:border-gray-300'
+                        }`}
+                        onClick={() => setActiveTab('editPreferences')}
+                      >
+                        Edit Preferences
                       </li>
-                      <li className="border-b-2 border-transparent pb-2 hover:border-gray-300">
+                      <li
+                        className={`pb-2 cursor-pointer ${
+                          activeTab === 'accountSettings' ? 'border-b-2 border-blue-500' : 'border-b-2 border-transparent hover:border-gray-300'
+                        }`}
+                        onClick={() => setActiveTab('accountSettings')}
+                      >
                         Account Settings
                       </li>
                     </ul>
                   </div>
-                  <div className="bg-white p-6 rounded-lg shadow-lg ">
-                    <div className="flex justify-between items-center">
-                      <h1 className="text-lg font-bold mb-4">
-                        Suggested Profiles
-                      </h1>
-                      <button
-                        className="p-2 bg-blue-500 rounded-xl  mb-4"
-                        onClick={() => handleSectionClick("findRoommate")}
-                      >
-                        {" "}
-                        View more
-                      </button>
-                    </div>
+                  <div className="bg-white p-6 rounded-lg shadow-lg">
+                    {activeTab === 'preferences' && (
+                      <div>
+                        <h2 className="text-xl font-bold mb-4">Preferences</h2>
+                        {/* Preferences Content */}
+                      </div>
+                    )}
+                    {activeTab === 'editPreferences' && (
+                      <div>
+                        <div className='flex w-full'>
+                        <UpdatePreferences/>
+                        </div>
+                      </div>
+                    )}
+                    {activeTab === 'accountSettings' && (
+                      <div>
+                        <h2 className="text-xl font-bold mb-4">Account Settings</h2>
+                        {/* Account Settings Content */}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="col-span-1 min-w-[300px]  grid grid-cols-1">
@@ -205,15 +229,14 @@ const Dashboard = () => {
                     <div className="flex justify-between items-center">
                       <h1 className="text-lg font-bold mb-4">My Friends</h1>
                       <div>
-                      <button
-                        className="p-2 text-blue-500 rounded-xl text-sm font-semibold  mb-4"
-                        onClick={() => handleSectionClick("myfriends")}
-                      >
-                        {" "}
-                        View more
-                      </button>
-                      
-                      < ArrowOutwardIcon fontSize='sm' className='text-blue-500' /></div>
+                        <button
+                          className="p-2 text-blue-500 rounded-xl text-sm font-semibold  mb-4"
+                          onClick={() => handleSectionClick("myfriends")}
+                        >
+                          View more
+                        </button>
+                        <ArrowOutwardIcon fontSize='sm' className='text-blue-500' />
+                      </div>
                     </div>
                     <MyFriends />
                   </div>

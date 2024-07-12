@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import CityInput from "@/components/CityInput";
-import UniversityInput from "@/components/UniversityInput"
+import UniversityInput from "@/components/UniversityInput";
 
 interface FormData {
   full_name: string;
@@ -20,6 +20,7 @@ interface FormData {
   smoker: string;
   description: string;
   have_room: string;
+  preferred_move_in_date: string; // New field
 }
 
 const Register = () => {
@@ -40,6 +41,7 @@ const Register = () => {
     smoker: "",
     description: "",
     have_room: "",
+    preferred_move_in_date: "", // New field
   });
   const [error, setError] = useState("");
   const router = useRouter();
@@ -195,8 +197,14 @@ const Register = () => {
                           required
                         />
                       </div>
-                      <CityInput value={formData.city} onChange={handleChange} />
-                      <UniversityInput value={formData.university} onChange={handleChange}/>
+                      <CityInput
+                        value={formData.city}
+                        onChange={handleChange}
+                      />
+                      <UniversityInput
+                        value={formData.university}
+                        onChange={handleChange}
+                      />
                       <button
                         type="button"
                         onClick={handleNext}
@@ -305,6 +313,23 @@ const Register = () => {
                           <option value="Non-Veg">Non-Veg</option>
                         </select>
                       </div>
+                      <div className="mb-4">
+                        <label
+                          htmlFor="preferred_move_in_date"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Preferred Move-In Date
+                        </label>
+                        <input
+                          type="date"
+                          id="preferred_move_in_date"
+                          name="preferred_move_in_date"
+                          value={formData.preferred_move_in_date}
+                          onChange={handleChange}
+                          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="flex flex-col items-center">
@@ -385,7 +410,12 @@ const Register = () => {
                           <option value="no">No</option>
                         </select>
                       </div>
-                      <div className="flex space-x-4">
+                      <button
+                          type="submit"
+                          className="w-full py-2 bg-[#333231] transition-colors duration-300 text-white rounded-xl border-r-4 border-b-4 border-[#eeeeee00] hover:border-[#ffc336]"
+                        >
+                          Register
+                        </button>
                         <button
                           type="button"
                           onClick={handleBack}
@@ -393,13 +423,8 @@ const Register = () => {
                         >
                           Back
                         </button>
-                        <button
-                          type="submit"
-                          className="w-full py-2 bg-[#333231] transition-colors duration-300 text-white rounded-xl border-r-4 border-b-4 border-[#eeeeee00] hover:border-[#ffc336]"
-                        >
-                          Register
-                        </button>
-                      </div>
+                       
+
                     </div>
                     {error && (
                       <div className="text-red-500 mb-4 text-center mt-2">
