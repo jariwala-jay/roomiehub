@@ -36,21 +36,23 @@ const SearchAll = () => {
         const token = localStorage.getItem("token");
         if (token) {
           axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
+  
           // Fetch preferences
           const preferencesResponse = await axios.get(
             "http://localhost:5000/api/users/preferences"
           );
           const prefs = preferencesResponse.data;
           setPreferences(prefs);
-
+  
           // Fetch user profile
           const userProfileResponse = await axios.get(
             "http://localhost:5000/api/users/profile"
           );
           const userProfile = userProfileResponse.data;
+          setCurrentUser(userProfile);
+  
           const userBudgetMax = userProfile.budget * 1.2;
-
+  
           setFilters({
             budget: [0, userBudgetMax],
             city: userProfile.city || "",
@@ -58,7 +60,7 @@ const SearchAll = () => {
             preference_checklist: prefs.preference_checklist || [],
             have_room: prefs.have_room || "Any",
           });
-
+  
           // Initial search with combined preferences and profile data
           const initialSearchCriteria = {
             ...prefs,
@@ -66,12 +68,12 @@ const SearchAll = () => {
             budget_max: userBudgetMax,
             city: userProfile.city || "",
           };
-
+  
           const searchResponse = await axios.post(
             "http://localhost:5000/api/users/searchAll",
             initialSearchCriteria
           );
-          
+  
           // Calculate match percentage
           const matchResponse = await axios.post(
             "http://localhost:5000/api/users/match-percentage",
@@ -80,17 +82,16 @@ const SearchAll = () => {
               profiles: searchResponse.data,
             }
           );
-
+  
           setResults(matchResponse.data);
         }
       } catch (err) {
         setError("Failed to fetch preferences or search for roommates.");
       }
     };
-
+  
     fetchPreferencesAndSearch();
   }, []);
-
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -144,15 +145,22 @@ const SearchAll = () => {
           filterCriteria
         );
         
+        // Fetch the current user profile again if necessary
+        const userProfileResponse = await axios.get(
+          "http://localhost:5000/api/users/profile"
+        );
+        const userProfile = userProfileResponse.data;
+        setCurrentUser(userProfile);
+  
         // Calculate match percentage
         const matchResponse = await axios.post(
           "http://localhost:5000/api/users/match-percentage",
           {
-            currentUser,
+            currentUser: userProfile,
             profiles: searchResponse.data,
           }
         );
-
+  
         setResults(matchResponse.data);
         setIsFilterModalOpen(false);
       }
@@ -160,6 +168,7 @@ const SearchAll = () => {
       setError("Failed to apply filters.");
     }
   };
+  
 
   const filteredResults = results.filter((user) =>
     Object.values(user).some((value) =>

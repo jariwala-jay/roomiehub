@@ -107,4 +107,20 @@ router.get(
   }
 );
 
+// Check if a request exists
+router.get('/check', async (req, res) => {
+  const { sender_id, receiver_id } = req.query;
+  console.log(req.query);
+
+  try {
+     console.log(sender_id, receiver_id);
+    const request = await Requests.findOne({ where: { sender_id, receiver_id } });
+    console.log(request);
+    res.json({ exists: !!request });
+    console.log(res.body);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 module.exports = router;

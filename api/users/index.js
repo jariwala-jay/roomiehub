@@ -267,22 +267,22 @@ router.post(
       }
 
       if (
-        preference_checklist.includes("male only") &&
-        !preference_checklist.includes("female only")
+        preference_checklist.includes("Male Only") &&
+        !preference_checklist.includes("Female Only")
       ) {
         whereClause.gender = "Male";
       } else if (
-        preference_checklist.includes("female only") &&
-        !preference_checklist.includes("male only")
+        preference_checklist.includes("Female Only") &&
+        !preference_checklist.includes("Male Only")
       ) {
         whereClause.gender = "Female";
       }
 
-      if (preference_checklist.includes("non-drinker")) {
+      if (preference_checklist.includes("Non-Drinker")) {
         whereClause.drinker = "no";
       }
 
-      if (preference_checklist.includes("non-smoker")) {
+      if (preference_checklist.includes("Non-Smoker")) {
         whereClause.smoker = "no";
       }
 
@@ -300,25 +300,30 @@ router.post('/match-percentage', passport.authenticate('jwt', { session: false }
   try {
     const { currentUser, profiles } = req.body;
 
-    // Assuming you have the match percentage calculation logic in a separate function
     const calculateMatchPercentage = (currentUser, profile) => {
       let matchScore = 0;
       let totalWeight = 0;
 
+      // Criteria weights and calculation logic
       const criteria = [
         { key: 'city', weight: 20 },
-        { key: 'veg_nonveg', weight: 15 },
-        { key: 'gender', weight: 15 },
+        { key: 'veg_nonveg', weight: 20 },
+        { key: 'gender', weight: 20 },
         { key: 'university', weight: 10 },
-        { key: 'budget', weight: 10 },
+        { key: 'budget', weight: 10, type: 'range', range: { min: profile.budget * 0.8, max: profile.budget * 1.2 } },
         { key: 'drinker', weight: 10 },
         { key: 'smoker', weight: 10 },
-        { key: 'preferred_move_in_date', weight: 10 },
       ];
 
-      criteria.forEach(({ key, weight }) => {
-        if (currentUser[key] === profile[key]) {
-          matchScore += weight;
+      criteria.forEach(({ key, weight, type, range }) => {
+        if (type === 'range') {
+          if (currentUser[key] >= range.min && currentUser[key] <= range.max) {
+            matchScore += weight;
+          }
+        } else {
+          if (currentUser[key] === profile[key]) {
+            matchScore += weight;
+          }
         }
         totalWeight += weight;
       });
@@ -336,6 +341,7 @@ router.post('/match-percentage', passport.authenticate('jwt', { session: false }
     res.status(400).json({ error: error.message });
   }
 });
+
 
 
 module.exports = router;
