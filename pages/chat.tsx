@@ -3,6 +3,8 @@ import io from "socket.io-client";
 import axios from "axios";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
+
+
 const socket = io("http://localhost:5000");
 
 const ChatPage = () => {
@@ -17,6 +19,7 @@ const ChatPage = () => {
   const typingTimeoutRef = useRef(null);
   const [isRead, setIsRead] = useState(true);
   const messagesEndRef = useRef(null);
+  
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -257,14 +260,14 @@ const ChatPage = () => {
 
   return (
     <>
-      <div className="flex h-[93vh] md:h-[86vh] lg:h-[93vh] mx-auto max-w-[2160px] bg-[#fff7e4]">
+      <div className="flex h-[93vh] md:h-[86vh] lg:h-[93vh] w-full mx-auto max-w-[2160px] bg-[#fff7e4]">
         {/* Friends Section */}
         <div
-          className={`w-full h-full md:w-1/4 bg-white md:rounded-tl-xl md:rounded-bl-xl  p-4 md:min-w-[300px]  overflow-y-scroll custom-scrollbar1 ${
+          className={`w-full  h-full md:w-1/4 bg-white md:rounded-tl-xl md:rounded-bl-xl  p-4 md:min-w-[300px]  overflow-y-scroll custom-scrollbar1 ${
             selectedFriend ? "hidden md:block" : "block"
           }`}
         >
-          <h2 className="text-xl font-bold mb-4 text-[#333231]">Friends</h2>
+          <h2 className="text-xl  font-bold mb-4 text-[#333231]">Friends</h2>
           {friends.map((friend) => (
             <div
               key={friend.id}
@@ -326,35 +329,41 @@ const ChatPage = () => {
         </div>
         {/* Chat Section */}
         <div
-          className={`w-full md:rounded-tr-xl md:rounded-br-xl  h-full md:w-3/4 p-4 pt-0 px-0 flex  flex-col bg-white ${
+          className={`w-full   h-full md:w-3/4 p-4 pt-0 px-0 flex  flex-col bg-white ${
             selectedFriend ? "block" : "hidden md:block"
           }`}
         >
           {selectedFriend ? (
-            <>
-              <div className="flex drop-shadow-lg p-4  md:rounded-tr-xl bg-[#333231] w-full items-center justify-start">
+            <div className="bg-[#ffffff] border-b-2 border-gray-200">
+              <div className="flex  p-4 py-2  bg-[#ffffff] bg-opacity-90  w-full items-center justify-start">
                 {" "}
                 <button
                   onClick={() => setSelectedFriend(null)}
-                  className="text-[#ffffff] md:hidden"
+                  className="text-[#333231] md:hidden"
                 >
                   <ArrowBackIcon />
                 </button>
-                <h2 className="text-xl items-center font-bold ml-2  text-[#ffffff]">
-                  {selectedFriend.full_name}
-                </h2>
+                <div className="flex items-center" >
+                  <img
+                    src={`data:image/jpeg;base64,${Buffer.from(
+                      selectedFriend.profile_pic
+                    ).toString("base64")}`}
+                    alt="Profile"
+                    className="w-10 h-10 justify-center rounded-full inline-block mr-2"
+                  />
+                  <h2 className="text-xl items-center font-bold ml-2  text-[#333231]">
+                    {selectedFriend.full_name}
+                  </h2>
+                </div>
               </div>
-            </>
+            </div>
           ) : (
             ""
           )}
 
           {selectedFriend ? (
             <>
-              <div
-               
-                className="flex-1   relative overflow-y-scroll custom-scrollbar mb-4"
-              >
+              <div className="flex-1   relative overflow-y-scroll custom-scrollbar mb-4">
                 <div className="messages">
                   {messages.map((msg, index) => {
                     const profilePic =
@@ -440,8 +449,10 @@ const ChatPage = () => {
               Select a friend to start chatting.
             </div>
           )}
+         
         </div>
       </div>
+     
     </>
   );
 };
