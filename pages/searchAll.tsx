@@ -206,7 +206,7 @@ const SearchAll = () => {
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row max-w-[2160px] mx-auto min-h-screen  bg-gray-100 p-6 pl-0 pt-0">
+      <div className="flex flex-col lg:flex-row max-w-[2160px] mx-auto min-h-screen  p-6 ">
         <div className="lg:w-1/2 bg-white max-h-[82vh] p-4 rounded-lg shadow-md hidden ">
           <div className="flex items-center mb-4">
             <h2 className="text-2xl font-bold mr-2">Filters</h2>
