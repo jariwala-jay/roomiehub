@@ -13,8 +13,6 @@ const secretKey = 'roomiehub'; // Use a secure key in production
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-
-
 // Create a new user
 router.post('/register', upload.single('profile_pic'), async (req, res) => {
   try {
@@ -33,6 +31,7 @@ router.post('/register', upload.single('profile_pic'), async (req, res) => {
       smoker,
       description,
       have_room,
+      preferred_move_in_date, // Add preferred_move_in_date
     } = req.body;
     const profile_pic = req.file ? req.file.buffer : null;
     // Validate input
@@ -51,7 +50,8 @@ router.post('/register', upload.single('profile_pic'), async (req, res) => {
       !drinker ||
       !smoker ||
       !description ||
-      have_room === undefined
+      have_room === undefined ||
+      !preferred_move_in_date // Validate preferred_move_in_date
     ) {
       return res.status(400).json({ error: 'All fields are required' });
     }
@@ -76,6 +76,7 @@ router.post('/register', upload.single('profile_pic'), async (req, res) => {
       smoker,
       description,
       have_room,
+      preferred_move_in_date, // Save preferred_move_in_date
     });
 
     const token = jwt.sign({ id: newUser.id }, secretKey, { expiresIn: '1h' });
@@ -84,6 +85,7 @@ router.post('/register', upload.single('profile_pic'), async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
 // Protected route to get user profile
 router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.json(req.user);
@@ -106,6 +108,7 @@ router.put('/profile', upload.single('profile_pic'), passport.authenticate('jwt'
       smoker,
       description,
       have_room,
+      preferred_move_in_date, // Add preferred_move_in_date
     } = req.body;
 
     const user = await User.findByPk(req.user.id);
@@ -130,6 +133,7 @@ router.put('/profile', upload.single('profile_pic'), passport.authenticate('jwt'
     user.smoker = smoker || user.smoker;
     user.description = description || user.description;
     user.have_room = have_room !== undefined ? have_room : user.have_room;
+    user.preferred_move_in_date = preferred_move_in_date || user.preferred_move_in_date; // Update preferred_move_in_date
 
     await user.save();
 
@@ -138,6 +142,7 @@ router.put('/profile', upload.single('profile_pic'), passport.authenticate('jwt'
     res.status(400).json({ error: error.message });
   }
 });
+
 router.post('/preferences', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const { preferred_date, preferred_veg_nonveg, preference_checklist, have_room } = req.body;
@@ -234,6 +239,7 @@ router.get('/notifications', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
 // Route to search for roommates
 router.post(
   "/searchAll",
@@ -294,7 +300,6 @@ router.post(
   }
 );
 
-
 // Add this new endpoint to calculate match percentage
 router.post('/match-percentage', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
@@ -307,17 +312,23 @@ router.post('/match-percentage', passport.authenticate('jwt', { session: false }
       // Criteria weights and calculation logic
       const criteria = [
         { key: 'city', weight: 20 },
-        { key: 'veg_nonveg', weight: 20 },
-        { key: 'gender', weight: 20 },
+        { key: 'veg_nonveg', weight: 15 },
+        { key: 'gender', weight: 15 },
         { key: 'university', weight: 10 },
         { key: 'budget', weight: 10, type: 'range', range: { min: profile.budget * 0.8, max: profile.budget * 1.2 } },
         { key: 'drinker', weight: 10 },
         { key: 'smoker', weight: 10 },
+        { key: 'preferred_move_in_date', weight: 10, type: 'date_range', range: { min: new Date(profile.preferred_move_in_date), max: new Date(new Date(profile.preferred_move_in_date).setMonth(new Date(profile.preferred_move_in_date).getMonth() + 1)) } }, // Add date range for preferred_move_in_date
       ];
 
       criteria.forEach(({ key, weight, type, range }) => {
         if (type === 'range') {
           if (currentUser[key] >= range.min && currentUser[key] <= range.max) {
+            matchScore += weight;
+          }
+        } else if (type === 'date_range') {
+          const currentUserDate = new Date(currentUser[key]);
+          if (currentUserDate >= range.min && currentUserDate <= range.max) {
             matchScore += weight;
           }
         } else {
@@ -341,7 +352,5 @@ router.post('/match-percentage', passport.authenticate('jwt', { session: false }
     res.status(400).json({ error: error.message });
   }
 });
-
-
 
 module.exports = router;
