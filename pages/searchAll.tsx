@@ -19,6 +19,7 @@ const SearchAll = () => {
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
+  const [sortOption, setSortOption] = useState("matchScore"); 
   const [filters, setFilters] = useState({
     budget: [0, 10000],
     city: "",
@@ -27,7 +28,7 @@ const SearchAll = () => {
     have_room: "Any",
   });
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-
+  
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     setCurrentUser(user);
@@ -83,7 +84,8 @@ const SearchAll = () => {
             }
           );
   
-          setResults(matchResponse.data);
+          const sortedResults = sortResults(sortOption, matchResponse.data);
+          setResults(sortedResults);
         }
       } catch (err) {
         setError("Failed to fetch preferences or search for roommates.");
@@ -92,6 +94,7 @@ const SearchAll = () => {
   
     fetchPreferencesAndSearch();
   }, []);
+  
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -126,6 +129,24 @@ const SearchAll = () => {
     setFilters({ ...filters, budget: newValue });
   };
 
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+    const sortedData = sortResults(e.target.value, results);
+    setResults(sortedData);
+  };
+
+  const sortResults = (option, data) => {
+    let sortedData = [...data];
+    if (option === "budget") {
+      sortedData.sort((a, b) => a.budget - b.budget);
+    } else if (option === "name") {
+      sortedData.sort((a, b) => a.full_name.localeCompare(b.full_name));
+    } else if (option === "matchScore") {
+      sortedData.sort((a, b) => b.matchPercentage - a.matchPercentage);
+    }
+    return sortedData;
+  };
+
   const applyFilters = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -139,12 +160,11 @@ const SearchAll = () => {
           budget_min: filters.budget[0],
           budget_max: filters.budget[1],
         };
-        console.log("Applying Filters:", filterCriteria); // Debugging line
         const searchResponse = await axios.post(
           "http://localhost:5000/api/users/searchAll",
           filterCriteria
         );
-        
+  
         // Fetch the current user profile again if necessary
         const userProfileResponse = await axios.get(
           "http://localhost:5000/api/users/profile"
@@ -161,14 +181,15 @@ const SearchAll = () => {
           }
         );
   
-        setResults(matchResponse.data);
+        // Sort the results
+        const sortedData = sortResults(sortOption, matchResponse.data);
+        setResults(sortedData);
         setIsFilterModalOpen(false);
       }
     } catch (err) {
       setError("Failed to apply filters.");
     }
   };
-  
 
   const filteredResults = results.filter((user) =>
     Object.values(user).some((value) =>
@@ -309,6 +330,11 @@ const SearchAll = () => {
               onChange={handleSearch}
               className="p-2 border border-gray-300 rounded-lg w-full"
             />
+            <select value={sortOption} onChange={handleSortChange}>
+              <option value="matchScore">Match Score</option>
+              <option value="budget">Budget</option>
+              <option value="name">Name [A-Z]</option>
+            </select>
           </div>
           {error && <div className="text-red-500 mb-4">{error}</div>}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3   3xl:grid-cols-4 gap-6 w-full">
