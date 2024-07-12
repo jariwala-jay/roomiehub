@@ -240,7 +240,7 @@ const Dashboard = () => {
                 className="flex absolute bottom-5 items-center space-x-2 w-[95%] rounded-md cursor-pointer"
                 onClick={handleLogout}
               >
-                <div className="bg-[#333231] flex items-center justify-center w-full rounded-3xl p-2 px-3">
+                <div className="flex items-center justify-center w-full py-2 bg-[#333231]   transition-colors duration-300 text-white rounded-xl border-r-4 border-b-4  border-[#eeeeee00] hover:border-b-4 hover:border-r-4 hover:border-[#ffc336]">
                   <span>
                     <LogoutIcon className="text-white" />
                   </span>
