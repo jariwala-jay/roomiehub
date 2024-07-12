@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-
+import CheckIcon from "@mui/icons-material/Check";
 const Notifications = ({ currentUser }) => {
   const [notifications, setNotifications] = useState([]);
   const [requests, setRequests] = useState([]);
@@ -83,11 +83,13 @@ const Notifications = ({ currentUser }) => {
           <p>No recent activity</p>
         ) : (
           <>
-            {notifications.slice(0,3).map((notification, index) => (
+            {notifications.slice(0, 3).map((notification, index) => (
               <li key={index} className="flex items-center space-x-4">
                 {notification.sender && notification.sender.profile_pic ? (
                   <img
-                    src={`data:image/jpeg;base64,${Buffer.from(notification.sender.profile_pic).toString('base64')}`}
+                    src={`data:image/jpeg;base64,${Buffer.from(
+                      notification.sender.profile_pic
+                    ).toString("base64")}`}
                     alt="Profile"
                     className="w-10 h-10 rounded-full"
                   />
@@ -104,7 +106,9 @@ const Notifications = ({ currentUser }) => {
               <li key={request.id} className="flex items-center space-x-4">
                 {request.sender && request.sender.profile_pic ? (
                   <img
-                    src={`data:image/jpeg;base64,${Buffer.from(request.sender.profile_pic).toString('base64')}`}
+                    src={`data:image/jpeg;base64,${Buffer.from(
+                      request.sender.profile_pic
+                    ).toString("base64")}`}
                     alt="Profile"
                     className="w-10 h-10 rounded-full"
                   />
@@ -112,18 +116,21 @@ const Notifications = ({ currentUser }) => {
                   <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
                 )}
                 <div>
-                  <p className="font-bold">{request.sender.full_name} wants to connect</p>
+                  <p className="font-bold">
+                    {request.sender.full_name} wants to connect
+                  </p>
                   <p className="text-gray-600">{request.timestamp}</p>
                   <div className="space-x-2">
                     <button
                       onClick={() => handleResponse(request.id, "accepted")}
-                      className="bg-green-500 text-white p-2 rounded"
+                      className="bg-gray-800 px-2 mt-1 border-2 border-gray-800 text-white font-semibold rounded"
                     >
                       Accept
+                      {/* <CheckIcon className="text-white" /> */}
                     </button>
                     <button
                       onClick={() => handleResponse(request.id, "rejected")}
-                      className="bg-red-500 text-white p-2 rounded"
+                      className=" text-gray-800 mt-1 border-2 font-semibold  border-gray-800 px-2 rounded"
                     >
                       Reject
                     </button>

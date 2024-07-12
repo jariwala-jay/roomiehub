@@ -11,6 +11,16 @@ import MyFriends from '@/components/MyFriends'; // Import the Friends component
 import Friends from './friends';
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import UpdatePreferences from './updatePreferences';
+import HomeIcon from "@mui/icons-material/Home";
+import PersonIcon from "@mui/icons-material/Person";
+import SearchIcon from "@mui/icons-material/Search";
+import ChatIcon from "@mui/icons-material/Chat";
+import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 
 const Dashboard = () => {
   const [profile, setProfile] = useState({
@@ -22,6 +32,7 @@ const Dashboard = () => {
   const [section, setSection] = useState('home'); // Section state to switch between sections
   const [sidebarOpen, setSidebarOpen] = useState(false); // State for sidebar visibility
   const [currentUser, setCurrentUser] = useState(null);
+  const [activeSection, setActiveSection] = useState("home");
   const [activeTab, setActiveTab] = useState('preferences'); // State for active tab
 
   useEffect(() => {
@@ -51,6 +62,7 @@ const Dashboard = () => {
 
   const handleSectionClick = (section) => {
     setSection(section);
+    setActiveSection(section);
     setSidebarOpen(false); // Close the sidebar when a section is selected
   };
 
@@ -62,68 +74,180 @@ const Dashboard = () => {
 
   return (
     <ProtectedRoute>
-      <div className="flex  h-full  bg-white">
+      <div className="flex relative  h-full  bg-white">
         {/* Sidebar */}
         <aside
-          className={`fixed z-50 inset-y-0 border-r-2 border-gray-200  left-0 transform ${
+          className={`fixed z-50  inset-y-0 border-r-2 border-gray-200  left-0 transform ${
             sidebarOpen
               ? "translate-x-0"
               : "-translate-x-full lg:translate-x-0 lg:static"
           } transition-transform duration-300 ease-in-out w-64 bg-white p-6 lg:relative`}
         >
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-center mb-8">
             <img
               src="/logo.png"
               alt="RoomieHub logo"
-              className="mb-4 lg:block hidden min-w-[150px] w-1/5"
+              className="mb-4 lg:block hidden min-w-[150px] w-4/5"
             />
             <button onClick={() => setSidebarOpen(false)} className="lg:hidden">
               <CloseIcon className="h-6 w-6 text-black" />
             </button>
           </div>
-          <nav>
+          <nav className="h-[82vh] relative">
             <ul className="space-y-2">
               <li
-                className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer"
+                className={`flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer ${
+                  activeSection === "home" ? "font-bold" : ""
+                }`}
                 onClick={() => handleSectionClick("home")}
               >
-                <span>🏠</span>
-                <span>Home</span>
+                <span>
+                  {activeSection === "home" ? (
+                    <HomeIcon
+                      sx={{ fontSize: 30 }}
+                      className="text-[#333231] text-xl"
+                    />
+                  ) : (
+                    <HomeOutlinedIcon
+                      sx={{ fontSize: 30 }}
+                      className="text-[#333231] text-xl"
+                    />
+                  )}
+                </span>
+                <span
+                  className={`text-[#333231] text-xl ${
+                    activeSection === "home" ? "font-semibold" : "font-medium"
+                  }`}
+                >
+                  Home
+                </span>
               </li>
               <li
-                className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer"
+                className={`flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer ${
+                  activeSection === "profile" ? "font-bold" : ""
+                }`}
                 onClick={() => handleSectionClick("profile")}
               >
-                <span>📄</span>
-                <span>Profile</span>
+                <span>
+                  {activeSection === "profile" ? (
+                    <PersonIcon
+                      sx={{ fontSize: 30 }}
+                      className="text-[#333231] text-xl"
+                    />
+                  ) : (
+                    <PersonOutlineOutlinedIcon
+                      sx={{ fontSize: 30 }}
+                      className="text-[#333231] text-xl"
+                    />
+                  )}
+                </span>
+                <span
+                  className={`text-[#333231] text-xl ${
+                    activeSection === "profile"
+                      ? "font-semibold"
+                      : "font-medium"
+                  }`}
+                >
+                  Profile
+                </span>
               </li>
               <li
-                className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer"
+                className={`flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer ${
+                  activeSection === "findRoommate" ? "font-bold" : ""
+                }`}
                 onClick={() => handleSectionClick("findRoommate")}
               >
-                <span>🔍</span>
-                <span>Find Roommate</span>
+                <span className=''>
+                  {activeSection === "findRoommate" ? (
+                    <SearchIcon
+                      sx={{ fontSize: 30, fontWeight: "bold" }}
+                      className="text-[#333231] text-xl"
+                    />
+                  ) : (
+                    <SearchIcon
+                      sx={{ fontSize: 30 }}
+                      className="text-[#333231] text-xl"
+                    />
+                  )}
+                </span>
+                <span
+                  className={`text-[#333231] text-xl ${
+                    activeSection === "findRoommate"
+                      ? "font-semibold"
+                      : "font-medium"
+                  }`}
+                >
+                  Find Roommate
+                </span>
               </li>
               <li
-                className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer"
+                className={`flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer ${
+                  activeSection === "chat" ? "font-bold" : ""
+                }`}
                 onClick={() => handleSectionClick("chat")}
               >
-                <span>💬</span>
-                <span>Chat</span>
+                <span>
+                  {activeSection === "chat" ? (
+                    <ChatIcon
+                      sx={{ fontSize: 30 }}
+                      className="text-[#333231] text-xl"
+                    />
+                  ) : (
+                    <ChatOutlinedIcon
+                      sx={{ fontSize: 30 }}
+                      className="text-[#333231] text-xl"
+                    />
+                  )}
+                </span>
+                <span
+                  className={`text-[#333231] text-xl ${
+                    activeSection === "chat" ? "font-semibold" : "font-medium"
+                  }`}
+                >
+                  Chat
+                </span>
               </li>
               <li
-                className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer"
+                className={`flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer ${
+                  activeSection === "settings" ? "font-bold" : ""
+                }`}
                 onClick={() => handleSectionClick("settings")}
               >
-                <span>⚙️</span>
-                <span>Settings</span>
+                <span>
+                  {activeSection === "settings" ? (
+                    <SettingsIcon
+                      sx={{ fontSize: 30 }}
+                      className="text-[#333231] text-xl"
+                    />
+                  ) : (
+                    <SettingsOutlinedIcon
+                      sx={{ fontSize: 30 }}
+                      className="text-[#333231] text-xl"
+                    />
+                  )}
+                </span>
+                <span
+                  className={`text-[#333231] text-xl ${
+                    activeSection === "settings"
+                      ? "font-semibold"
+                      : "font-medium"
+                  }`}
+                >
+                  Settings
+                </span>
               </li>
               <li
-                className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 cursor-pointer"
+                className="flex absolute bottom-5 items-center space-x-2 w-[95%] rounded-md cursor-pointer"
                 onClick={handleLogout}
               >
-                <span>🚪</span>
-                <span>Logout</span>
+                <div className="bg-[#333231] flex items-center justify-center w-full rounded-3xl p-2 px-3">
+                  <span>
+                    <LogoutIcon className="text-white" />
+                  </span>
+                  <span className="text-[#ffffff] text-center font-semibold text-xl">
+                    Logout
+                  </span>
+                </div>
               </li>
             </ul>
           </nav>
@@ -137,12 +261,12 @@ const Dashboard = () => {
           <img
             src="/logo.png"
             alt="RoomieHub logo"
-            className=" min-w-[150px] w-1/5"
+            className="mx-auto min-w-[150px] w-1/5"
           />
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 items-center md:p-6  md:pt-0 lg:mt-0 mt-[3.4rem]">
+        <div className="flex-1 items-center md:p-6 md:pl-0  md:pt-0 lg:mt-0 mt-[3.4rem]">
           {/* Profile Header */}
           {section === "home" && (
             <div className="">
@@ -178,47 +302,55 @@ const Dashboard = () => {
                     <ul className="flex space-x-4">
                       <li
                         className={`pb-2 cursor-pointer ${
-                          activeTab === 'preferences' ? 'border-b-2 border-blue-500' : 'border-b-2 border-transparent hover:border-gray-300'
+                          activeTab === "preferences"
+                            ? "border-b-2 border-blue-500"
+                            : "border-b-2 border-transparent hover:border-gray-300"
                         }`}
-                        onClick={() => setActiveTab('preferences')}
+                        onClick={() => setActiveTab("preferences")}
                       >
                         Preferences
                       </li>
                       <li
                         className={`pb-2 cursor-pointer ${
-                          activeTab === 'editPreferences' ? 'border-b-2 border-blue-500' : 'border-b-2 border-transparent hover:border-gray-300'
+                          activeTab === "editPreferences"
+                            ? "border-b-2 border-blue-500"
+                            : "border-b-2 border-transparent hover:border-gray-300"
                         }`}
-                        onClick={() => setActiveTab('editPreferences')}
+                        onClick={() => setActiveTab("editPreferences")}
                       >
                         Edit Preferences
                       </li>
                       <li
                         className={`pb-2 cursor-pointer ${
-                          activeTab === 'accountSettings' ? 'border-b-2 border-blue-500' : 'border-b-2 border-transparent hover:border-gray-300'
+                          activeTab === "accountSettings"
+                            ? "border-b-2 border-blue-500"
+                            : "border-b-2 border-transparent hover:border-gray-300"
                         }`}
-                        onClick={() => setActiveTab('accountSettings')}
+                        onClick={() => setActiveTab("accountSettings")}
                       >
                         Account Settings
                       </li>
                     </ul>
                   </div>
                   <div className="bg-white p-6 rounded-lg shadow-lg">
-                    {activeTab === 'preferences' && (
+                    {activeTab === "preferences" && (
                       <div>
                         <h2 className="text-xl font-bold mb-4">Preferences</h2>
                         {/* Preferences Content */}
                       </div>
                     )}
-                    {activeTab === 'editPreferences' && (
+                    {activeTab === "editPreferences" && (
                       <div>
-                        <div className='flex w-full'>
-                        <UpdatePreferences/>
+                        <div className="flex w-full">
+                          <UpdatePreferences />
                         </div>
                       </div>
                     )}
-                    {activeTab === 'accountSettings' && (
+                    {activeTab === "accountSettings" && (
                       <div>
-                        <h2 className="text-xl font-bold mb-4">Account Settings</h2>
+                        <h2 className="text-xl font-bold mb-4">
+                          Account Settings
+                        </h2>
                         {/* Account Settings Content */}
                       </div>
                     )}
@@ -235,7 +367,10 @@ const Dashboard = () => {
                         >
                           View more
                         </button>
-                        <ArrowOutwardIcon fontSize='sm' className='text-blue-500' />
+                        <ArrowOutwardIcon
+                          fontSize="sm"
+                          className="text-blue-500"
+                        />
                       </div>
                     </div>
                     <MyFriends />
