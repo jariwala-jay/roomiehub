@@ -3,23 +3,16 @@ import axios from "axios";
 import ProfileCard from "@/components/ProfileCard";
 import Slider from "@mui/material/Slider";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
-
 import Checkbox from "@mui/joy/Checkbox";
 import CityInput from "@/components/CityInput";
 import Modal from "@mui/material/Modal";
 import IconButton from "@mui/material/IconButton";
 
-const SearchAll = () => {
-  const [preferences, setPreferences] = useState({
-    veg_nonveg: "Any",
-    preference_checklist: [],
-    have_room: "Any",
-  });
-  const [results, setResults] = useState([]);
+const SearchAll = ({ currentUser, initialProfiles }) => {
+  const [results, setResults] = useState(initialProfiles);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentUser, setCurrentUser] = useState(null);
-  const [sortOption, setSortOption] = useState("matchScore"); 
+  const [sortOption, setSortOption] = useState("matchScore");
   const [filters, setFilters] = useState({
     budget: [0, 10000],
     city: "",
@@ -28,73 +21,11 @@ const SearchAll = () => {
     have_room: "Any",
   });
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  
+
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    setCurrentUser(user);
-    const fetchPreferencesAndSearch = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (token) {
-          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  
-          // Fetch preferences
-          const preferencesResponse = await axios.get(
-            "http://localhost:5000/api/users/preferences"
-          );
-          const prefs = preferencesResponse.data;
-          setPreferences(prefs);
-  
-          // Fetch user profile
-          const userProfileResponse = await axios.get(
-            "http://localhost:5000/api/users/profile"
-          );
-          const userProfile = userProfileResponse.data;
-          setCurrentUser(userProfile);
-  
-          const userBudgetMax = userProfile.budget * 1.2;
-  
-          setFilters({
-            budget: [0, userBudgetMax],
-            city: userProfile.city || "",
-            veg_nonveg: prefs.veg_nonveg || "Any",
-            preference_checklist: prefs.preference_checklist || [],
-            have_room: prefs.have_room || "Any",
-          });
-  
-          // Initial search with combined preferences and profile data
-          const initialSearchCriteria = {
-            ...prefs,
-            budget_min: 0,
-            budget_max: userBudgetMax,
-            city: userProfile.city || "",
-          };
-  
-          const searchResponse = await axios.post(
-            "http://localhost:5000/api/users/searchAll",
-            initialSearchCriteria
-          );
-  
-          // Calculate match percentage
-          const matchResponse = await axios.post(
-            "http://localhost:5000/api/users/match-percentage",
-            {
-              currentUser: userProfile,
-              profiles: searchResponse.data,
-            }
-          );
-  
-          const sortedResults = sortResults(sortOption, matchResponse.data);
-          setResults(sortedResults);
-        }
-      } catch (err) {
-        setError("Failed to fetch preferences or search for roommates.");
-      }
-    };
-  
-    fetchPreferencesAndSearch();
-  }, []);
-  
+    setResults(initialProfiles);
+  }, [initialProfiles]);
+
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -164,24 +95,15 @@ const SearchAll = () => {
           "http://localhost:5000/api/users/searchAll",
           filterCriteria
         );
-  
-        // Fetch the current user profile again if necessary
-        const userProfileResponse = await axios.get(
-          "http://localhost:5000/api/users/profile"
-        );
-        const userProfile = userProfileResponse.data;
-        setCurrentUser(userProfile);
-  
-        // Calculate match percentage
+
         const matchResponse = await axios.post(
           "http://localhost:5000/api/users/match-percentage",
           {
-            currentUser: userProfile,
+            currentUser,
             profiles: searchResponse.data,
           }
         );
-  
-        // Sort the results
+
         const sortedData = sortResults(sortOption, matchResponse.data);
         setResults(sortedData);
         setIsFilterModalOpen(false);
@@ -206,8 +128,8 @@ const SearchAll = () => {
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row max-w-[2160px] mx-auto min-h-screen  p-6 pl-0 ">
-        <div className="lg:w-1/2 bg-white max-h-[82vh] p-4 rounded-lg shadow-md hidden ">
+      <div className="flex flex-col lg:flex-row max-w-[2160px] mx-auto min-h-screen p-6 pl-0">
+        <div className="lg:w-1/2 bg-white max-h-[82vh] p-4 rounded-lg shadow-md hidden">
           <div className="flex items-center mb-4">
             <h2 className="text-2xl font-bold mr-2">Filters</h2>
             <TuneRoundedIcon className="text-[#ffd062]" />
@@ -315,7 +237,7 @@ const SearchAll = () => {
               />
               <h2 className="text-3xl ml-2 font-bold">Search Results</h2>
             </div>
-            <div >
+            <div>
               <IconButton onClick={() => setIsFilterModalOpen(true)}>
                 <TuneRoundedIcon className="text-[#ffd062]" />
               </IconButton>
@@ -337,7 +259,7 @@ const SearchAll = () => {
             </select>
           </div>
           {error && <div className="text-red-500 mb-4">{error}</div>}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3   3xl:grid-cols-4 gap-6 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-4 gap-6 w-full">
             {filteredResults.length === 0 ? (
               <p className="text-lg">No results found</p>
             ) : (
@@ -346,7 +268,7 @@ const SearchAll = () => {
                   key={user.id}
                   user={user}
                   currentUser={currentUser}
-                  matchPercentage={user.matchPercentage} // Pass match percentage to ProfileCard
+                  matchPercentage={user.matchPercentage}
                 />
               ))
             )}

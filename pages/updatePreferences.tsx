@@ -78,116 +78,123 @@ const UpdatePreferences = () => {
 
   return (
     <ProtectedRoute>
-        {preferences && (
-          <form onSubmit={handleSubmit} className="w-full max-w-md">
-            <div className="mb-4">
-              <label
-                htmlFor="preferred_date"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Preferred Date
-              </label>
-              <input
-                type="date"
-                id="preferred_date"
-                name="preferred_date"
-                value={preferences.preferred_date}
+      {preferences && (
+        <form onSubmit={handleSubmit} className="w-full max-w-md">
+          <div className="mb-4">
+            <label
+              htmlFor="preferred_date"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Preferred Date
+            </label>
+            <input
+              type="date"
+              id="preferred_date"
+              name="preferred_date"
+              value={preferences.preferred_date}
+              onChange={handleChange}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="preferred_veg_nonveg"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Preferred Veg/Non-Veg
+            </label>
+            <select
+              id="preferred_veg_nonveg"
+              name="preferred_veg_nonveg"
+              value={preferences.preferred_veg_nonveg}
+              onChange={handleChange}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            >
+              <option value="Veg">Veg</option>
+              <option value="Non-Veg">Non-Veg</option>
+              <option value="Any">Any</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Preferences Checklist
+            </label>
+            <div className=" flex flex-col mt-1 space-y-2">
+              <Checkbox
+                color="neutral"
+                size="md"
+                variant="soft"
+                label="Male Only"
+                name="preference_checklist"
+                value="male only"
                 onChange={handleChange}
-                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                checked={preferences.preference_checklist.includes("male only")}
+              />
+              <Checkbox
+                color="neutral"
+                size="md"
+                variant="soft"
+                label="Female Only"
+                name="preference_checklist"
+                value="female only"
+                onChange={handleChange}
+                checked={preferences.preference_checklist.includes(
+                  "female only"
+                )}
+              />
+              <Checkbox
+                color="neutral"
+                size="md"
+                variant="soft"
+                label="Non-Smoker"
+                name="preference_checklist"
+                value="non-smoker"
+                onChange={handleChange}
+                checked={preferences.preference_checklist.includes(
+                  "non-smoker"
+                )}
+              />
+              <Checkbox
+                color="neutral"
+                size="md"
+                variant="soft"
+                label="Non-Drinker"
+                name="preference_checklist"
+                value="non-drinker"
+                onChange={handleChange}
+                checked={preferences.preference_checklist.includes(
+                  "non-drinker"
+                )}
               />
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="preferred_veg_nonveg"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Preferred Veg/Non-Veg
-              </label>
-              <select
-                id="preferred_veg_nonveg"
-                name="preferred_veg_nonveg"
-                value={preferences.preferred_veg_nonveg}
-                onChange={handleChange}
-                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-              >
-                <option value="Veg">Veg</option>
-                <option value="Non-Veg">Non-Veg</option>
-                <option value="Any">Any</option>
-              </select>
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Preferences Checklist
-              </label>
-              <div className=" flex flex-col mt-1 space-y-2">
-                  <Checkbox
-                    color="neutral"
-                    size="md"
-                    variant="soft"
-                    label='Male Only'
-                    name="preference_checklist"
-                    value="male only"
-                    onChange={handleChange}
-                    checked={preferences.preference_checklist.includes("male only")}
-                  />
-                  <Checkbox
-                    color="neutral"
-                    size="md"
-                    variant="soft"
-                    label='Female Only'
-                    name="preference_checklist"
-                    value="female only"
-                    onChange={handleChange}
-                    checked={preferences.preference_checklist.includes("female only")}
-                  />
-                  <Checkbox
-                    color="neutral"
-                    size="md"
-                    variant="soft"
-                    label='Non-Smoker'
-                    name="preference_checklist"
-                    value="non-smoker"
-                    onChange={handleChange}
-                    checked={preferences.preference_checklist.includes("non-smoker")}
-                  />
-                  <Checkbox
-                    color="neutral"
-                    size="md"
-                    variant="soft"
-                    label='Non-Drinker'
-                    name="preference_checklist"
-                    value="non-drinker"
-                    onChange={handleChange}
-                    checked={preferences.preference_checklist.includes("non-drinker")}
-                  />
-              </div>
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="have_room"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Have Room
-              </label>
-              <select
-                id="have_room"
-                name="have_room"
-                value={preferences.have_room}
-                onChange={handleChange}
-                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-              >
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
-            </div>
-            <button
-              type="submit"
-              className="w-full py-2 bg-[#333231] transition-colors duration-300 text-white rounded-xl border-r-4 border-b-4 border-[#eeeeee00] hover:border-[#ffc336]"
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="have_room"
+              className="block text-sm font-medium text-gray-700"
             >
-              Save Preferences
-            </button>
-          </form>
-        )}
+              Have Room
+            </label>
+            <select
+              id="have_room"
+              name="have_room"
+              value={preferences.have_room}
+              onChange={handleChange}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            >
+              <option value="Any">Any</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+          <button
+            type="submit"
+            className="w-full py-2 bg-[#333231] transition-colors duration-300 text-white rounded-xl border-r-4 border-b-4 border-[#eeeeee00] hover:border-[#ffc336]"
+          >
+            Save Preferences
+          </button>
+        </form>
+      )}
     </ProtectedRoute>
   );
 };
